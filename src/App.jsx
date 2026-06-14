@@ -6,7 +6,7 @@ const SCENES = {
   hotel: {
     id: 'hotel',
     name: 'The Hotel',
-    background: '/hotel-bg.png',
+    background: 'https://uploads.onecompiler.io/44jjpumhc/1781428187587/Untitled%20design.png',
     products: [
       { 
         id: 'h1', 
@@ -125,10 +125,8 @@ export default function App() {
 
   return (
     <div className="relative w-full h-screen overflow-hidden bg-black text-white font-sans selection:bg-yellow-500 selection:text-black">
-      
-      {/* Background Environment */}
       <div 
-        className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${isLoaded ? 'opacity-70' : 'opacity-0 scale-105'}`}
+        className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${isLoaded ? 'opacity-100' : 'opacity-0 scale-105'}`}
         style={{
           backgroundImage: `url(${scene.background})`,
           backgroundSize: 'cover',
@@ -138,7 +136,6 @@ export default function App() {
       />
       <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/80 pointer-events-none" />
 
-      {/* Top Navigation Bar */}
       <nav className="absolute top-0 left-0 w-full p-6 flex justify-between items-center z-40">
         <div className="flex gap-8 items-center text-sm font-medium tracking-widest uppercase">
           <button className="hover:text-yellow-400 transition-colors hidden md:block">Albums</button>
@@ -156,7 +153,6 @@ export default function App() {
         </button>
       </nav>
 
-      {/* Interactive Hotspots */}
       {isLoaded && scene.products.map((product) => (
         <button
           key={product.id}
@@ -189,7 +185,6 @@ export default function App() {
         </button>
       ))}
 
-      {/* Product Slide-out Panel */}
       <div 
         className={`absolute top-0 right-0 h-full w-full md:w-[400px] bg-black/80 backdrop-blur-xl border-l border-white/10 p-8 z-50 transform transition-transform duration-500 ease-out flex flex-col ${
           activeProduct ? 'translate-x-0' : 'translate-x-full'
@@ -245,7 +240,6 @@ export default function App() {
         )}
       </div>
 
-      {/* Bottom Controls */}
       <div className="absolute bottom-8 w-full px-4 md:px-8 flex flex-col md:flex-row justify-between items-center md:items-end gap-6 z-40 pointer-events-none">
         <div className="flex items-center gap-4 bg-black/40 backdrop-blur-md p-3 rounded-full border border-white/10 pointer-events-auto self-start md:self-auto">
           <button 
@@ -258,13 +252,6 @@ export default function App() {
             <p className="text-xs font-bold tracking-wider">SUGA & SPICE</p>
             <p className="text-[10px] text-gray-400 tracking-widest uppercase">Mayé X Bonny</p>
           </div>
-          {isPlaying && (
-            <div className="flex gap-1 pr-4 h-4 items-end">
-              <div className="w-1 bg-yellow-500 animate-[bounce_1s_infinite] h-full" />
-              <div className="w-1 bg-yellow-500 animate-[bounce_0.8s_infinite] h-2/3" />
-              <div className="w-1 bg-yellow-500 animate-[bounce_1.2s_infinite] h-full" />
-            </div>
-          )}
         </div>
 
         <div className="flex flex-col items-center md:items-end gap-3 pointer-events-auto">
