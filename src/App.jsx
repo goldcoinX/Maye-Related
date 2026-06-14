@@ -82,7 +82,6 @@ const SCENES = {
   escape: {
     id: 'escape',
     name: 'The Escape',
-    // Note: Swap this URL with your escape driving screenshot in production
     background: 'https://images.unsplash.com/photo-1513628253939-010e64ac66cd?q=80&w=2560&auto=format&fit=crop',
     products: [
       { 
@@ -114,7 +113,6 @@ export default function App() {
 
   const scene = SCENES[currentSceneKey];
 
-  // Simulated loading effect for premium feel
   useEffect(() => {
     setIsLoaded(false);
     const timer = setTimeout(() => setIsLoaded(true), 800);
@@ -173,9 +171,7 @@ export default function App() {
           className="absolute group z-30 -translate-x-1/2 -translate-y-1/2"
           style={{ left: product.x, top: product.y }}
         >
-          {/* Pulsing ring */}
           <span className={`absolute inset-0 rounded-full border-2 animate-ping ${product.isDoor ? 'border-yellow-500/50' : 'border-white/50'}`} />
-          {/* Main button dot */}
           <span className={`relative flex items-center justify-center w-8 h-8 rounded-full backdrop-blur-md border transition-all duration-300 ${
             product.isDoor 
               ? 'bg-yellow-500/20 border-yellow-400 group-hover:bg-yellow-500' 
@@ -187,7 +183,6 @@ export default function App() {
               <ChevronRight size={16} className="text-white group-hover:text-black" />
             )}
           </span>
-          {/* Hover Label */}
           <span className="absolute top-10 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap text-xs font-medium tracking-wider bg-black/60 px-3 py-1 rounded backdrop-blur-sm pointer-events-none">
             {product.name}
           </span>
@@ -226,7 +221,6 @@ export default function App() {
                 <p>{activeProduct.desc}</p>
               </div>
               
-              {/* Sizing (Skip for non-apparel items like Rose/Car/Briefcase) */}
               {!['p1', 'p6', 'p7', 'p8'].includes(activeProduct.id) && (
                 <div className="space-y-3 mb-8">
                   <label className="text-xs tracking-widest uppercase text-gray-400">Size</label>
@@ -251,10 +245,8 @@ export default function App() {
         )}
       </div>
 
-      {/* Bottom Controls (Music & Scene Navigation) */}
+      {/* Bottom Controls */}
       <div className="absolute bottom-8 w-full px-4 md:px-8 flex flex-col md:flex-row justify-between items-center md:items-end gap-6 z-40 pointer-events-none">
-        
-        {/* Music Player */}
         <div className="flex items-center gap-4 bg-black/40 backdrop-blur-md p-3 rounded-full border border-white/10 pointer-events-auto self-start md:self-auto">
           <button 
             onClick={() => setIsPlaying(!isPlaying)}
@@ -275,7 +267,6 @@ export default function App() {
           )}
         </div>
 
-        {/* Scene Switcher */}
         <div className="flex flex-col items-center md:items-end gap-3 pointer-events-auto">
           <span className="text-xs tracking-widest uppercase text-gray-400 flex items-center gap-2">
             <MapPin size={12} /> Explore
@@ -300,7 +291,6 @@ export default function App() {
           </div>
         </div>
       </div>
-
     </div>
   );
 }
