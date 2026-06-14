@@ -6,7 +6,7 @@ const SCENES = {
   hotel: {
     id: 'hotel',
     name: 'The Hotel',
-    background: 'https://i.postimg.cc/dtHf53WT/Untitled-design.png',
+    background: '/hotel-bg.png',
     products: [
       { 
         id: 'h1', 
