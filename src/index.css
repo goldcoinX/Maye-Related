@@ -1,3 +1,20 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <title>Maye Related | Professional Services</title>
+    <meta name="description" content="Explore professional solutions and portfolio for Maye Related. High-quality services delivered." />
+    
+    <meta property="og:title" content="Maye Related" />
+    <meta property="og:description" content="Check out the professional platform for Maye Related." />
+    <meta property="og:image" content="/og-image.jpg" /> <meta property="og:url" content="https://your-domain.com" />
+    <meta property="og:type" content="website" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
