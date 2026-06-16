@@ -11,7 +11,7 @@ const SCENES = {
         id: 'h1', 
         name: 'The Getaway Guitar', 
         price: 450, 
-        x: '82%', y: '60%', 
+        x: '68%', y: '72%', 
         desc: 'Strum your way out. Classic acoustic guitar used in the sessions.',
         image: 'https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=500&auto=format&fit=crop'
       },
@@ -19,7 +19,7 @@ const SCENES = {
         id: 'h2', 
         name: 'Black Leather Briefcase', 
         price: 150, 
-        x: '70%', y: '75%', 
+        x: '52%', y: '85%', 
         desc: 'Secure the bag. Premium black leather briefcase.',
         image: 'https://images.unsplash.com/photo-1553754538-4187e834eb70?w=500&auto=format&fit=crop'
       },
@@ -28,14 +28,14 @@ const SCENES = {
         name: 'Enter Bonny & Clyde Room',
         isDoor: true,
         targetScene: 'room',
-        x: '30%', y: '65%'
+        x: '33%', y: '65%'
       },
       {
         id: 'h4_escape',
         name: 'Drive Out (The Escape)',
         isDoor: true,
         targetScene: 'escape',
-        x: '18%', y: '58%'
+        x: '12%', y: '60%'
       }
     ]
   },
