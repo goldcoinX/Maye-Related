@@ -5,7 +5,7 @@ const SCENES = {
   hotel: {
     id: 'hotel',
     name: 'The Hotel',
-    background: 'https://i.postimg.cc/dtHf53WT/home-the-hotel.png',
+    background: 'https://res.cloudinary.com/dccxjo9x8/image/upload/v1781626534/home_ready_hotel_azeki6.png',
     products: [
       { 
         id: 'h1', 
@@ -141,21 +141,26 @@ export default function App() {
   };
 
   return (
-    <div className="fixed inset-0 w-screen h-screen bg-black text-white font-sans overflow-hidden selection:bg-yellow-500 selection:text-black">
+    <div className="fixed inset-0 w-full h-full overflow-hidden bg-black text-white font-sans selection:bg-yellow-500 selection:text-black">
       
-      {/* Aggressive Deep Override to force full viewport on ANY hosting platform */}
+      {/* Force override of parent boundaries so the app occupies the absolute entire viewport */}
       <style>{`
-        html, body, #root, #__next, div[id*="root"] {
+        #root, #__next, :root {
+          max-width: none !important;
+          width: 100% !important;
+          height: 100% !important;
           margin: 0 !important;
           padding: 0 !important;
-          width: 100vw !important;
-          height: 100vh !important;
-          max-width: none !important;
+          position: relative !important;
+          overflow: hidden !important;
+        }
+        html, body {
+          margin: 0 !important;
+          padding: 0 !important;
+          width: 100% !important;
+          height: 100% !important;
           overflow: hidden !important;
           background-color: #000000 !important;
-          position: fixed !important;
-          top: 0 !important;
-          left: 0 !important;
         }
         /* Custom scrollbar reset */
         .no-scrollbar::-webkit-scrollbar {
@@ -169,16 +174,19 @@ export default function App() {
 
       {/* Loading Spinner */}
       {isLoading && (
-        <div className="absolute inset-0 flex items-center justify-center z-[100] bg-black">
+        <div className="absolute inset-0 flex items-center justify-center z-50 bg-black">
           <Loader2 className="animate-spin text-yellow-500" size={48} />
         </div>
       )}
 
-      {/* Background Image Container */}
+      {/* Background Image */}
       <div 
-        className={`absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-1000 ease-in-out ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
+        className={`absolute inset-0 transition-all duration-1000 ease-in-out ${isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-105'}`}
         style={{
-          backgroundImage: `url(${scene.background})`
+          backgroundImage: `url(${scene.background})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
         }}
       />
       <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/80 pointer-events-none" />
@@ -186,17 +194,17 @@ export default function App() {
       {/* Top Navigation */}
       <nav className="absolute top-0 left-0 w-full p-6 flex justify-between items-center z-40">
         <div className="flex gap-8 items-center text-sm font-medium tracking-widest uppercase">
-          <button className="hover:text-yellow-400 transition-colors hidden md:block focus:outline-none">Albums</button>
-          <button className="hover:text-yellow-400 transition-colors hidden md:block focus:outline-none">Projects</button>
-          <button className="hover:text-yellow-400 transition-colors focus:outline-none">Shop All</button>
+          <button className="hover:text-yellow-400 transition-colors hidden md:block">Albums</button>
+          <button className="hover:text-yellow-400 transition-colors hidden md:block">Projects</button>
+          <button className="hover:text-yellow-400 transition-colors">Shop All</button>
         </div>
         
-        {/* Minimal branding display */}
+        {/* Minimal branding display displaying only MAYÉ */}
         <div className="absolute left-1/2 -translate-x-1/2 text-xl md:text-2xl font-serif tracking-widest font-bold whitespace-nowrap drop-shadow-md select-none">
           MAYÉ
         </div>
 
-        <button className="flex items-center gap-2 hover:text-yellow-400 transition-colors text-sm font-medium tracking-widest uppercase bg-black/20 backdrop-blur-sm px-4 py-2 rounded-full border border-white/10 focus:outline-none">
+        <button className="flex items-center gap-2 hover:text-yellow-400 transition-colors text-sm font-medium tracking-widest uppercase bg-black/20 backdrop-blur-sm px-4 py-2 rounded-full border border-white/10">
           <ShoppingBag size={18} />
           <span>Cart ({cartCount})</span>
         </button>
@@ -276,7 +284,7 @@ export default function App() {
                   <label className="text-xs tracking-widest uppercase text-gray-400">Size</label>
                   <div className="flex gap-2">
                     {['S', 'M', 'L', 'XL'].map(size => (
-                      <button key={size} className="w-10 h-10 rounded border border-white/20 flex items-center justify-center hover:border-yellow-500 hover:text-yellow-500 transition-all text-xs font-bold focus:outline-none">
+                      <button key={size} className="w-10 h-10 rounded border border-white/20 flex items-center justify-center hover:border-yellow-500 hover:text-yellow-500 transition-all text-xs font-bold">
                         {size}
                       </button>
                     ))}
@@ -298,7 +306,7 @@ export default function App() {
       {/* Footer controls */}
       <div className="absolute bottom-8 left-0 w-full px-6 md:px-8 flex flex-row justify-between items-center z-40 pointer-events-none">
         
-        {/* SUGA & SPICE Music Player */}
+        {/* SUGA & SPICE Music Player positioned precisely at bottom-left */}
         <div className="flex items-center gap-4 bg-black/60 backdrop-blur-md p-3 rounded-full border border-white/10 pointer-events-auto shadow-2xl">
           <button 
             onClick={() => setIsPlaying(!isPlaying)}
@@ -319,7 +327,7 @@ export default function App() {
           )}
         </div>
 
-        {/* Scene Navigation Switcher */}
+        {/* Scene Navigation Switcher positioned precisely at bottom-right */}
         <div className="flex justify-end pointer-events-auto">
           <div className="flex justify-center gap-1 p-1 bg-black/60 backdrop-blur-md rounded-full border border-white/10 shadow-2xl">
             {Object.values(SCENES).map((s) => (
