@@ -11,7 +11,7 @@ const SCENES = {
         id: 'h1', 
         name: 'The Getaway Guitar', 
         price: 450, 
-        x: '68%', y: '72%', 
+        x: '73%', y: '67%', 
         desc: 'Strum your way out. Classic acoustic guitar used in the sessions.',
         image: 'https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=500&auto=format&fit=crop'
       },
@@ -19,7 +19,7 @@ const SCENES = {
         id: 'h2', 
         name: 'Black Leather Briefcase', 
         price: 150, 
-        x: '52%', y: '85%', 
+        x: '63%', y: '78%', 
         desc: 'Secure the bag. Premium black leather briefcase.',
         image: 'https://images.unsplash.com/photo-1553754538-4187e834eb70?w=500&auto=format&fit=crop'
       },
@@ -35,7 +35,7 @@ const SCENES = {
         name: 'Drive Out (The Escape)',
         isDoor: true,
         targetScene: 'escape',
-        x: '12%', y: '60%'
+        x: '10%', y: '78%'
       }
     ]
   },
