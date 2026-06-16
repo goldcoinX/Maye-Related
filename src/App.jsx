@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ShoppingBag, Play, Pause, X, ChevronRight, DoorOpen, Loader2 } from 'lucide-react';
+import { ShoppingBag, Play, Pause, X, ChevronRight, DoorOpen, Loader2, Instagram, Youtube, Music, Headphones, Smartphone } from 'lucide-react';
 
 const SCENES = {
   hotel: {
@@ -204,10 +204,31 @@ export default function App() {
           MAYÉ
         </div>
 
-        <button className="flex items-center gap-2 hover:text-yellow-400 transition-colors text-sm font-medium tracking-widest uppercase bg-black/20 backdrop-blur-sm px-4 py-2 rounded-full border border-white/10">
-          <ShoppingBag size={18} />
-          <span>Cart ({cartCount})</span>
-        </button>
+        <div className="flex items-center gap-6">
+          {/* Social & Music Links (Hidden on small screens to preserve layout) */}
+          <div className="hidden lg:flex items-center gap-4 text-white/70">
+            <a href="https://www.instagram.com/lu__maye" target="_blank" rel="noreferrer" className="hover:text-yellow-400 transition-colors" title="Instagram">
+              <Instagram size={18} />
+            </a>
+            <a href="https://www.youtube.com/@lu_maye" target="_blank" rel="noreferrer" className="hover:text-yellow-400 transition-colors" title="YouTube">
+              <Youtube size={18} />
+            </a>
+            <a href="https://www.tiktok.com/@lu_maye" target="_blank" rel="noreferrer" className="hover:text-yellow-400 transition-colors" title="TikTok">
+              <Smartphone size={18} />
+            </a>
+            <a href="https://open.spotify.com/artist/7nREcJOl7efyzyDi5eIDYS" target="_blank" rel="noreferrer" className="hover:text-yellow-400 transition-colors" title="Spotify">
+              <Headphones size={18} />
+            </a>
+            <a href="https://music.apple.com/us/artist/mayé/1648129929" target="_blank" rel="noreferrer" className="hover:text-yellow-400 transition-colors" title="Apple Music">
+              <Music size={18} />
+            </a>
+          </div>
+
+          <button className="flex items-center gap-2 hover:text-yellow-400 transition-colors text-sm font-medium tracking-widest uppercase bg-black/20 backdrop-blur-sm px-4 py-2 rounded-full border border-white/10">
+            <ShoppingBag size={18} />
+            <span>Cart ({cartCount})</span>
+          </button>
+        </div>
       </nav>
 
       {/* Hotspots */}
