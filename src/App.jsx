@@ -5,7 +5,7 @@ const SCENES = {
   hotel: {
     id: 'hotel',
     name: 'The Hotel',
-    background: 'https://res.cloudinary.com/dccxjo9x8/image/upload/v1781575579/hotel-bg_szc4ai.png',
+    background: 'https://i.postimg.cc/dtHf53WT/home-the-hotel.png',
     products: [
       { 
         id: 'h1', 
@@ -143,9 +143,8 @@ export default function App() {
   return (
     <div className="relative w-screen h-screen overflow-hidden bg-black text-white font-sans selection:bg-yellow-500 selection:text-black">
       
-      {}
+      {/* Force override of parent boundaries so the app occupies the absolute entire viewport */}
       <style>{`
-        /* Deep force override of parent boundaries so the app occupies the absolute entire viewport */
         #root, :root {
           max-width: none !important;
           width: 100vw !important;
@@ -180,7 +179,7 @@ export default function App() {
         </div>
       )}
 
-      {}
+      {/* Background Image */}
       <div 
         className={`absolute inset-0 transition-all duration-1000 ease-in-out ${isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-105'}`}
         style={{
@@ -192,7 +191,7 @@ export default function App() {
       />
       <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/80 pointer-events-none" />
 
-      {}
+      {/* Top Navigation */}
       <nav className="absolute top-0 left-0 w-full p-6 flex justify-between items-center z-40">
         <div className="flex gap-8 items-center text-sm font-medium tracking-widest uppercase">
           <button className="hover:text-yellow-400 transition-colors hidden md:block">Albums</button>
@@ -211,7 +210,7 @@ export default function App() {
         </button>
       </nav>
 
-      {}
+      {/* Hotspots */}
       {isLoaded && scene.products.map((product) => (
         <button
           key={product.id}
@@ -247,7 +246,7 @@ export default function App() {
         </button>
       ))}
 
-      {}
+      {/* Product Details Sidebar */}
       <div 
         className={`absolute top-0 right-0 h-full w-full md:w-[400px] bg-black/90 backdrop-blur-xl border-l border-white/10 p-8 z-50 transform transition-transform duration-500 ease-out flex flex-col ${
           activeProduct ? 'translate-x-0' : 'translate-x-full'
@@ -304,7 +303,7 @@ export default function App() {
         )}
       </div>
 
-      {}
+      {/* Footer controls */}
       <div className="absolute bottom-8 left-0 w-full px-6 md:px-8 flex flex-row justify-between items-center z-40 pointer-events-none">
         
         {/* SUGA & SPICE Music Player positioned precisely at bottom-left */}
