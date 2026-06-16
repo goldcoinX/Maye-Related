@@ -1,5 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { ShoppingBag, Play, Pause, X, ChevronRight, DoorOpen, Loader2, Instagram, Youtube, Music, Headphones, Smartphone } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { ShoppingBag, Play, Pause, X, ChevronRight, DoorOpen, Loader2, Music, Headphones, Smartphone } from 'lucide-react';
+
+// Custom Icon components to bypass the Lucide version error on Cloudflare
+const InstagramIcon = ({ size = 24, className = "" }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+  </svg>
+);
+
+const YoutubeIcon = ({ size = 24, className = "" }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33 2.78 2.78 0 0 0 1.94 2c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.33 29 29 0 0 0-.46-5.33z"></path>
+    <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
+  </svg>
+);
 
 const SCENES = {
   hotel: {
@@ -110,9 +126,13 @@ export default function App() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
+  
+  // Audio reference for the music player
+  const audioRef = useRef(null);
 
   const scene = SCENES[currentSceneKey];
 
+  // Handle Image Preloading
   useEffect(() => {
     setIsLoading(true);
     setIsLoaded(false);
@@ -136,31 +156,40 @@ export default function App() {
     }
   }, [currentSceneKey, scene.background]);
 
+  // Handle Music Playback
+  useEffect(() => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.play().catch(e => console.log("Audio play failed:", e));
+      } else {
+        audioRef.current.pause();
+      }
+    }
+  }, [isPlaying]);
+
   const handleAddToCart = () => {
     setCartCount(prev => prev + 1);
   };
 
   return (
-    <div className="fixed inset-0 w-full h-full overflow-hidden bg-black text-white font-sans selection:bg-yellow-500 selection:text-black">
+    <div className="fixed inset-0 w-screen h-screen bg-black text-white font-sans overflow-hidden selection:bg-yellow-500 selection:text-black">
       
-      {/* Force override of parent boundaries so the app occupies the absolute entire viewport */}
+      {/* Hidden audio element */}
+      <audio ref={audioRef} src="/suga-and-spice.mp3" loop />
+      
+      {/* Aggressive Deep Override to force full viewport on ANY hosting platform */}
       <style>{`
-        #root, #__next, :root {
+        html, body, #root, #__next, div[id*="root"] {
+          margin: 0 !important;
+          padding: 0 !important;
+          width: 100vw !important;
+          height: 100vh !important;
           max-width: none !important;
-          width: 100% !important;
-          height: 100% !important;
-          margin: 0 !important;
-          padding: 0 !important;
-          position: relative !important;
-          overflow: hidden !important;
-        }
-        html, body {
-          margin: 0 !important;
-          padding: 0 !important;
-          width: 100% !important;
-          height: 100% !important;
           overflow: hidden !important;
           background-color: #000000 !important;
+          position: fixed !important;
+          top: 0 !important;
+          left: 0 !important;
         }
         /* Custom scrollbar reset */
         .no-scrollbar::-webkit-scrollbar {
@@ -174,19 +203,16 @@ export default function App() {
 
       {/* Loading Spinner */}
       {isLoading && (
-        <div className="absolute inset-0 flex items-center justify-center z-50 bg-black">
+        <div className="absolute inset-0 flex items-center justify-center z-[100] bg-black">
           <Loader2 className="animate-spin text-yellow-500" size={48} />
         </div>
       )}
 
-      {/* Background Image */}
+      {/* Background Image Container */}
       <div 
-        className={`absolute inset-0 transition-all duration-1000 ease-in-out ${isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-105'}`}
+        className={`absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-1000 ease-in-out ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
         style={{
-          backgroundImage: `url(${scene.background})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
+          backgroundImage: `url(${scene.background})`
         }}
       />
       <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/80 pointer-events-none" />
@@ -194,12 +220,12 @@ export default function App() {
       {/* Top Navigation */}
       <nav className="absolute top-0 left-0 w-full p-6 flex justify-between items-center z-40">
         <div className="flex gap-8 items-center text-sm font-medium tracking-widest uppercase">
-          <button className="hover:text-yellow-400 transition-colors hidden md:block">Albums</button>
-          <button className="hover:text-yellow-400 transition-colors hidden md:block">Projects</button>
-          <button className="hover:text-yellow-400 transition-colors">Shop All</button>
+          <button className="hover:text-yellow-400 transition-colors hidden md:block focus:outline-none">Albums</button>
+          <button className="hover:text-yellow-400 transition-colors hidden md:block focus:outline-none">Projects</button>
+          <button className="hover:text-yellow-400 transition-colors focus:outline-none">Shop All</button>
         </div>
         
-        {/* Minimal branding display displaying only MAYÉ */}
+        {/* Minimal branding display */}
         <div className="absolute left-1/2 -translate-x-1/2 text-xl md:text-2xl font-serif tracking-widest font-bold whitespace-nowrap drop-shadow-md select-none">
           MAYÉ
         </div>
@@ -208,10 +234,10 @@ export default function App() {
           {/* Social & Music Links */}
           <div className="hidden sm:flex items-center gap-3 md:gap-4 text-white/80">
             <a href="https://www.instagram.com/lu__maye" target="_blank" rel="noreferrer" className="hover:text-yellow-400 transition-colors" title="Instagram">
-              <Instagram size={18} />
+              <InstagramIcon size={18} />
             </a>
             <a href="https://www.youtube.com/@lu_maye" target="_blank" rel="noreferrer" className="hover:text-yellow-400 transition-colors" title="YouTube">
-              <Youtube size={18} />
+              <YoutubeIcon size={18} />
             </a>
             <a href="https://www.tiktok.com/@lu_maye" target="_blank" rel="noreferrer" className="hover:text-yellow-400 transition-colors" title="TikTok">
               <Smartphone size={18} />
@@ -224,7 +250,7 @@ export default function App() {
             </a>
           </div>
 
-          <button className="flex items-center gap-2 hover:text-yellow-400 transition-colors text-sm font-medium tracking-widest uppercase bg-black/20 backdrop-blur-sm px-4 py-2 rounded-full border border-white/10">
+          <button className="flex items-center gap-2 hover:text-yellow-400 transition-colors text-sm font-medium tracking-widest uppercase bg-black/20 backdrop-blur-sm px-4 py-2 rounded-full border border-white/10 focus:outline-none">
             <ShoppingBag size={18} />
             <span>Cart ({cartCount})</span>
           </button>
@@ -305,7 +331,7 @@ export default function App() {
                   <label className="text-xs tracking-widest uppercase text-gray-400">Size</label>
                   <div className="flex gap-2">
                     {['S', 'M', 'L', 'XL'].map(size => (
-                      <button key={size} className="w-10 h-10 rounded border border-white/20 flex items-center justify-center hover:border-yellow-500 hover:text-yellow-500 transition-all text-xs font-bold">
+                      <button key={size} className="w-10 h-10 rounded border border-white/20 flex items-center justify-center hover:border-yellow-500 hover:text-yellow-500 transition-all text-xs font-bold focus:outline-none">
                         {size}
                       </button>
                     ))}
@@ -327,7 +353,7 @@ export default function App() {
       {/* Footer controls */}
       <div className="absolute bottom-8 left-0 w-full px-6 md:px-8 flex flex-row justify-between items-center z-40 pointer-events-none">
         
-        {/* SUGA & SPICE Music Player positioned precisely at bottom-left */}
+        {/* SUGA & SPICE Music Player */}
         <div className="flex items-center gap-4 bg-black/60 backdrop-blur-md p-3 rounded-full border border-white/10 pointer-events-auto shadow-2xl">
           <button 
             onClick={() => setIsPlaying(!isPlaying)}
@@ -348,7 +374,7 @@ export default function App() {
           )}
         </div>
 
-        {/* Scene Navigation Switcher positioned precisely at bottom-right */}
+        {/* Scene Navigation Switcher */}
         <div className="flex justify-end pointer-events-auto">
           <div className="flex justify-center gap-1 p-1 bg-black/60 backdrop-blur-md rounded-full border border-white/10 shadow-2xl">
             {Object.values(SCENES).map((s) => (
