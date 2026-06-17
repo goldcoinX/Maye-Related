@@ -1,5 +1,21 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ShoppingBag, Play, Pause, X, ChevronRight, DoorOpen, Loader2, Instagram, Youtube, Music, Headphones, Smartphone } from 'lucide-react';
+import { ShoppingBag, Play, Pause, X, ChevronRight, DoorOpen, Loader2, Music, Headphones, Smartphone } from 'lucide-react';
+
+// Custom Icon components to bypass the Lucide version error on Cloudflare
+const InstagramIcon = ({ size = 24, className = "" }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+  </svg>
+);
+
+const YoutubeIcon = ({ size = 24, className = "" }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33 2.78 2.78 0 0 0 1.94 2c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.33 29 29 0 0 0-.46-5.33z"></path>
+    <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
+  </svg>
+);
 
 const SCENES = {
   hotel: {
@@ -44,7 +60,7 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
   
-  // Custom MP3 Audio reference
+  // Custom MP3 Audio reference (Using your Cloudinary link!)
   const audioRef = useRef(null);
 
   const scene = SCENES[currentSceneKey];
@@ -96,7 +112,7 @@ export default function App() {
   const handleAddToCart = (product) => {
     setCart(prev => [...prev, product]);
     setActiveProduct(null); // Close sidebar after adding
-    setIsCartOpen(true);    // Optionally pop open the cart to show it worked
+    setIsCartOpen(true);    // Pop open the cart to show it worked
   };
 
   const cartTotal = cart.reduce((total, item) => total + item.price, 0);
@@ -147,11 +163,11 @@ export default function App() {
           {/* Social & Music Links with Tooltips */}
           <div className="hidden sm:flex items-center gap-3 md:gap-4 text-white/80">
             <a href="https://www.instagram.com/lu__maye" target="_blank" rel="noreferrer" className="group relative hover:text-yellow-400 transition-colors">
-              <Instagram size={18} />
+              <InstagramIcon size={18} />
               <span className="absolute top-full mt-3 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap text-[10px] font-medium tracking-wider bg-black/80 px-2 py-1 rounded backdrop-blur-sm pointer-events-none border border-white/10">Instagram</span>
             </a>
             <a href="https://www.youtube.com/@lu_maye" target="_blank" rel="noreferrer" className="group relative hover:text-yellow-400 transition-colors">
-              <Youtube size={18} />
+              <YoutubeIcon size={18} />
               <span className="absolute top-full mt-3 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap text-[10px] font-medium tracking-wider bg-black/80 px-2 py-1 rounded backdrop-blur-sm pointer-events-none border border-white/10">YouTube</span>
             </a>
             <a href="https://www.tiktok.com/@lu_maye" target="_blank" rel="noreferrer" className="group relative hover:text-yellow-400 transition-colors">
