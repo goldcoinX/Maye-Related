@@ -25,11 +25,11 @@ const SCENES = {
     portalLabel: 'Enter B & C Room',
     targetScene: 'room',
     portalX: '50%',
-    portalY: '62%',
+    portalY: '60%',
     neonColor: 'yellow',
     products: [
-      { id: 'h1', name: 'The Getaway Guitar', price: 450, x: '73%', y: '67%', desc: 'Strum your way out. Classic acoustic guitar used in the sessions.', image: 'https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=500&auto=format&fit=crop' },
-      { id: 'h2', name: 'Black Leather Briefcase', price: 150, x: '25%', y: '78%', desc: 'Secure the bag. Premium black leather briefcase.', image: 'https://images.unsplash.com/photo-1553754538-4187e834eb70?w=500&auto=format&fit=crop' }
+      { id: 'h1', name: 'The Getaway Guitar', price: 450, x: '75%', y: '65%', desc: 'Strum your way out. Classic acoustic guitar used in the sessions.', image: 'https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=500&auto=format&fit=crop' },
+      { id: 'h2', name: 'Black Leather Briefcase', price: 150, x: '25%', y: '75%', desc: 'Secure the bag. Premium black leather briefcase.', image: 'https://images.unsplash.com/photo-1553754538-4187e834eb70?w=500&auto=format&fit=crop' }
     ]
   },
   room: {
@@ -40,7 +40,7 @@ const SCENES = {
     portalLabel: 'The Escape →',
     targetScene: 'escape',
     portalX: '50%',
-    portalY: '70%',
+    portalY: '65%',
     neonColor: 'pink',
     products: [
       { id: 'p4', name: 'Mayé Red Plaid Suit', price: 350, x: '35%', y: '45%', desc: 'Tailored two-piece red plaid suit.', image: 'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=500&auto=format&fit=crop' },
@@ -55,7 +55,7 @@ const SCENES = {
     portalLabel: '← Return to Hotel',
     targetScene: 'hotel',
     portalX: '50%',
-    portalY: '75%',
+    portalY: '70%',
     neonColor: 'cyan',
     products: [
       { id: 'p8', name: 'Suga & Spice Vinyl', price: 35, x: '50%', y: '50%', desc: 'Limited edition yellow translucent vinyl.', image: 'https://images.unsplash.com/photo-1603048297172-c92544798d5e?w=500&auto=format&fit=crop' }
@@ -139,15 +139,16 @@ export default function App() {
   const getNeonStyle = (color) => {
     switch (color) {
       case 'pink':
-        return 'text-pink-300 drop-shadow-[0_0_12px_rgba(255,20,147,0.9)] border-pink-500/50 bg-pink-950/40';
+        return 'text-pink-300 drop-shadow-[0_0_12px_rgba(255,20,147,0.9)] border-pink-500/60 bg-black/60';
       case 'cyan':
-        return 'text-cyan-300 drop-shadow-[0_0_12px_rgba(0,243,255,0.9)] border-cyan-500/50 bg-cyan-950/40';
+        return 'text-cyan-300 drop-shadow-[0_0_12px_rgba(0,243,255,0.9)] border-cyan-500/60 bg-black/60';
       default:
-        return 'text-yellow-300 drop-shadow-[0_0_12px_rgba(234,179,8,0.9)] border-yellow-500/50 bg-yellow-950/40';
+        return 'text-yellow-300 drop-shadow-[0_0_12px_rgba(234,179,8,0.9)] border-yellow-500/60 bg-black/60';
     }
   };
 
   const cartTotal = cart.reduce((total, item) => total + item.price, 0);
+  const navLinks = ['BOOKING', 'BIO', 'TOUR', 'MERCH', 'MUSIC', 'GALLERY', 'JOIN'];
 
   return (
     <div className="fixed inset-0 w-full h-[100dvh] overflow-hidden bg-black text-white font-sans selection:bg-yellow-500 selection:text-black">
@@ -157,20 +158,12 @@ export default function App() {
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
-        @keyframes subtleLevitate {
+        @keyframes smoothLevitate {
           0%, 100% { transform: translate(-50%, -50%) translateY(0px); }
-          50% { transform: translate(-50%, -50%) translateY(-12px); }
+          50% { transform: translate(-50%, -50%) translateY(-10px); }
         }
         .animate-levitate {
-          animation: subtleLevitate 3.5s ease-in-out infinite;
-        }
-
-        @keyframes pulseGlow {
-          0%, 100% { opacity: 0.85; filter: brightness(1); }
-          50% { opacity: 1; filter: brightness(1.3); }
-        }
-        .animate-neon-pulse {
-          animation: pulseGlow 2s ease-in-out infinite;
+          animation: smoothLevitate 4s ease-in-out infinite;
         }
       `}</style>
 
@@ -195,13 +188,13 @@ export default function App() {
       <nav className="absolute top-0 left-0 w-full p-4 md:p-6 flex justify-between items-center z-40">
         <button 
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)} 
-          className="lg:hidden p-2 rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-white"
+          className="lg:hidden p-2 rounded-full bg-black/50 backdrop-blur-md border border-white/20 text-white hover:text-yellow-400"
         >
-          <Menu size={20} />
+          <Menu size={22} />
         </button>
 
         <div className="hidden lg:flex gap-6 items-center text-xs font-semibold tracking-widest uppercase">
-          {['BOOKING', 'BIO', 'TOUR', 'MERCH', 'MUSIC', 'GALLERY', 'JOIN'].map((item) => (
+          {navLinks.map((item) => (
             <button 
               key={item} 
               onClick={() => handleNavClick(item)}
@@ -235,25 +228,38 @@ export default function App() {
             </a>
           </div>
 
-          <button onClick={() => setIsCartOpen(true)} className="flex items-center gap-2 hover:text-yellow-400 transition-colors text-xs md:text-sm font-medium tracking-widest uppercase bg-black/40 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 shadow-lg">
+          <button onClick={() => setIsCartOpen(true)} className="flex items-center gap-2 hover:text-yellow-400 transition-colors text-xs md:text-sm font-medium tracking-widest uppercase bg-black/50 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 shadow-lg">
             <ShoppingBag size={16} />
             <span>Cart ({cart.length})</span>
           </button>
         </div>
       </nav>
 
+      {/* Persistent Horizontal Navigation Bar on Mobile Header */}
+      <div className="lg:hidden absolute top-16 left-0 w-full overflow-x-auto no-scrollbar px-4 py-2 z-30 flex gap-3 bg-black/40 backdrop-blur-sm border-b border-white/10">
+        {navLinks.map((item) => (
+          <button
+            key={item}
+            onClick={() => handleNavClick(item)}
+            className="text-[10px] font-bold tracking-widest uppercase bg-black/60 border border-white/20 px-3 py-1.5 rounded-full whitespace-nowrap text-gray-200 active:text-yellow-400 active:border-yellow-400"
+          >
+            {item}
+          </button>
+        ))}
+      </div>
+
       {mobileMenuOpen && (
         <div className="fixed inset-0 bg-black/95 z-50 flex flex-col p-8 lg:hidden backdrop-blur-xl">
           <div className="flex justify-between items-center mb-8">
-            <span className="text-2xl font-serif font-bold">MAYÉ</span>
+            <span className="text-2xl font-serif font-bold text-yellow-500">MAYÉ MENU</span>
             <button onClick={() => setMobileMenuOpen(false)} className="p-2"><X size={24} /></button>
           </div>
-          <div className="flex flex-col gap-6 text-lg font-bold tracking-widest uppercase">
-            {['BOOKING', 'BIO', 'TOUR', 'MERCH', 'MUSIC', 'GALLERY', 'JOIN'].map((item) => (
+          <div className="flex flex-col gap-5 text-lg font-bold tracking-widest uppercase">
+            {navLinks.map((item) => (
               <button 
                 key={item} 
                 onClick={() => handleNavClick(item)}
-                className="text-left hover:text-yellow-500 transition-colors border-b border-white/10 pb-3"
+                className="text-left hover:text-yellow-500 active:text-yellow-400 transition-colors border-b border-white/10 pb-3"
               >
                 {item}
               </button>
@@ -262,20 +268,22 @@ export default function App() {
         </div>
       )}
 
+      {/* levitating Neon Scene Link Button */}
       {isLoaded && (
         <button
           onClick={() => {
             setActiveProduct(null);
             setCurrentSceneKey(scene.targetScene);
           }}
-          className={`absolute z-30 animate-levitate animate-neon-pulse focus:outline-none px-6 py-3 rounded-full border backdrop-blur-md font-bold tracking-widest uppercase text-xs md:text-sm transition-transform active:scale-95 shadow-2xl flex items-center gap-2 ${getNeonStyle(scene.neonColor)}`}
+          className={`absolute z-30 animate-levitate focus:outline-none px-6 py-3 rounded-full border backdrop-blur-md font-bold tracking-widest uppercase text-xs md:text-sm shadow-2xl flex items-center gap-2 active:scale-95 transition-transform ${getNeonStyle(scene.neonColor)}`}
           style={{ left: scene.portalX, top: scene.portalY }}
         >
-          <Compass size={16} className="animate-spin" style={{ animationDuration: '8s' }} />
+          <Compass size={16} />
           <span>{scene.portalLabel}</span>
         </button>
       )}
 
+      {/* Product Hotspots without blinking on mobile */}
       {isLoaded && scene.products.map((product) => (
         <button
           key={product.id}
@@ -283,11 +291,13 @@ export default function App() {
           className="absolute group z-30 -translate-x-1/2 -translate-y-1/2 focus:outline-none w-10 h-10 md:w-12 md:h-12 flex items-center justify-center"
           style={{ left: product.x, top: product.y }}
         >
-          <span className="absolute inset-0 rounded-full border-2 animate-ping border-white/50" />
-          <span className="relative flex items-center justify-center w-6 h-6 md:w-8 md:h-8 rounded-full bg-white/20 border border-white/40 group-hover:bg-yellow-500 group-hover:border-yellow-400 transition-all duration-300">
-            <ChevronRight size={14} className="text-white group-hover:text-black" />
+          {/* Ping animation ONLY on desktop */}
+          <span className="hidden md:block absolute inset-0 rounded-full border-2 animate-ping border-white/50" />
+          
+          <span className="relative flex items-center justify-center w-7 h-7 md:w-8 md:h-8 rounded-full bg-black/60 border border-white/40 group-hover:bg-yellow-500 group-hover:border-yellow-400 transition-all duration-300">
+            <ChevronRight size={14} className="text-yellow-400 group-hover:text-black" />
           </span>
-          <span className="absolute top-12 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap text-xs font-medium tracking-wider bg-black/80 px-3 py-1 rounded backdrop-blur-sm pointer-events-none border border-white/10">
+          <span className="absolute top-10 left-1/2 -translate-x-1/2 text-[10px] md:text-xs font-bold tracking-wider bg-black/90 text-yellow-400 px-2 py-1 rounded border border-yellow-500/40 whitespace-nowrap">
             {product.name}
           </span>
         </button>
@@ -295,7 +305,7 @@ export default function App() {
 
       {activeModal && (
         <div className="fixed inset-0 bg-black/90 backdrop-blur-xl z-[70] flex items-center justify-center p-4">
-          <div className="relative w-full max-w-2xl bg-black/80 border border-white/10 rounded-2xl p-6 md:p-8 max-h-[85vh] overflow-y-auto no-scrollbar shadow-2xl">
+          <div className="relative w-full max-w-2xl bg-black/90 border border-white/20 rounded-2xl p-6 md:p-8 max-h-[85vh] overflow-y-auto no-scrollbar shadow-2xl">
             <button 
               onClick={() => setActiveModal(null)} 
               className="absolute top-6 right-6 p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
