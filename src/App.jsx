@@ -145,7 +145,7 @@ export default function App() {
         className={`absolute inset-0 transition-all duration-700 ease-in-out ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
         style={{
           backgroundImage: `url(${scene.backgroundMobile})`,
-          backgroundSize: '100% 100%', // Forces it to perfectly map to the container bounds
+          backgroundSize: '100% 100%', 
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
         }}
@@ -163,7 +163,7 @@ export default function App() {
             top: hitbox.y,
             width: hitbox.w,
             height: hitbox.h,
-            background: 'transparent', // Change this to 'rgba(255, 0, 0, 0.3)' temporarily to see the hitboxes while testing
+            background: 'transparent', 
             border: 'none',
           }}
         />
