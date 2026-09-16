@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ShoppingBag, Play, Pause, X, ChevronRight, DoorOpen, Loader2, Music, Headphones, Smartphone, Menu, Mail } from 'lucide-react';
+import { ShoppingBag, Play, Pause, X, ChevronRight, DoorOpen, Loader2, Music, Headphones, Smartphone, Menu, Mail, Compass } from 'lucide-react';
 
 const InstagramIcon = ({ size = 24, className = "" }) => (
   <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
@@ -19,33 +19,46 @@ const YoutubeIcon = ({ size = 24, className = "" }) => (
 const SCENES = {
   hotel: {
     id: 'hotel',
-    name: 'The Hotel',
-    background: 'https://res.cloudinary.com/dccxjo9x8/image/upload/v1781626534/home_ready_hotel_azeki6.png',
+    name: '1. Hotel (Home)',
+    backgroundDesktop: 'https://res.cloudinary.com/dccxjo9x8/image/upload/v1781626534/home_ready_hotel_azeki6.png',
+    backgroundMobile: 'https://res.cloudinary.com/dccxjo9x8/image/upload/v1789576396/1_ex0tvu.svg',
+    portalLabel: 'Enter B & C Room',
+    targetScene: 'room',
+    portalX: '50%',
+    portalY: '62%',
+    neonColor: 'yellow',
     products: [
       { id: 'h1', name: 'The Getaway Guitar', price: 450, x: '73%', y: '67%', desc: 'Strum your way out. Classic acoustic guitar used in the sessions.', image: 'https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=500&auto=format&fit=crop' },
-      { id: 'h2', name: 'Black Leather Briefcase', price: 150, x: '63%', y: '78%', desc: 'Secure the bag. Premium black leather briefcase.', image: 'https://images.unsplash.com/photo-1553754538-4187e834eb70?w=500&auto=format&fit=crop' },
-      { id: 'h3_door', name: 'Enter Bonny & Clyde Room', isDoor: true, targetScene: 'room', x: '33%', y: '65%' },
-      { id: 'h4_escape', name: 'Drive Out (The Escape)', isDoor: true, targetScene: 'escape', x: '10%', y: '78%' }
+      { id: 'h2', name: 'Black Leather Briefcase', price: 150, x: '25%', y: '78%', desc: 'Secure the bag. Premium black leather briefcase.', image: 'https://images.unsplash.com/photo-1553754538-4187e834eb70?w=500&auto=format&fit=crop' }
     ]
   },
   room: {
     id: 'room',
-    name: 'Bonny & Clyde Room',
-    background: 'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?q=80&w=2560&auto=format&fit=crop',
+    name: '2. B & C Room',
+    backgroundDesktop: 'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?q=80&w=2560&auto=format&fit=crop',
+    backgroundMobile: 'https://res.cloudinary.com/dccxjo9x8/image/upload/v1789576428/2_joviqo.svg',
+    portalLabel: 'The Escape →',
+    targetScene: 'escape',
+    portalX: '50%',
+    portalY: '70%',
+    neonColor: 'pink',
     products: [
-      { id: 'p4', name: 'Mayé Red Plaid Suit', price: 350, x: '35%', y: '50%', desc: 'Tailored two-piece red plaid suit. As worn by Mayé while counting the stash.', image: 'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=500&auto=format&fit=crop' },
-      { id: 'p5', name: 'Bonny Black Moto Jacket', price: 180, x: '75%', y: '55%', desc: '"You like it when I dress up..." Official Bonny Moto Leather Jacket.', image: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500&auto=format&fit=crop' },
-      { id: 'p6', name: 'The Crimson Rose', price: 15, x: '60%', y: '45%', desc: 'A preserved, everlasting crimson rose. "I do care baby..."', image: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=500&auto=format&fit=crop' },
-      { id: 'p7', name: 'Getaway Money Briefcase', price: 120, x: '45%', y: '75%', desc: 'Secure aluminum briefcase filled with prop $100 bills.', image: 'https://images.unsplash.com/photo-1553754538-4187e834eb70?w=500&auto=format&fit=crop' }
+      { id: 'p4', name: 'Mayé Red Plaid Suit', price: 350, x: '35%', y: '45%', desc: 'Tailored two-piece red plaid suit.', image: 'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=500&auto=format&fit=crop' },
+      { id: 'p5', name: 'Bonny Black Moto Jacket', price: 180, x: '75%', y: '50%', desc: 'Official Bonny Moto Leather Jacket.', image: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500&auto=format&fit=crop' }
     ]
   },
   escape: {
     id: 'escape',
-    name: 'The Escape',
-    background: 'https://images.unsplash.com/photo-1513628253939-010e64ac66cd?q=80&w=2560&auto=format&fit=crop',
+    name: '3. The Escape',
+    backgroundDesktop: 'https://images.unsplash.com/photo-1513628253939-010e64ac66cd?q=80&w=2560&auto=format&fit=crop',
+    backgroundMobile: 'https://res.cloudinary.com/dccxjo9x8/image/upload/v1789577552/3_the_escape_rik8zf.svg',
+    portalLabel: '← Return to Hotel',
+    targetScene: 'hotel',
+    portalX: '50%',
+    portalY: '75%',
+    neonColor: 'cyan',
     products: [
-      { id: 'p8', name: 'Suga & Spice Vinyl (Yellow Edition)', price: 35, x: '50%', y: '60%', desc: 'Limited edition yellow translucent vinyl featuring the Beatnasti instrumental.', image: 'https://images.unsplash.com/photo-1603048297172-c92544798d5e?w=500&auto=format&fit=crop' },
-      { id: 'p9', name: 'Bonny Pleated Mini-Skirt', price: 45, x: '70%', y: '50%', desc: '"Put my little skirt on..." Classic black pleated mini.', image: 'https://images.unsplash.com/photo-1582142306909-195724d33ffc?w=500&auto=format&fit=crop' }
+      { id: 'p8', name: 'Suga & Spice Vinyl', price: 35, x: '50%', y: '50%', desc: 'Limited edition yellow translucent vinyl.', image: 'https://images.unsplash.com/photo-1603048297172-c92544798d5e?w=500&auto=format&fit=crop' }
     ]
   }
 };
@@ -60,9 +73,16 @@ export default function App() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [activeModal, setActiveModal] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   const audioRef = useRef(null);
   const scene = SCENES[currentSceneKey];
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     audioRef.current = new Audio('https://res.cloudinary.com/dccxjo9x8/video/upload/v1781667910/May%C3%A9_X_Bonnie_Suga_and_Spice_Mixed__1756223314000_1756223314000_6279753_ahvioq.mp3');
@@ -89,8 +109,9 @@ export default function App() {
     setIsLoading(true);
     setIsLoaded(false);
 
+    const activeBg = isMobile ? scene.backgroundMobile : scene.backgroundDesktop;
     const img = new Image();
-    img.src = scene.background;
+    img.src = activeBg;
     const handleLoadComplete = () => {
       setIsLoading(false);
       setTimeout(() => setIsLoaded(true), 50); 
@@ -98,7 +119,7 @@ export default function App() {
     img.onload = handleLoadComplete;
     img.onerror = handleLoadComplete;
     if (img.complete) handleLoadComplete();
-  }, [currentSceneKey, scene]);
+  }, [currentSceneKey, scene, isMobile]);
 
   const handleAddToCart = (product) => {
     setCart(prev => [...prev, product]);
@@ -115,6 +136,17 @@ export default function App() {
     }
   };
 
+  const getNeonStyle = (color) => {
+    switch (color) {
+      case 'pink':
+        return 'text-pink-300 drop-shadow-[0_0_12px_rgba(255,20,147,0.9)] border-pink-500/50 bg-pink-950/40';
+      case 'cyan':
+        return 'text-cyan-300 drop-shadow-[0_0_12px_rgba(0,243,255,0.9)] border-cyan-500/50 bg-cyan-950/40';
+      default:
+        return 'text-yellow-300 drop-shadow-[0_0_12px_rgba(234,179,8,0.9)] border-yellow-500/50 bg-yellow-950/40';
+    }
+  };
+
   const cartTotal = cart.reduce((total, item) => total + item.price, 0);
 
   return (
@@ -124,6 +156,22 @@ export default function App() {
         #root, #__next, :root { max-width: none !important; width: 100% !important; height: 100% !important; margin: 0 !important; padding: 0 !important; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        @keyframes subtleLevitate {
+          0%, 100% { transform: translate(-50%, -50%) translateY(0px); }
+          50% { transform: translate(-50%, -50%) translateY(-12px); }
+        }
+        .animate-levitate {
+          animation: subtleLevitate 3.5s ease-in-out infinite;
+        }
+
+        @keyframes pulseGlow {
+          0%, 100% { opacity: 0.85; filter: brightness(1); }
+          50% { opacity: 1; filter: brightness(1.3); }
+        }
+        .animate-neon-pulse {
+          animation: pulseGlow 2s ease-in-out infinite;
+        }
       `}</style>
 
       {isLoading && (
@@ -135,7 +183,7 @@ export default function App() {
       <div 
         className={`absolute inset-0 transition-all duration-1000 ease-in-out ${isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-105'}`}
         style={{
-          backgroundImage: `url(${scene.background})`,
+          backgroundImage: `url(${isMobile ? scene.backgroundMobile : scene.backgroundDesktop})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
@@ -214,31 +262,30 @@ export default function App() {
         </div>
       )}
 
+      {isLoaded && (
+        <button
+          onClick={() => {
+            setActiveProduct(null);
+            setCurrentSceneKey(scene.targetScene);
+          }}
+          className={`absolute z-30 animate-levitate animate-neon-pulse focus:outline-none px-6 py-3 rounded-full border backdrop-blur-md font-bold tracking-widest uppercase text-xs md:text-sm transition-transform active:scale-95 shadow-2xl flex items-center gap-2 ${getNeonStyle(scene.neonColor)}`}
+          style={{ left: scene.portalX, top: scene.portalY }}
+        >
+          <Compass size={16} className="animate-spin" style={{ animationDuration: '8s' }} />
+          <span>{scene.portalLabel}</span>
+        </button>
+      )}
+
       {isLoaded && scene.products.map((product) => (
         <button
           key={product.id}
-          onClick={() => {
-            if (product.isDoor) {
-              setActiveProduct(null);
-              setCurrentSceneKey(product.targetScene);
-            } else {
-              setActiveProduct(product);
-            }
-          }}
+          onClick={() => setActiveProduct(product)}
           className="absolute group z-30 -translate-x-1/2 -translate-y-1/2 focus:outline-none w-10 h-10 md:w-12 md:h-12 flex items-center justify-center"
           style={{ left: product.x, top: product.y }}
         >
-          <span className={`absolute inset-0 rounded-full border-2 animate-ping ${product.isDoor ? 'border-yellow-500/50' : 'border-white/50'}`} />
-          <span className={`relative flex items-center justify-center w-6 h-6 md:w-8 md:h-8 rounded-full backdrop-blur-md border transition-all duration-300 ${
-            product.isDoor 
-              ? 'bg-yellow-500/20 border-yellow-400 group-hover:bg-yellow-500' 
-              : 'bg-white/20 border-white/40 group-hover:bg-yellow-500 group-hover:border-yellow-400'
-          }`}>
-            {product.isDoor ? (
-              <DoorOpen size={14} className="text-yellow-400 group-hover:text-black" />
-            ) : (
-              <ChevronRight size={14} className="text-white group-hover:text-black" />
-            )}
+          <span className="absolute inset-0 rounded-full border-2 animate-ping border-white/50" />
+          <span className="relative flex items-center justify-center w-6 h-6 md:w-8 md:h-8 rounded-full bg-white/20 border border-white/40 group-hover:bg-yellow-500 group-hover:border-yellow-400 transition-all duration-300">
+            <ChevronRight size={14} className="text-white group-hover:text-black" />
           </span>
           <span className="absolute top-12 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap text-xs font-medium tracking-wider bg-black/80 px-3 py-1 rounded backdrop-blur-sm pointer-events-none border border-white/10">
             {product.name}
@@ -273,10 +320,7 @@ export default function App() {
               <div className="space-y-4">
                 <h2 className="text-2xl font-serif font-bold tracking-widest uppercase mb-4 text-yellow-500">Biography</h2>
                 <p className="text-sm leading-relaxed text-gray-300">
-                  MAYÉ is an independent visionary artist blending sultry R&B textures, cinematic storytelling, and genre-defying production. Known for high-concept visuals and immersive sonic experiences, MAYÉ creates world-building records that linger between romance and high-stakes drama.
-                </p>
-                <p className="text-sm leading-relaxed text-gray-300">
-                  With the latest release "Suga & Spice," MAYÉ continues to push creative limits across music, film, and fashion.
+                  MAYÉ is an independent visionary artist blending sultry R&B textures, cinematic storytelling, and genre-defying production.
                 </p>
               </div>
             )}
@@ -287,8 +331,7 @@ export default function App() {
                 <div className="space-y-4">
                   {[
                     { date: 'OCT 24', city: 'Lagos, Nigeria', venue: 'Beachfront Arena' },
-                    { date: 'NOV 12', city: 'London, UK', venue: 'O2 Forum Kentish Town' },
-                    { date: 'DEC 05', city: 'New York, NY', venue: 'Webster Hall' }
+                    { date: 'NOV 12', city: 'London, UK', venue: 'O2 Forum Kentish Town' }
                   ].map((tour, idx) => (
                     <div key={idx} className="flex justify-between items-center p-4 bg-white/5 rounded border border-white/10">
                       <div>
@@ -306,16 +349,14 @@ export default function App() {
             {activeModal === 'MUSIC' && (
               <div>
                 <h2 className="text-2xl font-serif font-bold tracking-widest uppercase mb-6 text-yellow-500">Discography</h2>
-                <div className="space-y-4">
-                  <div className="p-4 bg-white/5 rounded border border-white/10 flex justify-between items-center">
-                    <div>
-                      <p className="font-bold text-base">Suga & Spice</p>
-                      <p className="text-xs text-gray-400">Single • Mayé X Bonny</p>
-                    </div>
-                    <button onClick={() => setIsPlaying(!isPlaying)} className="p-3 bg-yellow-500 text-black rounded-full hover:bg-yellow-400">
-                      {isPlaying ? <Pause size={16} /> : <Play size={16} />}
-                    </button>
+                <div className="p-4 bg-white/5 rounded border border-white/10 flex justify-between items-center">
+                  <div>
+                    <p className="font-bold text-base">Suga & Spice</p>
+                    <p className="text-xs text-gray-400">Single • Mayé X Bonny</p>
                   </div>
+                  <button onClick={() => setIsPlaying(!isPlaying)} className="p-3 bg-yellow-500 text-black rounded-full hover:bg-yellow-400">
+                    {isPlaying ? <Pause size={16} /> : <Play size={16} />}
+                  </button>
                 </div>
               </div>
             )}
@@ -326,9 +367,7 @@ export default function App() {
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                   {[
                     'https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=500&auto=format&fit=crop',
-                    'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=500&auto=format&fit=crop',
-                    'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500&auto=format&fit=crop',
-                    'https://images.unsplash.com/photo-1603048297172-c92544798d5e?w=500&auto=format&fit=crop'
+                    'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=500&auto=format&fit=crop'
                   ].map((imgUrl, i) => (
                     <img key={i} src={imgUrl} className="w-full h-32 object-cover rounded border border-white/10" alt="Gallery preview" />
                   ))}
@@ -340,10 +379,9 @@ export default function App() {
               <div className="text-center">
                 <Mail className="mx-auto text-yellow-500 mb-4" size={40} />
                 <h2 className="text-2xl font-serif font-bold tracking-widest uppercase mb-2">Join The Inner Circle</h2>
-                <p className="text-sm text-gray-300 mb-6">Subscribe to receive exclusive drops, early ticket access, and behind-the-scenes content directly from MAYÉ.</p>
-                <form onSubmit={(e) => { e.preventDefault(); alert('Welcome to the inner circle!'); setActiveModal(null); }} className="flex flex-col gap-3">
+                <form onSubmit={(e) => { e.preventDefault(); alert('Subscribed!'); setActiveModal(null); }} className="flex flex-col gap-3 mt-4">
                   <input type="email" placeholder="Enter your email address" required className="w-full bg-white/5 border border-white/10 rounded px-4 py-3 text-sm focus:outline-none focus:border-yellow-500" />
-                  <button type="submit" className="py-3 bg-yellow-500 text-black font-bold uppercase tracking-widest hover:bg-yellow-400 transition-colors rounded">Subscribe Now</button>
+                  <button type="submit" className="py-3 bg-yellow-500 text-black font-bold uppercase tracking-widest hover:bg-yellow-400 transition-colors rounded">Subscribe</button>
                 </form>
               </div>
             )}
@@ -372,29 +410,11 @@ export default function App() {
                   src={activeProduct.image} 
                   alt={activeProduct.name} 
                   className="w-full h-full object-cover opacity-80"
-                  onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?w=500&auto=format&fit=crop' }}
                 />
               </div>
-              
               <h2 className="text-2xl font-serif font-bold mb-2 pr-8">{activeProduct.name}</h2>
               <p className="text-yellow-500 text-xl font-medium mb-6">${activeProduct.price.toLocaleString('en-US', {minimumFractionDigits: 2})}</p>
-              
-              <div className="space-y-4 text-sm text-gray-300 leading-relaxed mb-8">
-                <p>{activeProduct.desc}</p>
-              </div>
-              
-              {!['h1', 'h2', 'p6', 'p7', 'p8'].includes(activeProduct.id) && (
-                <div className="space-y-3 mb-8">
-                  <label className="text-xs tracking-widest uppercase text-gray-400">Size</label>
-                  <div className="flex gap-2">
-                    {['S', 'M', 'L', 'XL'].map(size => (
-                      <button key={size} className="w-10 h-10 rounded border border-white/20 flex items-center justify-center hover:border-yellow-500 hover:text-yellow-500 transition-all text-xs font-bold">
-                        {size}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
+              <p className="text-sm text-gray-300 leading-relaxed mb-8">{activeProduct.desc}</p>
             </div>
 
             <button 
@@ -414,10 +434,7 @@ export default function App() {
       >
         <div className="flex justify-between items-center mb-8">
           <h2 className="text-xl font-serif font-bold tracking-widest uppercase">Your Cart</h2>
-          <button 
-            onClick={() => setIsCartOpen(false)}
-            className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors focus:outline-none"
-          >
+          <button onClick={() => setIsCartOpen(false)} className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors">
             <X size={20} />
           </button>
         </div>
@@ -455,7 +472,6 @@ export default function App() {
       </div>
 
       <div className="absolute bottom-6 md:bottom-8 left-0 w-full px-4 md:px-8 flex flex-row justify-between items-end md:items-center z-40 pointer-events-none">
-        
         <div className="flex items-center gap-4 bg-black/60 backdrop-blur-md p-2 md:p-3 rounded-full border border-white/10 pointer-events-auto shadow-2xl">
           <button 
             onClick={() => setIsPlaying(!isPlaying)}
@@ -467,13 +483,6 @@ export default function App() {
             <p className="text-xs font-bold tracking-wider">SUGA & SPICE</p>
             <p className="text-[10px] text-gray-400 tracking-widest uppercase">Mayé X Bonny</p>
           </div>
-          {isPlaying && (
-            <div className="flex gap-1 pr-4 h-4 items-end">
-              <div className="w-1 bg-yellow-500 animate-[bounce_1s_infinite] h-full" />
-              <div className="w-1 bg-yellow-500 animate-[bounce_0.8s_infinite] h-2/3" />
-              <div className="w-1 bg-yellow-500 animate-[bounce_1.2s_infinite] h-full" />
-            </div>
-          )}
         </div>
 
         <div className="flex justify-end pointer-events-auto">
@@ -485,7 +494,7 @@ export default function App() {
                   setActiveProduct(null);
                   setCurrentSceneKey(s.id);
                 }}
-                className={`px-3 md:px-6 py-2 md:py-2.5 rounded-full text-[9px] md:text-xs font-bold tracking-widest uppercase transition-all duration-300 focus:outline-none ${
+                className={`px-3 md:px-5 py-2 rounded-full text-[9px] md:text-xs font-bold tracking-widest uppercase transition-all duration-300 ${
                   currentSceneKey === s.id 
                     ? 'bg-white text-black shadow-lg' 
                     : 'text-gray-400 hover:text-white'
@@ -496,8 +505,8 @@ export default function App() {
             ))}
           </div>
         </div>
-
       </div>
+
     </div>
   );
 }
