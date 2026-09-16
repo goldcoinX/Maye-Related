@@ -21,14 +21,12 @@ const SCENES = {
     id: 'hotel',
     name: '1. Hotel (Home)',
     backgroundDesktop: 'https://res.cloudinary.com/dccxjo9x8/image/upload/v1781626534/home_ready_hotel_azeki6.png',
-    backgroundMobile: 'https://res.cloudinary.com/dccxjo9x8/image/upload/v1789576396/1_ex0tvu.svg',
-    portalLabel: 'B & C ROOM', 
+    backgroundMobile: 'https://res.cloudinary.com/dccxjo9x8/image/upload/v1789580313/1_the_hotel_h3udh8.png',
     targetScene: 'room',
     portalX: '50%',
     portalY: '60%',
     portalMobileX: '82%', 
     portalMobileY: '33%', 
-    neonColor: 'yellow',
     products: [
       { id: 'h1', name: 'The Getaway Guitar', price: 450, x: '75%', y: '65%', desc: 'Strum your way out. Classic acoustic guitar used in the sessions.', image: 'https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=500&auto=format&fit=crop' },
       { id: 'h2', name: 'Black Leather Briefcase', price: 150, x: '25%', y: '75%', desc: 'Secure the bag. Premium black leather briefcase.', image: 'https://images.unsplash.com/photo-1553754538-4187e834eb70?w=500&auto=format&fit=crop' }
@@ -38,14 +36,12 @@ const SCENES = {
     id: 'room',
     name: '2. B & C Room',
     backgroundDesktop: 'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?q=80&w=2560&auto=format&fit=crop',
-    backgroundMobile: 'https://res.cloudinary.com/dccxjo9x8/image/upload/v1789576428/2_joviqo.svg',
-    portalLabel: 'THE ESCAPE', 
+    backgroundMobile: 'https://res.cloudinary.com/dccxjo9x8/image/upload/v1789580317/2_the_new_pharoah_black_cat_vmfw9q.png',
     targetScene: 'escape',
     portalX: '50%',
     portalY: '65%',
     portalMobileX: '50%', 
     portalMobileY: '61%',
-    neonColor: 'pink',
     products: [
       { id: 'p4', name: 'Mayé Red Plaid Suit', price: 350, x: '35%', y: '45%', desc: 'Tailored two-piece red plaid suit.', image: 'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=500&auto=format&fit=crop' },
       { id: 'p5', name: 'Bonny Black Moto Jacket', price: 180, x: '75%', y: '50%', desc: 'Official Bonny Moto Leather Jacket.', image: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500&auto=format&fit=crop' }
@@ -55,14 +51,12 @@ const SCENES = {
     id: 'escape',
     name: '3. The Escape',
     backgroundDesktop: 'https://images.unsplash.com/photo-1513628253939-010e64ac66cd?q=80&w=2560&auto=format&fit=crop',
-    backgroundMobile: 'https://res.cloudinary.com/dccxjo9x8/image/upload/v1789577552/3_the_escape_rik8zf.svg',
-    portalLabel: 'Back to Hotle',
+    backgroundMobile: 'https://res.cloudinary.com/dccxjo9x8/image/upload/v1789580311/3_the_escape_mc2sqm.png',
     targetScene: 'hotel',
     portalX: '50%',
     portalY: '70%',
     portalMobileX: '78%', 
     portalMobileY: '65%',
-    neonColor: 'cyan',
     products: [
       { id: 'p8', name: 'Suga & Spice Vinyl', price: 35, x: '50%', y: '50%', desc: 'Limited edition yellow translucent vinyl.', image: 'https://images.unsplash.com/photo-1603048297172-c92544798d5e?w=500&auto=format&fit=crop' }
     ]
@@ -142,18 +136,6 @@ export default function App() {
     }
   };
 
-  // Pure neon text glow, no background boxes or borders
-  const getNeonTextStyle = (color) => {
-    switch (color) {
-      case 'pink':
-        return 'text-pink-100 drop-shadow-[0_0_15px_rgba(255,20,147,1)]';
-      case 'cyan':
-        return 'text-cyan-100 drop-shadow-[0_0_15px_rgba(0,243,255,1)]';
-      default:
-        return 'text-yellow-100 drop-shadow-[0_0_15px_rgba(234,179,8,1)]';
-    }
-  };
-
   const cartTotal = cart.reduce((total, item) => total + item.price, 0);
   const navLinks = ['BOOKING', 'BIO', 'TOUR', 'MERCH', 'MUSIC', 'GALLERY', 'JOIN'];
 
@@ -164,15 +146,6 @@ export default function App() {
         #root, #__next, :root { max-width: none !important; width: 100% !important; height: 100% !important; margin: 0 !important; padding: 0 !important; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        
-        /* Ultra-smooth, elegant levitation for the text */
-        @keyframes finesseLevitate {
-          0%, 100% { transform: translate(-50%, -50%) translateY(0px); }
-          50% { transform: translate(-50%, -50%) translateY(-6px); }
-        }
-        .animate-finesse-levitate {
-          animation: finesseLevitate 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-        }
       `}</style>
 
       {isLoading && (
@@ -253,26 +226,25 @@ export default function App() {
         </div>
       )}
 
-      {/* 
-        THE FIX: Finesse Levitating Text Hitbox 
-        This is placed directly over your drawn SVG text with transparent backgrounds.
-      */}
+      {/* Transparent Clickable Hitbox directly positioned over your drawn text/artwork */}
       {isLoaded && (
         <button
           onClick={() => {
             setActiveProduct(null);
             setCurrentSceneKey(scene.targetScene);
           }}
-          className={`absolute z-30 animate-finesse-levitate focus:outline-none p-4 font-bold font-serif whitespace-nowrap active:scale-95 transition-transform ${getNeonTextStyle(scene.neonColor)}`}
+          aria-label={`Navigate to ${scene.targetScene}`}
+          className="absolute z-30 -translate-x-1/2 -translate-y-1/2 focus:outline-none cursor-pointer group"
           style={{ 
             left: isMobile ? scene.portalMobileX : scene.portalX, 
             top: isMobile ? scene.portalMobileY : scene.portalY,
-            fontSize: isMobile ? '16px' : '20px',
+            width: isMobile ? '120px' : '160px',
+            height: isMobile ? '55px' : '70px',
             background: 'transparent',
             border: 'none',
           }}
         >
-          {scene.portalLabel}
+          <span className="w-full h-full block rounded-lg group-hover:bg-white/10 group-active:scale-95 transition-all" />
         </button>
       )}
 
