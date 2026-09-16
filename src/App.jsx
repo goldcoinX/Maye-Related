@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ShoppingBag, Play, Pause, X, ChevronRight, DoorOpen, Loader2, Music, Headphones, Smartphone, Menu, Mail, Compass } from 'lucide-react';
+import { ShoppingBag, Play, Pause, X, ChevronRight, Loader2, Music, Headphones, Smartphone, Menu, Mail } from 'lucide-react';
 
 const InstagramIcon = ({ size = 24, className = "" }) => (
   <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
@@ -22,10 +22,12 @@ const SCENES = {
     name: '1. Hotel (Home)',
     backgroundDesktop: 'https://res.cloudinary.com/dccxjo9x8/image/upload/v1781626534/home_ready_hotel_azeki6.png',
     backgroundMobile: 'https://res.cloudinary.com/dccxjo9x8/image/upload/v1789576396/1_ex0tvu.svg',
-    portalLabel: 'Enter B & C Room',
+    portalLabel: 'B & C ROOM', 
     targetScene: 'room',
     portalX: '50%',
     portalY: '60%',
+    portalMobileX: '82%', 
+    portalMobileY: '33%', 
     neonColor: 'yellow',
     products: [
       { id: 'h1', name: 'The Getaway Guitar', price: 450, x: '75%', y: '65%', desc: 'Strum your way out. Classic acoustic guitar used in the sessions.', image: 'https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=500&auto=format&fit=crop' },
@@ -37,10 +39,12 @@ const SCENES = {
     name: '2. B & C Room',
     backgroundDesktop: 'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?q=80&w=2560&auto=format&fit=crop',
     backgroundMobile: 'https://res.cloudinary.com/dccxjo9x8/image/upload/v1789576428/2_joviqo.svg',
-    portalLabel: 'The Escape →',
+    portalLabel: 'THE ESCAPE', 
     targetScene: 'escape',
     portalX: '50%',
     portalY: '65%',
+    portalMobileX: '50%', 
+    portalMobileY: '61%',
     neonColor: 'pink',
     products: [
       { id: 'p4', name: 'Mayé Red Plaid Suit', price: 350, x: '35%', y: '45%', desc: 'Tailored two-piece red plaid suit.', image: 'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=500&auto=format&fit=crop' },
@@ -52,10 +56,12 @@ const SCENES = {
     name: '3. The Escape',
     backgroundDesktop: 'https://images.unsplash.com/photo-1513628253939-010e64ac66cd?q=80&w=2560&auto=format&fit=crop',
     backgroundMobile: 'https://res.cloudinary.com/dccxjo9x8/image/upload/v1789577552/3_the_escape_rik8zf.svg',
-    portalLabel: '← Return to Hotel',
+    portalLabel: 'Back to Hotle',
     targetScene: 'hotel',
     portalX: '50%',
     portalY: '70%',
+    portalMobileX: '78%', 
+    portalMobileY: '65%',
     neonColor: 'cyan',
     products: [
       { id: 'p8', name: 'Suga & Spice Vinyl', price: 35, x: '50%', y: '50%', desc: 'Limited edition yellow translucent vinyl.', image: 'https://images.unsplash.com/photo-1603048297172-c92544798d5e?w=500&auto=format&fit=crop' }
@@ -136,14 +142,15 @@ export default function App() {
     }
   };
 
-  const getNeonStyle = (color) => {
+  // Pure neon text glow, no background boxes or borders
+  const getNeonTextStyle = (color) => {
     switch (color) {
       case 'pink':
-        return 'text-pink-300 drop-shadow-[0_0_12px_rgba(255,20,147,0.9)] border-pink-500/60 bg-black/60';
+        return 'text-pink-100 drop-shadow-[0_0_15px_rgba(255,20,147,1)]';
       case 'cyan':
-        return 'text-cyan-300 drop-shadow-[0_0_12px_rgba(0,243,255,0.9)] border-cyan-500/60 bg-black/60';
+        return 'text-cyan-100 drop-shadow-[0_0_15px_rgba(0,243,255,1)]';
       default:
-        return 'text-yellow-300 drop-shadow-[0_0_12px_rgba(234,179,8,0.9)] border-yellow-500/60 bg-black/60';
+        return 'text-yellow-100 drop-shadow-[0_0_15px_rgba(234,179,8,1)]';
     }
   };
 
@@ -158,12 +165,13 @@ export default function App() {
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
-        @keyframes smoothLevitate {
+        /* Ultra-smooth, elegant levitation for the text */
+        @keyframes finesseLevitate {
           0%, 100% { transform: translate(-50%, -50%) translateY(0px); }
-          50% { transform: translate(-50%, -50%) translateY(-10px); }
+          50% { transform: translate(-50%, -50%) translateY(-6px); }
         }
-        .animate-levitate {
-          animation: smoothLevitate 4s ease-in-out infinite;
+        .animate-finesse-levitate {
+          animation: finesseLevitate 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
         }
       `}</style>
 
@@ -195,13 +203,7 @@ export default function App() {
 
         <div className="hidden lg:flex gap-6 items-center text-xs font-semibold tracking-widest uppercase">
           {navLinks.map((item) => (
-            <button 
-              key={item} 
-              onClick={() => handleNavClick(item)}
-              className="hover:text-yellow-400 transition-colors drop-shadow"
-            >
-              {item}
-            </button>
+            <button key={item} onClick={() => handleNavClick(item)} className="hover:text-yellow-400 transition-colors drop-shadow">{item}</button>
           ))}
         </div>
         
@@ -211,21 +213,11 @@ export default function App() {
 
         <div className="flex items-center gap-4 md:gap-6">
           <div className="hidden sm:flex items-center gap-3 md:gap-4 text-white/80">
-            <a href="https://www.instagram.com/lu__maye" target="_blank" rel="noreferrer" className="hover:text-yellow-400 transition-colors">
-              <InstagramIcon size={18} />
-            </a>
-            <a href="https://www.youtube.com/@lu_maye" target="_blank" rel="noreferrer" className="hover:text-yellow-400 transition-colors">
-              <YoutubeIcon size={18} />
-            </a>
-            <a href="https://www.tiktok.com/@lu_maye" target="_blank" rel="noreferrer" className="hover:text-yellow-400 transition-colors">
-              <Smartphone size={18} />
-            </a>
-            <a href="https://open.spotify.com/artist/7nREcJOl7efyzyDi5eIDYS" target="_blank" rel="noreferrer" className="hover:text-yellow-400 transition-colors">
-              <Headphones size={18} />
-            </a>
-            <a href="https://music.apple.com/us/artist/mayé/1648129929" target="_blank" rel="noreferrer" className="hover:text-yellow-400 transition-colors">
-              <Music size={18} />
-            </a>
+            <a href="#" className="hover:text-yellow-400 transition-colors"><InstagramIcon size={18} /></a>
+            <a href="#" className="hover:text-yellow-400 transition-colors"><YoutubeIcon size={18} /></a>
+            <a href="#" className="hover:text-yellow-400 transition-colors"><Smartphone size={18} /></a>
+            <a href="#" className="hover:text-yellow-400 transition-colors"><Headphones size={18} /></a>
+            <a href="#" className="hover:text-yellow-400 transition-colors"><Music size={18} /></a>
           </div>
 
           <button onClick={() => setIsCartOpen(true)} className="flex items-center gap-2 hover:text-yellow-400 transition-colors text-xs md:text-sm font-medium tracking-widest uppercase bg-black/50 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 shadow-lg">
@@ -235,7 +227,6 @@ export default function App() {
         </div>
       </nav>
 
-      {/* Persistent Horizontal Navigation Bar on Mobile Header */}
       <div className="lg:hidden absolute top-16 left-0 w-full overflow-x-auto no-scrollbar px-4 py-2 z-30 flex gap-3 bg-black/40 backdrop-blur-sm border-b border-white/10">
         {navLinks.map((item) => (
           <button
@@ -256,34 +247,36 @@ export default function App() {
           </div>
           <div className="flex flex-col gap-5 text-lg font-bold tracking-widest uppercase">
             {navLinks.map((item) => (
-              <button 
-                key={item} 
-                onClick={() => handleNavClick(item)}
-                className="text-left hover:text-yellow-500 active:text-yellow-400 transition-colors border-b border-white/10 pb-3"
-              >
-                {item}
-              </button>
+              <button key={item} onClick={() => handleNavClick(item)} className="text-left hover:text-yellow-500 active:text-yellow-400 transition-colors border-b border-white/10 pb-3">{item}</button>
             ))}
           </div>
         </div>
       )}
 
-      {/* levitating Neon Scene Link Button */}
+      {/* 
+        THE FIX: Finesse Levitating Text Hitbox 
+        This is placed directly over your drawn SVG text with transparent backgrounds.
+      */}
       {isLoaded && (
         <button
           onClick={() => {
             setActiveProduct(null);
             setCurrentSceneKey(scene.targetScene);
           }}
-          className={`absolute z-30 animate-levitate focus:outline-none px-6 py-3 rounded-full border backdrop-blur-md font-bold tracking-widest uppercase text-xs md:text-sm shadow-2xl flex items-center gap-2 active:scale-95 transition-transform ${getNeonStyle(scene.neonColor)}`}
-          style={{ left: scene.portalX, top: scene.portalY }}
+          className={`absolute z-30 animate-finesse-levitate focus:outline-none p-4 font-bold font-serif whitespace-nowrap active:scale-95 transition-transform ${getNeonTextStyle(scene.neonColor)}`}
+          style={{ 
+            left: isMobile ? scene.portalMobileX : scene.portalX, 
+            top: isMobile ? scene.portalMobileY : scene.portalY,
+            fontSize: isMobile ? '16px' : '20px',
+            background: 'transparent',
+            border: 'none',
+          }}
         >
-          <Compass size={16} />
-          <span>{scene.portalLabel}</span>
+          {scene.portalLabel}
         </button>
       )}
 
-      {/* Product Hotspots without blinking on mobile */}
+      {/* Product Hotspots */}
       {isLoaded && scene.products.map((product) => (
         <button
           key={product.id}
@@ -291,9 +284,7 @@ export default function App() {
           className="absolute group z-30 -translate-x-1/2 -translate-y-1/2 focus:outline-none w-10 h-10 md:w-12 md:h-12 flex items-center justify-center"
           style={{ left: product.x, top: product.y }}
         >
-          {/* Ping animation ONLY on desktop */}
           <span className="hidden md:block absolute inset-0 rounded-full border-2 animate-ping border-white/50" />
-          
           <span className="relative flex items-center justify-center w-7 h-7 md:w-8 md:h-8 rounded-full bg-black/60 border border-white/40 group-hover:bg-yellow-500 group-hover:border-yellow-400 transition-all duration-300">
             <ChevronRight size={14} className="text-yellow-400 group-hover:text-black" />
           </span>
@@ -303,6 +294,7 @@ export default function App() {
         </button>
       ))}
 
+      {/* Modals */}
       {activeModal && (
         <div className="fixed inset-0 bg-black/90 backdrop-blur-xl z-[70] flex items-center justify-center p-4">
           <div className="relative w-full max-w-2xl bg-black/90 border border-white/20 rounded-2xl p-6 md:p-8 max-h-[85vh] overflow-y-auto no-scrollbar shadow-2xl">
@@ -395,11 +387,11 @@ export default function App() {
                 </form>
               </div>
             )}
-
           </div>
         </div>
       )}
 
+      {/* Active Product Sidebar */}
       <div 
         className={`absolute top-0 right-0 h-full w-full sm:w-[400px] bg-black/95 backdrop-blur-xl border-l border-white/10 p-8 z-50 transform transition-transform duration-500 ease-out flex flex-col ${
           activeProduct ? 'translate-x-0' : 'translate-x-full'
@@ -437,6 +429,7 @@ export default function App() {
         )}
       </div>
 
+      {/* Cart Sidebar */}
       <div 
         className={`absolute top-0 right-0 h-full w-full sm:w-[400px] bg-black/95 backdrop-blur-xl border-l border-white/10 p-8 z-[60] transform transition-transform duration-500 ease-out flex flex-col ${
           isCartOpen ? 'translate-x-0' : 'translate-x-full'
@@ -449,38 +442,47 @@ export default function App() {
           </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto no-scrollbar space-y-6">
+        <div className="flex-1 overflow-y-auto no-scrollbar flex flex-col gap-4">
           {cart.length === 0 ? (
-            <div className="h-full flex flex-col items-center justify-center text-gray-500 space-y-4">
-              <ShoppingBag size={48} className="opacity-50" />
-              <p className="text-sm tracking-widest uppercase">Your cart is empty</p>
+            <div className="flex-1 flex flex-col items-center justify-center text-gray-500 gap-4">
+              <ShoppingBag size={48} className="opacity-20" />
+              <p className="text-sm uppercase tracking-widest">Cart is empty</p>
             </div>
           ) : (
-            cart.map((item, idx) => (
-              <div key={idx} className="flex gap-4 items-center bg-white/5 p-3 rounded-lg border border-white/10">
-                <img src={item.image} className="w-16 h-16 rounded object-cover" alt={item.name} />
-                <div className="flex-1">
-                  <p className="text-sm font-bold truncate">{item.name}</p>
-                  <p className="text-xs text-yellow-500 font-medium mt-1">${item.price.toLocaleString('en-US', {minimumFractionDigits: 2})}</p>
+            cart.map((item, index) => (
+              <div key={index} className="flex gap-4 p-4 bg-white/5 rounded-lg border border-white/5">
+                <div className="w-16 h-16 bg-gray-900 rounded overflow-hidden flex-shrink-0">
+                  <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
                 </div>
+                <div className="flex-1">
+                  <h3 className="text-sm font-bold truncate pr-4">{item.name}</h3>
+                  <p className="text-yellow-500 text-sm mt-1">${item.price}</p>
+                </div>
+                <button 
+                  onClick={() => setCart(cart.filter((_, i) => i !== index))}
+                  className="text-gray-500 hover:text-red-400 p-2 h-fit"
+                >
+                  <X size={16} />
+                </button>
               </div>
             ))
           )}
         </div>
 
         {cart.length > 0 && (
-          <div className="mt-8 border-t border-white/10 pt-6">
-            <div className="flex justify-between items-center mb-6 text-lg">
-              <span className="font-medium">Total</span>
-              <span className="font-bold text-yellow-500">${cartTotal.toLocaleString('en-US', {minimumFractionDigits: 2})}</span>
+          <div className="mt-8 pt-6 border-t border-white/10">
+            <div className="flex justify-between items-center mb-6">
+              <span className="text-sm uppercase tracking-widest text-gray-400">Total</span>
+              <span className="text-xl font-bold">${cartTotal.toLocaleString('en-US', {minimumFractionDigits: 2})}</span>
             </div>
-            <button className="w-full py-4 bg-yellow-500 text-black font-bold tracking-widest uppercase hover:bg-yellow-400 transition-colors rounded-none focus:outline-none">
-              Checkout Now
+            <button className="w-full py-4 bg-white text-black font-bold tracking-widest uppercase hover:bg-yellow-500 transition-colors">
+              Checkout
             </button>
           </div>
         )}
       </div>
 
+      {/* Bottom Scene Nav / Player */}
       <div className="absolute bottom-6 md:bottom-8 left-0 w-full px-4 md:px-8 flex flex-row justify-between items-end md:items-center z-40 pointer-events-none">
         <div className="flex items-center gap-4 bg-black/60 backdrop-blur-md p-2 md:p-3 rounded-full border border-white/10 pointer-events-auto shadow-2xl">
           <button 
@@ -516,7 +518,6 @@ export default function App() {
           </div>
         </div>
       </div>
-
     </div>
   );
 }
