@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ShoppingBag, Play, Pause, X, ChevronRight, DoorOpen, Loader2, Music, Headphones, Smartphone } from 'lucide-react';
+import { ShoppingBag, Play, Pause, X, ChevronRight, DoorOpen, Loader2, Music, Headphones, Smartphone, Menu, Mail, Calendar, MapPin, Send } from 'lucide-react';
 
-// Custom Icon components to bypass the Lucide version error on Cloudflare
+// Custom SVG Icons to avoid Lucide version issues on Cloudflare
 const InstagramIcon = ({ size = 24, className = "" }) => (
   <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
     <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
@@ -21,6 +21,8 @@ const SCENES = {
   hotel: {
     id: 'hotel',
     name: 'The Hotel',
+    // Background Video zoomed in to play horizontally
+    video: 'https://res.cloudinary.com/dccxjo9x8/video/upload/v1789574973/Busted_The_Daring_Window_Escape_krpy1o.mov',
     background: 'https://res.cloudinary.com/dccxjo9x8/image/upload/v1781626534/home_ready_hotel_azeki6.png',
     products: [
       { id: 'h1', name: 'The Getaway Guitar', price: 450, x: '73%', y: '67%', desc: 'Strum your way out. Classic acoustic guitar used in the sessions.', image: 'https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=500&auto=format&fit=crop' },
@@ -59,10 +61,10 @@ export default function App() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
-  
-  // Custom MP3 Audio reference (Using your Cloudinary link!)
-  const audioRef = useRef(null);
+  const [activeModal, setActiveModal] = useState(null); // Modal handler for top nav links
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  const audioRef = useRef(null);
   const scene = SCENES[currentSceneKey];
 
   // Initialize Audio
@@ -77,7 +79,7 @@ export default function App() {
     };
   }, []);
 
-  // Handle Play/Pause logic
+  // Play/Pause Audio
   useEffect(() => {
     if (audioRef.current) {
       if (isPlaying) {
@@ -88,31 +90,40 @@ export default function App() {
     }
   }, [isPlaying]);
 
-  // Load Background Images
+  // Handle Scene Media Loading
   useEffect(() => {
     setIsLoading(true);
     setIsLoaded(false);
-    
-    const img = new Image();
-    img.src = scene.background;
-    
-    const handleLoadComplete = () => {
+
+    if (scene.video) {
       setIsLoading(false);
-      setTimeout(() => setIsLoaded(true), 50); 
-    };
-
-    img.onload = handleLoadComplete;
-    img.onerror = handleLoadComplete;
-
-    if (img.complete) {
-      handleLoadComplete();
+      setIsLoaded(true);
+    } else {
+      const img = new Image();
+      img.src = scene.background;
+      const handleLoadComplete = () => {
+        setIsLoading(false);
+        setTimeout(() => setIsLoaded(true), 50); 
+      };
+      img.onload = handleLoadComplete;
+      img.onerror = handleLoadComplete;
+      if (img.complete) handleLoadComplete();
     }
-  }, [currentSceneKey, scene.background]);
+  }, [currentSceneKey, scene]);
 
   const handleAddToCart = (product) => {
     setCart(prev => [...prev, product]);
-    setActiveProduct(null); // Close sidebar after adding
-    setIsCartOpen(true);    // Pop open the cart to show it worked
+    setActiveProduct(null);
+    setIsCartOpen(true);
+  };
+
+  const handleNavClick = (linkName) => {
+    setMobileMenuOpen(false);
+    if (linkName === 'MERCH') {
+      setIsCartOpen(true);
+    } else {
+      setActiveModal(linkName);
+    }
   };
 
   const cartTotal = cart.reduce((total, item) => total + item.price, 0);
@@ -120,78 +131,125 @@ export default function App() {
   return (
     <div className="fixed inset-0 w-full h-[100dvh] overflow-hidden bg-black text-white font-sans selection:bg-yellow-500 selection:text-black">
       
-      {/* Global CSS Reset */}
+      {/* CSS Reset & Scrollbar hiding */}
       <style>{`
         #root, #__next, :root { max-width: none !important; width: 100% !important; height: 100% !important; margin: 0 !important; padding: 0 !important; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
 
-      {/* Loading Spinner */}
+      {/* Loading Overlay */}
       {isLoading && (
         <div className="absolute inset-0 flex items-center justify-center z-50 bg-black">
           <Loader2 className="animate-spin text-yellow-500" size={48} />
         </div>
       )}
 
-      {/* Background Image */}
-      <div 
-        className={`absolute inset-0 transition-all duration-1000 ease-in-out ${isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-105'}`}
-        style={{
-          backgroundImage: `url(${scene.background})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-        }}
-      />
-      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/80 pointer-events-none" />
+      {/* Media Background: Video or Image */}
+      {scene.video ? (
+        <div className="absolute inset-0 overflow-hidden">
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-full object-cover scale-110 object-center transition-all duration-1000"
+            src={scene.video}
+          />
+        </div>
+      ) : (
+        <div 
+          className={`absolute inset-0 transition-all duration-1000 ease-in-out ${isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-105'}`}
+          style={{
+            backgroundImage: `url(${scene.background})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+          }}
+        />
+      )}
 
-      {/* Top Navigation */}
+      {/* Vignette Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/80 pointer-events-none" />
+
+      {/* Top Navigation Bar */}
       <nav className="absolute top-0 left-0 w-full p-4 md:p-6 flex justify-between items-center z-40">
-        <div className="hidden md:flex gap-8 items-center text-sm font-medium tracking-widest uppercase">
-          <button className="hover:text-yellow-400 transition-colors">Albums</button>
-          <button className="hover:text-yellow-400 transition-colors">Projects</button>
-          <button className="hover:text-yellow-400 transition-colors">Shop All</button>
+        
+        {/* Mobile Hamburger Button */}
+        <button 
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)} 
+          className="lg:hidden p-2 rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-white"
+        >
+          <Menu size={20} />
+        </button>
+
+        {/* Desktop Navigation Links (BOOKING, BIO, TOUR, MERCH, MUSIC, GALLERY, JOIN) */}
+        <div className="hidden lg:flex gap-6 items-center text-xs font-semibold tracking-widest uppercase">
+          {['BOOKING', 'BIO', 'TOUR', 'MERCH', 'MUSIC', 'GALLERY', 'JOIN'].map((item) => (
+            <button 
+              key={item} 
+              onClick={() => handleNavClick(item)}
+              className="hover:text-yellow-400 transition-colors drop-shadow"
+            >
+              {item}
+            </button>
+          ))}
         </div>
         
-        {/* MAYÉ Branding */}
-        <div className="absolute left-1/2 -translate-x-1/2 text-xl md:text-2xl font-serif tracking-widest font-bold whitespace-nowrap drop-shadow-md select-none">
+        {/* Branding MAYÉ */}
+        <div className="absolute left-1/2 -translate-x-1/2 text-2xl md:text-3xl font-serif tracking-widest font-bold whitespace-nowrap drop-shadow-lg select-none">
           MAYÉ
         </div>
 
+        {/* Social Links & Cart */}
         <div className="flex items-center gap-4 md:gap-6">
-          {/* Social & Music Links with Tooltips */}
           <div className="hidden sm:flex items-center gap-3 md:gap-4 text-white/80">
-            <a href="https://www.instagram.com/lu__maye" target="_blank" rel="noreferrer" className="group relative hover:text-yellow-400 transition-colors">
+            <a href="https://www.instagram.com/lu__maye" target="_blank" rel="noreferrer" className="hover:text-yellow-400 transition-colors">
               <InstagramIcon size={18} />
-              <span className="absolute top-full mt-3 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap text-[10px] font-medium tracking-wider bg-black/80 px-2 py-1 rounded backdrop-blur-sm pointer-events-none border border-white/10">Instagram</span>
             </a>
-            <a href="https://www.youtube.com/@lu_maye" target="_blank" rel="noreferrer" className="group relative hover:text-yellow-400 transition-colors">
+            <a href="https://www.youtube.com/@lu_maye" target="_blank" rel="noreferrer" className="hover:text-yellow-400 transition-colors">
               <YoutubeIcon size={18} />
-              <span className="absolute top-full mt-3 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap text-[10px] font-medium tracking-wider bg-black/80 px-2 py-1 rounded backdrop-blur-sm pointer-events-none border border-white/10">YouTube</span>
             </a>
-            <a href="https://www.tiktok.com/@lu_maye" target="_blank" rel="noreferrer" className="group relative hover:text-yellow-400 transition-colors">
+            <a href="https://www.tiktok.com/@lu_maye" target="_blank" rel="noreferrer" className="hover:text-yellow-400 transition-colors">
               <Smartphone size={18} />
-              <span className="absolute top-full mt-3 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap text-[10px] font-medium tracking-wider bg-black/80 px-2 py-1 rounded backdrop-blur-sm pointer-events-none border border-white/10">TikTok</span>
             </a>
-            <a href="https://open.spotify.com/artist/7nREcJOl7efyzyDi5eIDYS" target="_blank" rel="noreferrer" className="group relative hover:text-yellow-400 transition-colors">
+            <a href="https://open.spotify.com/artist/7nREcJOl7efyzyDi5eIDYS" target="_blank" rel="noreferrer" className="hover:text-yellow-400 transition-colors">
               <Headphones size={18} />
-              <span className="absolute top-full mt-3 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap text-[10px] font-medium tracking-wider bg-black/80 px-2 py-1 rounded backdrop-blur-sm pointer-events-none border border-white/10">Spotify</span>
             </a>
-            <a href="https://music.apple.com/us/artist/mayé/1648129929" target="_blank" rel="noreferrer" className="group relative hover:text-yellow-400 transition-colors">
+            <a href="https://music.apple.com/us/artist/mayé/1648129929" target="_blank" rel="noreferrer" className="hover:text-yellow-400 transition-colors">
               <Music size={18} />
-              <span className="absolute top-full mt-3 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap text-[10px] font-medium tracking-wider bg-black/80 px-2 py-1 rounded backdrop-blur-sm pointer-events-none border border-white/10">Apple Music</span>
             </a>
           </div>
 
-          <button onClick={() => setIsCartOpen(true)} className="flex items-center gap-2 hover:text-yellow-400 transition-colors text-xs md:text-sm font-medium tracking-widest uppercase bg-black/30 backdrop-blur-sm px-4 py-2 rounded-full border border-white/10">
+          <button onClick={() => setIsCartOpen(true)} className="flex items-center gap-2 hover:text-yellow-400 transition-colors text-xs md:text-sm font-medium tracking-widest uppercase bg-black/40 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 shadow-lg">
             <ShoppingBag size={16} />
             <span>Cart ({cart.length})</span>
           </button>
         </div>
       </nav>
 
-      {/* Hotspots */}
+      {/* Mobile Drawer Navigation Menu */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 bg-black/95 z-50 flex flex-col p-8 lg:hidden backdrop-blur-xl">
+          <div className="flex justify-between items-center mb-8">
+            <span className="text-2xl font-serif font-bold">MAYÉ</span>
+            <button onClick={() => setMobileMenuOpen(false)} className="p-2"><X size={24} /></button>
+          </div>
+          <div className="flex flex-col gap-6 text-lg font-bold tracking-widest uppercase">
+            {['BOOKING', 'BIO', 'TOUR', 'MERCH', 'MUSIC', 'GALLERY', 'JOIN'].map((item) => (
+              <button 
+                key={item} 
+                onClick={() => handleNavClick(item)}
+                className="text-left hover:text-yellow-500 transition-colors border-b border-white/10 pb-3"
+              >
+                {item}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Interactive Hotspots */}
       {isLoaded && scene.products.map((product) => (
         <button
           key={product.id}
@@ -206,9 +264,7 @@ export default function App() {
           className="absolute group z-30 -translate-x-1/2 -translate-y-1/2 focus:outline-none w-10 h-10 md:w-12 md:h-12 flex items-center justify-center"
           style={{ left: product.x, top: product.y }}
         >
-          {/* Pulsing visual halo */}
           <span className={`absolute inset-0 rounded-full border-2 animate-ping ${product.isDoor ? 'border-yellow-500/50' : 'border-white/50'}`} />
-          {/* Glowing button container */}
           <span className={`relative flex items-center justify-center w-6 h-6 md:w-8 md:h-8 rounded-full backdrop-blur-md border transition-all duration-300 ${
             product.isDoor 
               ? 'bg-yellow-500/20 border-yellow-400 group-hover:bg-yellow-500' 
@@ -220,12 +276,124 @@ export default function App() {
               <ChevronRight size={14} className="text-white group-hover:text-black" />
             )}
           </span>
-          {/* Interactive Tooltip Label */}
           <span className="absolute top-12 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap text-xs font-medium tracking-wider bg-black/80 px-3 py-1 rounded backdrop-blur-sm pointer-events-none border border-white/10">
             {product.name}
           </span>
         </button>
       ))}
+
+      {/* Nav Link Modals Overlay */}
+      {activeModal && (
+        <div className="fixed inset-0 bg-black/90 backdrop-blur-xl z-[70] flex items-center justify-center p-4">
+          <div className="relative w-full max-w-2xl bg-black/80 border border-white/10 rounded-2xl p-6 md:p-8 max-h-[85vh] overflow-y-auto no-scrollbar shadow-2xl">
+            <button 
+              onClick={() => setActiveModal(null)} 
+              className="absolute top-6 right-6 p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+            >
+              <X size={20} />
+            </button>
+
+            {/* BOOKING MODAL */}
+            {activeModal === 'BOOKING' && (
+              <div>
+                <h2 className="text-2xl font-serif font-bold tracking-widest uppercase mb-4 text-yellow-500">Booking & Management</h2>
+                <p className="text-sm text-gray-300 mb-6">For live performance bookings, corporate events, and press inquiries worldwide.</p>
+                <form onSubmit={(e) => { e.preventDefault(); alert('Booking request sent!'); setActiveModal(null); }} className="space-y-4">
+                  <input type="text" placeholder="Your Name / Organization" required className="w-full bg-white/5 border border-white/10 rounded px-4 py-3 text-sm focus:outline-none focus:border-yellow-500" />
+                  <input type="email" placeholder="Email Address" required className="w-full bg-white/5 border border-white/10 rounded px-4 py-3 text-sm focus:outline-none focus:border-yellow-500" />
+                  <textarea placeholder="Event Details & Dates" rows={4} required className="w-full bg-white/5 border border-white/10 rounded px-4 py-3 text-sm focus:outline-none focus:border-yellow-500" />
+                  <button type="submit" className="w-full py-3 bg-yellow-500 text-black font-bold uppercase tracking-widest hover:bg-yellow-400 transition-colors rounded">Send Booking Request</button>
+                </form>
+              </div>
+            )}
+
+            {/* BIO MODAL */}
+            {activeModal === 'BIO' && (
+              <div className="space-y-4">
+                <h2 className="text-2xl font-serif font-bold tracking-widest uppercase mb-4 text-yellow-500">Biography</h2>
+                <p className="text-sm leading-relaxed text-gray-300">
+                  MAYÉ is an independent visionary artist blending sultry R&B textures, cinematic storytelling, and genre-defying production. Known for high-concept visuals and immersive sonic experiences, MAYÉ creates world-building records that linger between romance and high-stakes drama.
+                </p>
+                <p className="text-sm leading-relaxed text-gray-300">
+                  With the latest release "Suga & Spice," MAYÉ continues to push creative limits across music, film, and fashion.
+                </p>
+              </div>
+            )}
+
+            {/* TOUR MODAL */}
+            {activeModal === 'TOUR' && (
+              <div>
+                <h2 className="text-2xl font-serif font-bold tracking-widest uppercase mb-6 text-yellow-500">Upcoming Tour Dates</h2>
+                <div className="space-y-4">
+                  {[
+                    { date: 'OCT 24', city: 'Lagos, Nigeria', venue: 'Beachfront Arena' },
+                    { date: 'NOV 12', city: 'London, UK', venue: 'O2 Forum Kentish Town' },
+                    { date: 'DEC 05', city: 'New York, NY', venue: 'Webster Hall' }
+                  ].map((tour, idx) => (
+                    <div key={idx} className="flex justify-between items-center p-4 bg-white/5 rounded border border-white/10">
+                      <div>
+                        <span className="text-xs font-bold text-yellow-500 block">{tour.date}</span>
+                        <span className="text-base font-bold">{tour.city}</span>
+                        <span className="text-xs text-gray-400 block">{tour.venue}</span>
+                      </div>
+                      <button className="px-4 py-2 bg-white text-black font-bold text-xs uppercase tracking-widest hover:bg-yellow-500 transition-colors rounded">RSVP</button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* MUSIC MODAL */}
+            {activeModal === 'MUSIC' && (
+              <div>
+                <h2 className="text-2xl font-serif font-bold tracking-widest uppercase mb-6 text-yellow-500">Discography</h2>
+                <div className="space-y-4">
+                  <div className="p-4 bg-white/5 rounded border border-white/10 flex justify-between items-center">
+                    <div>
+                      <p className="font-bold text-base">Suga & Spice</p>
+                      <p className="text-xs text-gray-400">Single • Mayé X Bonny</p>
+                    </div>
+                    <button onClick={() => setIsPlaying(!isPlaying)} className="p-3 bg-yellow-500 text-black rounded-full hover:bg-yellow-400">
+                      {isPlaying ? <Pause size={16} /> : <Play size={16} />}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* GALLERY MODAL */}
+            {activeModal === 'GALLERY' && (
+              <div>
+                <h2 className="text-2xl font-serif font-bold tracking-widest uppercase mb-6 text-yellow-500">Gallery</h2>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                  {[
+                    'https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=500&auto=format&fit=crop',
+                    'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=500&auto=format&fit=crop',
+                    'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500&auto=format&fit=crop',
+                    'https://images.unsplash.com/photo-1603048297172-c92544798d5e?w=500&auto=format&fit=crop'
+                  ].map((imgUrl, i) => (
+                    <img key={i} src={imgUrl} className="w-full h-32 object-cover rounded border border-white/10" alt="Gallery preview" />
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* JOIN MODAL */}
+            {activeModal === 'JOIN' && (
+              <div className="text-center">
+                <Mail className="mx-auto text-yellow-500 mb-4" size={40} />
+                <h2 className="text-2xl font-serif font-bold tracking-widest uppercase mb-2">Join The Inner Circle</h2>
+                <p className="text-sm text-gray-300 mb-6">Subscribe to receive exclusive drops, early ticket access, and behind-the-scenes content directly from MAYÉ.</p>
+                <form onSubmit={(e) => { e.preventDefault(); alert('Welcome to the inner circle!'); setActiveModal(null); }} className="flex flex-col gap-3">
+                  <input type="email" placeholder="Enter your email address" required className="w-full bg-white/5 border border-white/10 rounded px-4 py-3 text-sm focus:outline-none focus:border-yellow-500" />
+                  <button type="submit" className="py-3 bg-yellow-500 text-black font-bold uppercase tracking-widest hover:bg-yellow-400 transition-colors rounded">Subscribe Now</button>
+                </form>
+              </div>
+            )}
+
+          </div>
+        </div>
+      )}
 
       {/* Product Details Sidebar */}
       <div 
@@ -259,7 +427,6 @@ export default function App() {
                 <p>{activeProduct.desc}</p>
               </div>
               
-              {/* Selective Size Selector for wearable products */}
               {!['h1', 'h2', 'p6', 'p7', 'p8'].includes(activeProduct.id) && (
                 <div className="space-y-3 mb-8">
                   <label className="text-xs tracking-widest uppercase text-gray-400">Size</label>
@@ -284,7 +451,7 @@ export default function App() {
         )}
       </div>
 
-      {/* Cart Sidebar (Higher Z-index so it overlays everything) */}
+      {/* Cart Sidebar */}
       <div 
         className={`absolute top-0 right-0 h-full w-full sm:w-[400px] bg-black/95 backdrop-blur-xl border-l border-white/10 p-8 z-[60] transform transition-transform duration-500 ease-out flex flex-col ${
           isCartOpen ? 'translate-x-0' : 'translate-x-full'
@@ -332,7 +499,7 @@ export default function App() {
         )}
       </div>
 
-      {/* Footer controls */}
+      {/* Bottom Audio Player & Scene Switcher */}
       <div className="absolute bottom-6 md:bottom-8 left-0 w-full px-4 md:px-8 flex flex-row justify-between items-end md:items-center z-40 pointer-events-none">
         
         {/* SUGA & SPICE Music Player */}
@@ -356,7 +523,7 @@ export default function App() {
           )}
         </div>
 
-        {/* Scene Navigation Switcher */}
+        {/* Scene Switcher */}
         <div className="flex justify-end pointer-events-auto">
           <div className="flex justify-center gap-1 p-1 bg-black/60 backdrop-blur-md rounded-full border border-white/10 shadow-2xl">
             {Object.values(SCENES).map((s) => (
