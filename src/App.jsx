@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ShoppingBag, Play, Pause, X, Loader2, Mail } from 'lucide-react';
+import { ShoppingBag, Play, Pause, X, Loader2, Mail, Instagram, Youtube, Music, Radio } from 'lucide-react';
 
 const SCENES = {
   hotel: {
@@ -7,10 +7,8 @@ const SCENES = {
     name: 'THE HOTEL',
     background: 'https://res.cloudinary.com/dccxjo9x8/image/upload/v1789580313/1_the_hotel_h3udh8.png',
     hitboxes: [
-      // Desktop Items (Hidden on Mobile)
       { id: 'plaid_suit', type: 'product', target: 'p1', x: '20%', y: '50%', w: '15%', h: '30%', className: 'hidden md:block' },
       { id: 'briefcase', type: 'product', target: 'p4', x: '50%', y: '70%', w: '15%', h: '15%', className: 'hidden md:block' },
-      // Mobile Items (Hidden on Desktop)
       { id: 'room_sign', type: 'scene', target: 'room', x: '70%', y: '27%', w: '25%', h: '8%', className: 'block md:hidden' },
       { id: 'lumusic_hq', type: 'modal', target: 'BIO', x: '63%', y: '73%', w: '28%', h: '12%', className: 'block md:hidden' },
       { id: 'hotel_text', type: 'scene', target: 'hotel', x: '35%', y: '8%', w: '30%', h: '6%', className: 'block md:hidden' }
@@ -25,9 +23,7 @@ const SCENES = {
     name: 'BONNY & CLYDE ROOM',
     background: 'https://res.cloudinary.com/dccxjo9x8/image/upload/v1789580317/2_the_new_pharoah_black_cat_vmfw9q.png',
     hitboxes: [
-      // Desktop Items (Hidden on Mobile)
       { id: 'vinyl', type: 'product', target: 'p_vinyl', x: '40%', y: '60%', w: '15%', h: '15%', className: 'hidden md:block' },
-      // Mobile Items (Hidden on Desktop)
       { id: 'cat', type: 'product', target: 'p2', x: '18%', y: '60%', w: '18%', h: '18%', className: 'block md:hidden' },
       { id: 'gun', type: 'product', target: 'p3', x: '70%', y: '80%', w: '20%', h: '12%', className: 'block md:hidden' },
       { id: 'escape_text', type: 'scene', target: 'escape', x: '35%', y: '85%', w: '30%', h: '8%', className: 'block md:hidden' }
@@ -43,9 +39,7 @@ const SCENES = {
     name: 'THE ESCAPE',
     background: 'https://res.cloudinary.com/dccxjo9x8/image/upload/v1789580311/3_the_escape_mc2sqm.png',
     hitboxes: [
-      // Mobile Items (Hidden on Desktop)
       { id: 'seal', type: 'scene', target: 'hotel', x: '60%', y: '55%', w: '30%', h: '18%', className: 'block md:hidden' },
-      // Desktop Items (Hidden on Mobile - Mobile uses the transparent nav bars instead)
       { id: 'music', type: 'modal', target: 'MUSIC', x: '32%', y: '4%', w: '16%', h: '5%', className: 'hidden md:block' },
       { id: 'join', type: 'modal', target: 'JOIN', x: '88%', y: '4%', w: '12%', h: '5%', className: 'hidden md:block' },
       { id: 'hotel_link', type: 'scene', target: 'hotel', x: '73%', y: '62%', w: '28%', h: '16%', className: 'hidden md:block' },
@@ -137,8 +131,33 @@ export default function App() {
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
 
-      <div className="relative w-full max-w-[500px] h-full shadow-2xl">
+      <div className="relative w-full max-w-[1400px] h-full flex flex-col shadow-2xl">
         
+        {/* DESKTOP TOP HEADER NAV */}
+        <header className="hidden md:flex justify-between items-center px-8 py-4 bg-black/80 backdrop-blur-md border-b border-white/10 z-50">
+          <div className="flex gap-6 text-sm tracking-widest uppercase font-serif">
+            <button onClick={() => setActiveModal('BOOKING')} className="hover:text-yellow-500 transition-colors">Booking</button>
+            <button onClick={() => setActiveModal('BIO')} className="hover:text-yellow-500 transition-colors">Bio</button>
+            <button onClick={() => setActiveModal('TOUR')} className="hover:text-yellow-500 transition-colors">Tour</button>
+            <button onClick={() => setIsCartOpen(true)} className="hover:text-yellow-500 transition-colors">Merch</button>
+            <button onClick={() => setActiveModal('MUSIC')} className="hover:text-yellow-500 transition-colors">Music</button>
+            <button onClick={() => setActiveModal('GALLERY')} className="hover:text-yellow-500 transition-colors">Gallery</button>
+            <button onClick={() => setActiveModal('JOIN')} className="hover:text-yellow-500 transition-colors">Join</button>
+          </div>
+          <h1 className="text-xl font-serif tracking-widest font-bold">MAYÉ</h1>
+          <div className="flex items-center gap-6">
+            <div className="flex gap-4 text-gray-300">
+              <Instagram size={18} className="hover:text-yellow-500 cursor-pointer" />
+              <Youtube size={18} className="hover:text-yellow-500 cursor-pointer" />
+              <Music size={18} className="hover:text-yellow-500 cursor-pointer" />
+              <Radio size={18} className="hover:text-yellow-500 cursor-pointer" />
+            </div>
+            <button onClick={() => setIsCartOpen(true)} className="flex items-center gap-2 text-sm tracking-widest uppercase hover:text-yellow-500 transition-colors">
+              <ShoppingBag size={16} /> Cart ({cart.length})
+            </button>
+          </div>
+        </header>
+
         {/* MOBILE TOP NAV INVISIBLE OVERLAY */}
         <div className="absolute top-0 left-0 w-full h-[10%] z-40 flex justify-between px-4 md:hidden">
           <button onClick={() => setActiveModal('BIO')} className="w-1/4 h-full" aria-label="Bio" />
@@ -154,47 +173,62 @@ export default function App() {
           <button onClick={() => setIsCartOpen(true)} className="w-1/3 h-full" aria-label="Merch" />
         </div>
 
-        {isLoading && (
-          <div className="absolute inset-0 flex items-center justify-center z-50 bg-black">
-            <Loader2 className="animate-spin text-yellow-500" size={48} />
-          </div>
-        )}
+        <div className="relative flex-1 w-full h-full overflow-hidden">
+          {isLoading && (
+            <div className="absolute inset-0 flex items-center justify-center z-50 bg-black">
+              <Loader2 className="animate-spin text-yellow-500" size={48} />
+            </div>
+          )}
 
-        <div 
-          className={`absolute inset-0 transition-all duration-500 ease-in-out ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
-          style={{
-            backgroundImage: `url(${scene.background})`,
-            backgroundSize: '100% 100%', 
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat',
-          }}
-        />
-
-        {isLoaded && scene.hitboxes.map((box) => (
-          <button
-            key={box.id}
-            onClick={() => handleHitboxClick(box)}
-            aria-label={box.id}
-            className={`absolute -translate-x-1/2 -translate-y-1/2 cursor-pointer z-30 group focus:outline-none ${box.className || ''}`}
-            style={{ 
-              left: box.x, 
-              top: box.y, 
-              width: box.w, 
-              height: box.h,
-              background: 'transparent',
-              border: 'none',
+          <div 
+            className={`absolute inset-0 transition-all duration-500 ease-in-out ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
+            style={{
+              backgroundImage: `url(${scene.background})`,
+              backgroundSize: '100% 100%', 
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
             }}
-          >
-            <span className="w-full h-full block rounded group-hover:bg-white/10 group-active:bg-white/20 transition-all duration-150" />
-          </button>
-        ))}
+          />
 
-        <button 
-          onClick={() => setIsPlaying(!isPlaying)}
-          className="absolute top-4 left-1/2 -translate-x-1/2 z-40 w-8 h-8 rounded-full bg-black/40 backdrop-blur-sm border border-white/10 flex items-center justify-center hover:bg-yellow-500 hover:text-black transition-colors"
-        >
-          {isPlaying ? <Pause size={14} /> : <Play size={14} className="ml-1" />}
-        </button>
+          {isLoaded && scene.hitboxes.map((box) => (
+            <button
+              key={box.id}
+              onClick={() => handleHitboxClick(box)}
+              aria-label={box.id}
+              className={`absolute -translate-x-1/2 -translate-y-1/2 cursor-pointer z-30 group focus:outline-none ${box.className || ''}`}
+              style={{ 
+                left: box.x, 
+                top: box.y, 
+                width: box.w, 
+                height: box.h,
+                background: 'transparent',
+                border: 'none',
+              }}
+            >
+              <span className="w-full h-full block rounded group-hover:bg-white/10 group-active:bg-white/20 transition-all duration-150" />
+            </button>
+          ))}
+
+          <button 
+            onClick={() => setIsPlaying(!isPlaying)}
+            className="absolute top-4 left-1/2 -translate-x-1/2 z-40 w-8 h-8 rounded-full bg-black/40 backdrop-blur-sm border border-white/10 flex items-center justify-center hover:bg-yellow-500 hover:text-black transition-colors md:hidden"
+          >
+            {isPlaying ? <Pause size={14} /> : <Play size={14} className="ml-1" />}
+          </button>
+        </div>
+
+        {/* SCENE SELECTOR FOOTER FOR DESKTOP */}
+        <footer className="hidden md:flex justify-center gap-8 py-4 bg-black/80 backdrop-blur-md border-t border-white/10 z-50 text-xs tracking-widest uppercase">
+          {Object.values(SCENES).map((s) => (
+            <button 
+              key={s.id}
+              onClick={() => { setActiveProduct(null); setCurrentSceneKey(s.id); }}
+              className={`pb-1 transition-colors ${currentSceneKey === s.id ? 'text-yellow-500 border-b-2 border-yellow-500' : 'text-gray-400 hover:text-white'}`}
+            >
+              {s.name}
+            </button>
+          ))}
+        </footer>
 
         {activeModal && (
           <div className="absolute inset-0 bg-black/90 backdrop-blur-md z-[70] flex items-center justify-center p-6">
@@ -272,6 +306,15 @@ export default function App() {
                     <input type="email" placeholder="Enter your email" required className="w-full bg-white/5 border border-white/10 rounded px-4 py-3 text-sm focus:outline-none focus:border-yellow-500" />
                     <button type="submit" className="py-3 bg-yellow-500 text-black font-bold text-sm uppercase tracking-widest hover:bg-yellow-400 transition-colors rounded">Subscribe</button>
                   </form>
+                </div>
+              )}
+
+              {activeModal === 'BOOKING' && (
+                <div className="space-y-4">
+                  <h2 className="text-xl font-serif font-bold tracking-widest uppercase mb-4 text-yellow-500">Booking Inquiries</h2>
+                  <p className="text-sm leading-relaxed text-gray-300">
+                    For bookings, sync licensing, and press inquiries, contact management directly.
+                  </p>
                 </div>
               )}
             </div>
