@@ -9,22 +9,21 @@ const SCENES = {
     hitboxes: [
       { id: 'plaid_suit', type: 'product', target: 'p1', x: '20%', y: '50%', w: '15%', h: '30%', className: 'hidden md:block' },
       { id: 'briefcase', type: 'product', target: 'p4', x: '50%', y: '70%', w: '15%', h: '15%', className: 'hidden md:block' },
-      // Green Circle: B&C ROOM Sign (Now with optimized MP4 transitionVideo attached)
+      // Added label for glowing/levitating text & heavily optimized Cloudinary video URL for mobile
       { 
         id: 'room_sign', 
         type: 'scene', 
         target: 'room', 
+        label: 'B&C ROOM',
         x: '70%', 
         y: '27%', 
         w: '25%', 
-        h: '8%', 
+        h: '12%', 
         className: 'block md:hidden',
-        transitionVideo: 'https://res.cloudinary.com/dccxjo9x8/video/upload/f_auto,q_auto/v1789630779/1st_transition_m2cwtv.mp4'
+        transitionVideo: 'https://res.cloudinary.com/dccxjo9x8/video/upload/c_scale,w_800/f_auto,q_auto:eco/v1789630779/1st_transition_m2cwtv.mp4'
       },
-      // Green Circle: Lumusic HQ Badge
       { id: 'lumusic_hq', type: 'modal', target: 'BIO', x: '63%', y: '73%', w: '28%', h: '12%', className: 'block md:hidden' },
-      // Green Circle: THE HOTEL text indicator
-      { id: 'hotel_text', type: 'scene', target: 'hotel', x: '35%', y: '8%', w: '30%', h: '6%', className: 'block md:hidden' }
+      { id: 'hotel_text', type: 'scene', target: 'hotel', label: 'THE HOTEL', x: '35%', y: '8%', w: '30%', h: '8%', className: 'block md:hidden' }
     ],
     products: [
       { id: 'p1', name: 'Mayé Red Plaid Suit', price: 850, desc: 'Exclusive tailored red plaid suit.', image: 'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=500&auto=format&fit=crop' },
@@ -37,12 +36,9 @@ const SCENES = {
     background: 'https://uploads.onecompiler.io/44jjpumhc/1789609916900/2%20the%20new%20pharoah%20black%20cat.svg',
     hitboxes: [
       { id: 'vinyl', type: 'product', target: 'p_vinyl', x: '40%', y: '60%', w: '15%', h: '15%', className: 'hidden md:block' },
-      // Green Circle: The Black Cat
       { id: 'cat', type: 'product', target: 'p2', x: '18%', y: '60%', w: '18%', h: '18%', className: 'block md:hidden' },
-      // Green Circle: Prop Gun
       { id: 'gun', type: 'product', target: 'p3', x: '70%', y: '80%', w: '20%', h: '12%', className: 'block md:hidden' },
-      // Green Circle: THE ESCAPE text bubble
-      { id: 'escape_text', type: 'scene', target: 'escape', x: '35%', y: '85%', w: '30%', h: '8%', className: 'block md:hidden' }
+      { id: 'escape_text', type: 'scene', target: 'escape', label: 'THE ESCAPE', x: '35%', y: '85%', w: '30%', h: '10%', className: 'block md:hidden' }
     ],
     products: [
       { id: 'p2', name: 'The New Pharaoh Cat', price: 450, desc: 'Bastet inspired black cat statue from the B&C Room.', image: 'https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=500&auto=format&fit=crop' },
@@ -55,8 +51,7 @@ const SCENES = {
     name: 'THE ESCAPE',
     background: 'https://uploads.onecompiler.io/44jjpumhc/1789609903497/3%20the%20escape%20.svg',
     hitboxes: [
-      // Green Circle: Back to Hotel Seal
-      { id: 'seal', type: 'scene', target: 'hotel', x: '60%', y: '55%', w: '30%', h: '18%', className: 'block md:hidden' },
+      { id: 'seal', type: 'scene', target: 'hotel', label: 'BACK TO HOTEL', x: '60%', y: '55%', w: '30%', h: '18%', className: 'block md:hidden' },
       { id: 'music', type: 'modal', target: 'MUSIC', x: '32%', y: '4%', w: '16%', h: '5%', className: 'hidden md:block' },
       { id: 'join', type: 'modal', target: 'JOIN', x: '88%', y: '4%', w: '12%', h: '5%', className: 'hidden md:block' },
       { id: 'hotel_link', type: 'scene', target: 'hotel', x: '73%', y: '62%', w: '28%', h: '16%', className: 'hidden md:block' },
@@ -113,7 +108,7 @@ export default function App() {
     });
 
     const videoUrls = [
-      'https://res.cloudinary.com/dccxjo9x8/video/upload/f_auto,q_auto/v1789630779/1st_transition_m2cwtv.mp4'
+      'https://res.cloudinary.com/dccxjo9x8/video/upload/c_scale,w_800/f_auto,q_auto:eco/v1789630779/1st_transition_m2cwtv.mp4'
     ];
     videoUrls.forEach((url) => {
       const link = document.createElement('link');
@@ -178,6 +173,15 @@ export default function App() {
         #root, #__next, :root { max-width: none !important; width: 100% !important; height: 100% !important; margin: 0 !important; padding: 0 !important; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Custom Keyframes for the Levitating glowing text */
+        @keyframes levitate {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-10px); }
+        }
+        .animate-float {
+          animation: levitate 2.5s ease-in-out infinite;
+        }
       `}</style>
 
       {/* FULLSCREEN VIDEO TRANSITION OVERLAY */}
@@ -187,6 +191,8 @@ export default function App() {
             src={activeTransition.videoUrl}
             autoPlay
             playsInline
+            muted /* CRITICAL: Mobile browsers will freeze on autoPlay without muted */
+            preload="auto"
             className="w-full h-full object-cover"
             onEnded={() => {
               setCurrentSceneKey(activeTransition.targetScene);
@@ -255,7 +261,7 @@ export default function App() {
             }}
           />
 
-          {/* HITBOXES WITH NEON GLOW LOGIC */}
+          {/* HITBOXES WITH NEON GLOW & LEVITATE LOGIC */}
           {isLoaded && scene.hitboxes.map((box) => (
             <button
               key={box.id}
@@ -271,11 +277,19 @@ export default function App() {
                 border: 'none',
               }}
             >
-              <span className={`w-full h-full block transition-all duration-300 ${
-  box.type === 'scene' 
-    ? 'drop-shadow-[0_0_12px_rgba(234,179,8,0.8)] animate-pulse hover:drop-shadow-[0_0_20px_rgba(234,179,8,1)]' 
-    : 'group-hover:bg-white/10 group-active:bg-white/20 rounded'
-              }`} />
+              {/* Product hitboxes hover state */}
+              {box.type !== 'scene' && (
+                <span className="w-full h-full block transition-all duration-300 group-hover:bg-white/10 group-active:bg-white/20 rounded" />
+              )}
+              
+              {/* Scene hitboxes with glowing levitating text */}
+              {box.type === 'scene' && box.label && (
+                <div className="w-full h-full flex items-center justify-center animate-float">
+                  <span className="text-yellow-500 font-serif font-bold text-lg md:text-xl tracking-widest drop-shadow-[0_0_10px_rgba(234,179,8,1)] text-center px-2 py-1 rounded bg-black/30 backdrop-blur-sm border border-yellow-500/50">
+                    {box.label}
+                  </span>
+                </div>
+              )}
             </button>
           ))}
         </div>
