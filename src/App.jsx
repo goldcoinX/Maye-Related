@@ -9,8 +9,18 @@ const SCENES = {
     hitboxes: [
       { id: 'plaid_suit', type: 'product', target: 'p1', x: '20%', y: '50%', w: '15%', h: '30%', className: 'hidden md:block' },
       { id: 'briefcase', type: 'product', target: 'p4', x: '50%', y: '70%', w: '15%', h: '15%', className: 'hidden md:block' },
-      // Green Circle: B&C ROOM Sign
-      { id: 'room_sign', type: 'scene', target: 'room', x: '70%', y: '27%', w: '25%', h: '8%', className: 'block md:hidden' },
+      // Green Circle: B&C ROOM Sign (Now with transitionVideo attached)
+      { 
+        id: 'room_sign', 
+        type: 'scene', 
+        target: 'room', 
+        x: '70%', 
+        y: '27%', 
+        w: '25%', 
+        h: '8%', 
+        className: 'block md:hidden',
+        transitionVideo: 'https://res.cloudinary.com/dccxjo9x8/video/upload/v1789630779/1st_transition_m2cwtv.mov'
+      },
       // Green Circle: Lumusic HQ Badge
       { id: 'lumusic_hq', type: 'modal', target: 'BIO', x: '63%', y: '73%', w: '28%', h: '12%', className: 'block md:hidden' },
       // Green Circle: THE HOTEL text indicator
@@ -67,6 +77,7 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
   const [activeModal, setActiveModal] = useState(null);
+  const [activeTransition, setActiveTransition] = useState(null); // New state for managing video transitions
 
   const audioRef = useRef(null);
   const scene = SCENES[currentSceneKey];
@@ -116,7 +127,12 @@ export default function App() {
   const handleHitboxClick = (box) => {
     if (box.type === 'scene') {
       setActiveProduct(null);
-      setCurrentSceneKey(box.target);
+      // Check if the hitbox has a video attached before changing the scene
+      if (box.transitionVideo) {
+        setActiveTransition({ videoUrl: box.transitionVideo, targetScene: box.target });
+      } else {
+        setCurrentSceneKey(box.target);
+      }
     } else if (box.type === 'modal') {
       setActiveModal(box.target);
     } else if (box.type === 'cart') {
@@ -137,6 +153,22 @@ export default function App() {
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
+
+      {/* FULLSCREEN VIDEO TRANSITION OVERLAY */}
+      {activeTransition && (
+        <div className="absolute inset-0 z-[100] bg-black">
+          <video
+            src={activeTransition.videoUrl}
+            autoPlay
+            playsInline
+            className="w-full h-full object-cover"
+            onEnded={() => {
+              setCurrentSceneKey(activeTransition.targetScene);
+              setActiveTransition(null);
+            }}
+          />
+        </div>
+      )}
 
       <div className="relative w-full max-w-[1400px] h-full flex flex-col shadow-2xl">
         
