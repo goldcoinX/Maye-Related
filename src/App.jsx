@@ -271,10 +271,10 @@ export default function App() {
                 border: 'none',
               }}
             >
-              <span className={`w-full h-full block rounded-xl transition-all duration-300 ${
-                box.type === 'scene' 
-                  ? 'border-2 border-yellow-500/50 shadow-[0_0_15px_rgba(234,179,8,0.5)] animate-pulse hover:border-yellow-400 hover:shadow-[0_0_25px_rgba(234,179,8,0.8)]' 
-                  : 'group-hover:bg-white/10 group-active:bg-white/20'
+              <span className={`w-full h-full block transition-all duration-300 ${
+  box.type === 'scene' 
+    ? 'drop-shadow-[0_0_12px_rgba(234,179,8,0.8)] animate-pulse hover:drop-shadow-[0_0_20px_rgba(234,179,8,1)]' 
+    : 'group-hover:bg-white/10 group-active:bg-white/20 rounded'
               }`} />
             </button>
           ))}
