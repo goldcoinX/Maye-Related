@@ -7,11 +7,11 @@ const SCENES = {
     name: 'THE HOTEL',
     background: 'https://uploads.onecompiler.io/44jjpumhc/1789609923816/1%20the%20hotel.svg',
     hitboxes: [
-      // Top artwork text labels
-      { id: 'bio_text', type: 'modal', target: 'BIO', x: '12%', y: '3%', w: '18%', h: '5%', className: 'block' },
-      { id: 'music_text', type: 'modal', target: 'MUSIC', x: '35%', y: '3%', w: '20%', h: '5%', className: 'block' },
-      { id: 'gallery_text', type: 'modal', target: 'GALLERY', x: '62%', y: '3%', w: '22%', h: '5%', className: 'block' },
-      { id: 'join_text', type: 'modal', target: 'JOIN', x: '88%', y: '3%', w: '18%', h: '5%', className: 'block' },
+      // Bulletproof Top Header Hitboxes (0-12% height, split into 4 perfect 25% width columns)
+      { id: 'bio_text', type: 'modal', target: 'BIO', x: '12.5%', y: '6%', w: '25%', h: '12%', className: 'block' },
+      { id: 'music_text', type: 'modal', target: 'MUSIC', x: '37.5%', y: '6%', w: '25%', h: '12%', className: 'block' },
+      { id: 'gallery_text', type: 'modal', target: 'GALLERY', x: '62.5%', y: '6%', w: '25%', h: '12%', className: 'block' },
+      { id: 'join_text', type: 'modal', target: 'JOIN', x: '87.5%', y: '6%', w: '25%', h: '12%', className: 'block' },
       
       // Interactive scene elements
       { id: 'plaid_suit', type: 'product', target: 'p1', x: '20%', y: '50%', w: '20%', h: '35%', className: 'block' },
@@ -29,7 +29,7 @@ const SCENES = {
         transitionVideo: 'https://res.cloudinary.com/dccxjo9x8/video/upload/c_scale,w_800/f_auto,q_auto:eco/v1789630779/1st_transition_m2cwtv.mp4'
       },
       { id: 'lumusic_hq', type: 'modal', target: 'BIO', x: '75%', y: '77%', w: '30%', h: '12%', className: 'block' },
-      { id: 'hotel_text', type: 'scene', target: 'hotel', x: '50%', y: '8%', w: '40%', h: '8%', className: 'block' }
+      { id: 'hotel_text', type: 'scene', target: 'hotel', x: '50%', y: '18%', w: '40%', h: '8%', className: 'block' }
     ],
     products: [
       { id: 'p1', name: 'Mayé Red Plaid Suit', price: 850, desc: 'Exclusive tailored red plaid suit.', image: 'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=500&auto=format&fit=crop' },
@@ -41,11 +41,11 @@ const SCENES = {
     name: 'BONNY & CLYDE ROOM',
     background: 'https://uploads.onecompiler.io/44jjpumhc/1789609916900/2%20the%20new%20pharoah%20black%20cat.svg',
     hitboxes: [
-      // Top artwork text labels
-      { id: 'bio_text', type: 'modal', target: 'BIO', x: '12%', y: '3%', w: '18%', h: '5%', className: 'block' },
-      { id: 'music_text', type: 'modal', target: 'MUSIC', x: '35%', y: '3%', w: '20%', h: '5%', className: 'block' },
-      { id: 'gallery_text', type: 'modal', target: 'GALLERY', x: '62%', y: '3%', w: '22%', h: '5%', className: 'block' },
-      { id: 'join_text', type: 'modal', target: 'JOIN', x: '88%', y: '3%', w: '18%', h: '5%', className: 'block' },
+      // Bulletproof Top Header Hitboxes
+      { id: 'bio_text', type: 'modal', target: 'BIO', x: '12.5%', y: '6%', w: '25%', h: '12%', className: 'block' },
+      { id: 'music_text', type: 'modal', target: 'MUSIC', x: '37.5%', y: '6%', w: '25%', h: '12%', className: 'block' },
+      { id: 'gallery_text', type: 'modal', target: 'GALLERY', x: '62.5%', y: '6%', w: '25%', h: '12%', className: 'block' },
+      { id: 'join_text', type: 'modal', target: 'JOIN', x: '87.5%', y: '6%', w: '25%', h: '12%', className: 'block' },
 
       // Interactive scene elements
       { id: 'vinyl', type: 'product', target: 'p_vinyl', x: '40%', y: '60%', w: '18%', h: '18%', className: 'block' },
@@ -64,18 +64,20 @@ const SCENES = {
     name: 'THE ESCAPE',
     background: 'https://uploads.onecompiler.io/44jjpumhc/1789609903497/3%20the%20escape%20.svg',
     hitboxes: [
-      // Top artwork text labels
-      { id: 'bio_text', type: 'modal', target: 'BIO', x: '12%', y: '3%', w: '18%', h: '5%', className: 'block' },
-      { id: 'music_text', type: 'modal', target: 'MUSIC', x: '35%', y: '3%', w: '20%', h: '5%', className: 'block' },
-      { id: 'gallery_text', type: 'modal', target: 'GALLERY', x: '62%', y: '3%', w: '22%', h: '5%', className: 'block' },
-      { id: 'join_text', type: 'modal', target: 'JOIN', x: '88%', y: '3%', w: '18%', h: '5%', className: 'block' },
+      // Bulletproof Top Header Hitboxes
+      { id: 'bio_text', type: 'modal', target: 'BIO', x: '12.5%', y: '6%', w: '25%', h: '12%', className: 'block' },
+      { id: 'music_text', type: 'modal', target: 'MUSIC', x: '37.5%', y: '6%', w: '25%', h: '12%', className: 'block' },
+      { id: 'gallery_text', type: 'modal', target: 'GALLERY', x: '62.5%', y: '6%', w: '25%', h: '12%', className: 'block' },
+      { id: 'join_text', type: 'modal', target: 'JOIN', x: '87.5%', y: '6%', w: '25%', h: '12%', className: 'block' },
 
-      // Interactive scene elements & bottom artwork text labels
+      // Interactive scene elements
       { id: 'seal', type: 'scene', target: 'hotel', x: '68%', y: '60%', w: '32%', h: '15%', className: 'block', showBeacon: true },
       { id: 'hotel_link', type: 'scene', target: 'hotel', x: '73%', y: '62%', w: '30%', h: '18%', className: 'block' },
-      { id: 'tour_text', type: 'modal', target: 'TOUR', x: '18%', y: '95%', w: '25%', h: '6%', className: 'block' },
-      { id: 'escape_nav_text', type: 'scene', target: 'escape', x: '50%', y: '95%', w: '30%', h: '6%', className: 'block' },
-      { id: 'merch_text', type: 'cart', target: 'cart', x: '82%', y: '95%', w: '25%', h: '6%', className: 'block' }
+      { id: 'escape_nav_text', type: 'scene', target: 'escape', x: '50%', y: '80%', w: '30%', h: '6%', className: 'block' },
+      
+      // Bulletproof Bottom Footer Hitboxes (split into 2 perfect 50% width columns)
+      { id: 'tour_text', type: 'modal', target: 'TOUR', x: '25%', y: '94%', w: '50%', h: '12%', className: 'block' },
+      { id: 'merch_text', type: 'cart', target: 'cart', x: '75%', y: '94%', w: '50%', h: '12%', className: 'block' }
     ],
     products: []
   }
@@ -232,6 +234,7 @@ export default function App() {
               key={box.id}
               onClick={() => handleHitboxClick(box)}
               aria-label={box.id}
+              // Added hover:bg-white/10 so you can physically see the grid blocks when you tap/hover them
               className={`absolute -translate-x-1/2 -translate-y-1/2 cursor-pointer z-30 focus:outline-none flex items-center justify-center transition-all duration-150 hover:bg-white/10 active:bg-white/20 active:scale-95 rounded-lg ${box.className || ''}`}
               style={{ left: box.x, top: box.y, width: box.w, height: box.h }}
             >
@@ -332,12 +335,6 @@ export default function App() {
                 </div>
               )}
 
-              {activeModal === 'BOOKING' && (
-                <div className="space-y-2">
-                  <h2 className="text-lg font-serif font-bold uppercase text-yellow-500">Booking Inquiries</h2>
-                  <p className="text-xs text-gray-300">Contact management directly for sync and live bookings.</p>
-                </div>
-              )}
             </div>
           </div>
         )}
