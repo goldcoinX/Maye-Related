@@ -78,7 +78,7 @@ export default function App() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [activeModal, setActiveModal] = useState(null);
   const [activeTransition, setActiveTransition] = useState(null);
-  const [isInitialLoad, setIsInitialLoad] = useState(true); // NEW STATE for initial load
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
 
   const audioRef = useRef(null);
   const scene = SCENES[currentSceneKey];
@@ -105,7 +105,7 @@ export default function App() {
     }
   }, [isPlaying]);
 
-  // NEW PRELOADER: Downloads backgrounds and transition videos instantly
+  // PRELOADER
   useEffect(() => {
     Object.values(SCENES).forEach((s) => {
       const img = new Image();
@@ -124,7 +124,7 @@ export default function App() {
     });
   }, []);
 
-  // UPDATED SPINNER LOGIC: Only show loading spinner on the first visit
+  // SPINNER LOGIC
   useEffect(() => {
     if (isInitialLoad) {
       setIsLoading(true);
@@ -136,7 +136,7 @@ export default function App() {
     
     const handleLoadComplete = () => {
       setIsLoading(false);
-      setIsInitialLoad(false); // Prevents the spinner from appearing on future clicks
+      setIsInitialLoad(false); 
       setTimeout(() => setIsLoaded(true), 50); 
     };
     
@@ -154,7 +154,6 @@ export default function App() {
   const handleHitboxClick = (box) => {
     if (box.type === 'scene') {
       setActiveProduct(null);
-      // Check if the hitbox has a video attached before changing the scene
       if (box.transitionVideo) {
         setActiveTransition({ videoUrl: box.transitionVideo, targetScene: box.target });
       } else {
@@ -256,6 +255,7 @@ export default function App() {
             }}
           />
 
+          {/* HITBOXES WITH NEON GLOW LOGIC */}
           {isLoaded && scene.hitboxes.map((box) => (
             <button
               key={box.id}
@@ -271,7 +271,11 @@ export default function App() {
                 border: 'none',
               }}
             >
-              <span className="w-full h-full block rounded group-hover:bg-white/10 group-active:bg-white/20 transition-all duration-150" />
+              <span className={`w-full h-full block rounded-xl transition-all duration-300 ${
+                box.type === 'scene' 
+                  ? 'border-2 border-yellow-500/50 shadow-[0_0_15px_rgba(234,179,8,0.5)] animate-pulse hover:border-yellow-400 hover:shadow-[0_0_25px_rgba(234,179,8,0.8)]' 
+                  : 'group-hover:bg-white/10 group-active:bg-white/20'
+              }`} />
             </button>
           ))}
         </div>
