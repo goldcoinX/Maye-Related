@@ -4,29 +4,26 @@ import { ShoppingBag, Play, Pause, X, Loader2, Mail } from 'lucide-react';
 const SCENES = {
   hotel: {
     id: 'hotel',
-    background: 'https://res.cloudinary.com/dccxjo9x8/image/upload/v1789580313/1_the_hotel_h3udh8.png',
-    hitboxes: [
-      { id: 'bio', type: 'modal', target: 'BIO', x: '11%', y: '4%', w: '12%', h: '5%' },
-      { id: 'gallery', type: 'modal', target: 'GALLERY', x: '58%', y: '4%', w: '18%', h: '5%' },
-      { id: 'join', type: 'modal', target: 'JOIN', x: '84%', y: '4%', w: '12%', h: '5%' },
-      { id: 'title', type: 'none', x: '50%', y: '13%', w: '30%', h: '5%' },
-      { id: 'room_link', type: 'scene', target: 'room', x: '82%', y: '34%', w: '25%', h: '6%' },
-      { id: 'hq_badge', type: 'product', target: 'p1', x: '82%', y: '78%', w: '25%', h: '12%' }
-    ],
-    products: [
-      { id: 'p1', name: 'Lumusic HQ Badge', price: 25, desc: 'Official Lumusic HQ Access Badge. Collector item.', image: 'https://images.unsplash.com/photo-1553754538-4187e834eb70?w=500&auto=format&fit=crop' }
-    ]
+    name: 'THE HOTEL', // Updated to match screenshot
+    backgroundDesktop: 'https://res.cloudinary.com/dccxjo9x8/image/upload/v1781626534/home_ready_hotel_azeki6.png',
+    backgroundMobile: 'https://res.cloudinary.com/dccxjo9x8/image/upload/v1789580313/1_the_hotel_h3udh8.png',
+    // ... hitboxes remain the same
   },
   room: {
     id: 'room',
-    background: 'https://res.cloudinary.com/dccxjo9x8/image/upload/v1789580317/2_the_new_pharoah_black_cat_vmfw9q.png',
-    hitboxes: [
-      { id: 'bio', type: 'modal', target: 'BIO', x: '11%', y: '4%', w: '12%', h: '5%' },
-      { id: 'join', type: 'modal', target: 'JOIN', x: '84%', y: '4%', w: '12%', h: '5%' },
-      { id: 'cat', type: 'product', target: 'p2', x: '30%', y: '61%', w: '18%', h: '12%' },
-      { id: 'gun', type: 'product', target: 'p3', x: '80%', y: '75%', w: '18%', h: '8%' },
-      { id: 'escape_link', type: 'scene', target: 'escape', x: '50%', y: '84%', w: '32%', h: '6%' }
-    ],
+    name: 'BONNY & CLYDE ROOM', // Updated to match screenshot
+    backgroundDesktop: 'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?q=80&w=2560&auto=format&fit=crop',
+    backgroundMobile: 'https://res.cloudinary.com/dccxjo9x8/image/upload/v1789580317/2_the_new_pharoah_black_cat_vmfw9q.png',
+    // ... hitboxes remain the same
+  },
+  escape: {
+    id: 'escape',
+    name: 'THE ESCAPE', // Updated to match screenshot
+    backgroundDesktop: 'https://images.unsplash.com/photo-1513628253939-010e64ac66cd?q=80&w=2560&auto=format&fit=crop',
+    backgroundMobile: 'https://res.cloudinary.com/dccxjo9x8/image/upload/v1789580311/3_the_escape_mc2sqm.png',
+    // ... hitboxes remain the same
+  }
+};
     products: [
       { id: 'p2', name: 'The New Pharaoh Cat', price: 450, desc: 'Bastet inspired black cat statue from the B&C Room.', image: 'https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=500&auto=format&fit=crop' },
       { id: 'p3', name: 'Prop Gun Replica', price: 150, desc: 'Used in the Escape shoot polaroids.', image: 'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=500&auto=format&fit=crop' }
