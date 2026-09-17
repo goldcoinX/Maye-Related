@@ -7,21 +7,22 @@ const SCENES = {
     name: 'THE HOTEL',
     background: 'https://uploads.onecompiler.io/44jjpumhc/1789609923816/1%20the%20hotel.svg',
     hitboxes: [
-      { id: 'plaid_suit', type: 'product', target: 'p1', x: '20%', y: '50%', w: '15%', h: '30%', className: 'hidden md:block' },
-      { id: 'briefcase', type: 'product', target: 'p4', x: '50%', y: '70%', w: '15%', h: '15%', className: 'hidden md:block' },
+      { id: 'plaid_suit', type: 'product', target: 'p1', x: '20%', y: '50%', w: '20%', h: '35%', className: 'block' },
+      { id: 'briefcase', type: 'product', target: 'p4', x: '50%', y: '70%', w: '20%', h: '20%', className: 'block' },
       { 
         id: 'room_sign', 
         type: 'scene', 
         target: 'room', 
         x: '75%', 
         y: '28%', 
-        w: '28%', 
-        h: '15%', 
+        w: '30%', 
+        h: '18%', 
         className: 'block',
+        showBeacon: true,
         transitionVideo: 'https://res.cloudinary.com/dccxjo9x8/video/upload/c_scale,w_800/f_auto,q_auto:eco/v1789630779/1st_transition_m2cwtv.mp4'
       },
-      { id: 'lumusic_hq', type: 'modal', target: 'BIO', x: '75%', y: '77%', w: '28%', h: '10%', className: 'block md:hidden' },
-      { id: 'hotel_text', type: 'scene', target: 'hotel', x: '50%', y: '8%', w: '35%', h: '6%', className: 'block md:hidden' }
+      { id: 'lumusic_hq', type: 'modal', target: 'BIO', x: '75%', y: '77%', w: '30%', h: '12%', className: 'block' },
+      { id: 'hotel_text', type: 'scene', target: 'hotel', x: '50%', y: '8%', w: '40%', h: '8%', className: 'block' }
     ],
     products: [
       { id: 'p1', name: 'Mayé Red Plaid Suit', price: 850, desc: 'Exclusive tailored red plaid suit.', image: 'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=500&auto=format&fit=crop' },
@@ -31,12 +32,12 @@ const SCENES = {
   room: {
     id: 'room',
     name: 'BONNY & CLYDE ROOM',
-    background: 'https://uploads.onecompiler.io/44jjpumhc/178960916900/2%20the%20new%20pharoah%20black%20cat.svg',
+    background: 'https://uploads.onecompiler.io/44jjpumhc/1789609916900/2%20the%20new%20pharoah%20black%20cat.svg',
     hitboxes: [
-      { id: 'vinyl', type: 'product', target: 'p_vinyl', x: '40%', y: '60%', w: '15%', h: '15%', className: 'hidden md:block' },
-      { id: 'cat', type: 'product', target: 'p2', x: '18%', y: '60%', w: '18%', h: '18%', className: 'block' },
-      { id: 'gun', type: 'product', target: 'p3', x: '70%', y: '80%', w: '20%', h: '12%', className: 'block' },
-      { id: 'escape_text', type: 'scene', target: 'escape', x: '50%', y: '85%', w: '30%', h: '10%', className: 'block md:hidden' }
+      { id: 'vinyl', type: 'product', target: 'p_vinyl', x: '40%', y: '60%', w: '18%', h: '18%', className: 'block' },
+      { id: 'cat', type: 'product', target: 'p2', x: '18%', y: '60%', w: '20%', h: '20%', className: 'block' },
+      { id: 'gun', type: 'product', target: 'p3', x: '70%', y: '80%', w: '22%', h: '15%', className: 'block' },
+      { id: 'escape_text', type: 'scene', target: 'escape', x: '50%', y: '85%', w: '35%', h: '12%', className: 'block', showBeacon: true }
     ],
     products: [
       { id: 'p2', name: 'The New Pharaoh Cat', price: 450, desc: 'Bastet inspired black cat statue from the B&C Room.', image: 'https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=500&auto=format&fit=crop' },
@@ -49,13 +50,13 @@ const SCENES = {
     name: 'THE ESCAPE',
     background: 'https://uploads.onecompiler.io/44jjpumhc/1789609903497/3%20the%20escape%20.svg',
     hitboxes: [
-      { id: 'seal', type: 'scene', target: 'hotel', x: '68%', y: '60%', w: '30%', h: '12%', className: 'block md:hidden' },
-      { id: 'music', type: 'modal', target: 'MUSIC', x: '32%', y: '4%', w: '16%', h: '5%', className: 'hidden md:block' },
-      { id: 'join', type: 'modal', target: 'JOIN', x: '88%', y: '4%', w: '12%', h: '5%', className: 'hidden md:block' },
-      { id: 'hotel_link', type: 'scene', target: 'hotel', x: '73%', y: '62%', w: '28%', h: '16%', className: 'hidden md:block' },
-      { id: 'tour', type: 'modal', target: 'TOUR', x: '18%', y: '96%', w: '20%', h: '6%', className: 'hidden md:block' },
-      { id: 'escape_nav', type: 'scene', target: 'escape', x: '50%', y: '96%', w: '25%', h: '6%', className: 'hidden md:block' },
-      { id: 'merch', type: 'cart', target: 'cart', x: '82%', y: '96%', w: '20%', h: '6%', className: 'hidden md:block' }
+      { id: 'seal', type: 'scene', target: 'hotel', x: '68%', y: '60%', w: '32%', h: '15%', className: 'block', showBeacon: true },
+      { id: 'music', type: 'modal', target: 'MUSIC', x: '32%', y: '4%', w: '18%', h: '7%', className: 'block' },
+      { id: 'join', type: 'modal', target: 'JOIN', x: '88%', y: '4%', w: '15%', h: '7%', className: 'block' },
+      { id: 'hotel_link', type: 'scene', target: 'hotel', x: '73%', y: '62%', w: '30%', h: '18%', className: 'block' },
+      { id: 'tour', type: 'modal', target: 'TOUR', x: '18%', y: '94%', w: '22%', h: '8%', className: 'block' },
+      { id: 'escape_nav', type: 'scene', target: 'escape', x: '50%', y: '94%', w: '28%', h: '8%', className: 'block' },
+      { id: 'merch', type: 'cart', target: 'cart', x: '82%', y: '94%', w: '22%', h: '8%', className: 'block' }
     ],
     products: []
   }
@@ -70,26 +71,20 @@ export default function App() {
   const [activeModal, setActiveModal] = useState(null);
   const [activeTransition, setActiveTransition] = useState(null);
 
-  // In-memory Cache for Pre-downloaded Video Blobs
   const videoBlobCache = useRef({});
-
   const scene = SCENES[currentSceneKey];
 
-  // Preload Background Images & Fetch Transition Videos into Blob Cache on Initial Load
   useEffect(() => {
     Object.values(SCENES).forEach((s) => {
-      // Cache Background Images
       const img = new Image();
       img.src = s.background;
 
-      // Pre-download Transition Videos
       s.hitboxes.forEach((box) => {
         if (box.transitionVideo && !videoBlobCache.current[box.transitionVideo]) {
           fetch(box.transitionVideo)
             .then((res) => res.blob())
             .then((blob) => {
-              const blobUrl = URL.createObjectURL(blob);
-              videoBlobCache.current[box.transitionVideo] = blobUrl;
+              videoBlobCache.current[box.transitionVideo] = URL.createObjectURL(blob);
             })
             .catch(() => {});
         }
@@ -97,7 +92,6 @@ export default function App() {
     });
   }, []);
 
-  // Handle Scene Image Loading States
   useEffect(() => {
     setSceneLoading(true);
     const img = new Image();
@@ -124,7 +118,6 @@ export default function App() {
     if (box.type === 'scene') {
       setActiveProduct(null);
       if (box.transitionVideo) {
-        // Use cached local blob if available for instant play, else raw URL
         const cachedSource = videoBlobCache.current[box.transitionVideo] || box.transitionVideo;
         setActiveTransition({ videoUrl: cachedSource, targetScene: box.target });
       } else {
@@ -178,7 +171,7 @@ export default function App() {
         }
       `}</style>
 
-      {/* INSTANT PRE-CACHED VIDEO TRANSITION OVERLAY */}
+      {/* INSTANT TRANSITION VIDEO OVERLAY */}
       {activeTransition && (
         <div 
           className="absolute inset-0 z-[100] bg-black cursor-pointer"
@@ -221,7 +214,7 @@ export default function App() {
           </div>
         </header>
 
-        {/* MAIN SCENE CANVAS */}
+        {/* MAIN CANVAS */}
         <div className="relative flex-1 w-full h-full overflow-hidden bg-black flex items-center justify-center">
           
           {sceneLoading && (
@@ -236,26 +229,26 @@ export default function App() {
             className={`w-full h-full object-fill transition-opacity duration-300 ${sceneLoading ? 'opacity-0' : 'opacity-100'}`}
           />
 
-          {/* HOTSPOTS / BEACONS */}
+          {/* INTERACTIVE HOTSPOTS */}
           {!sceneLoading && scene.hitboxes.map((box) => (
             <button
               key={box.id}
               onClick={() => handleHitboxClick(box)}
               aria-label={box.id}
-              className={`absolute -translate-x-1/2 -translate-y-1/2 cursor-pointer z-30 focus:outline-none flex items-center justify-center group ${box.className || ''}`}
+              className={`absolute -translate-x-1/2 -translate-y-1/2 cursor-pointer z-30 focus:outline-none flex items-center justify-center transition-all duration-200 hover:bg-white/10 active:scale-95 rounded-lg ${box.className || ''}`}
               style={{ left: box.x, top: box.y, width: box.w, height: box.h }}
             >
-              {box.type === 'scene' && (
-                <div className="relative flex items-center justify-center w-6 h-6">
-                  <span className="absolute w-5 h-5 rounded-full border border-white/60 animate-ripple pointer-events-none" />
-                  <span className="w-2.5 h-2.5 rounded-full border border-white/80 animate-beacon transition-transform group-hover:scale-125" />
+              {box.showBeacon && (
+                <div className="relative flex items-center justify-center w-6 h-6 pointer-events-none">
+                  <span className="absolute w-5 h-5 rounded-full border border-white/60 animate-ripple" />
+                  <span className="w-2.5 h-2.5 rounded-full border border-white/80 animate-beacon" />
                 </div>
               )}
             </button>
           ))}
         </div>
 
-        {/* DESKTOP FOOTER */}
+        {/* DESKTOP FOOTER NAV */}
         <footer className="hidden md:flex justify-center gap-8 py-4 bg-black/80 backdrop-blur-md border-t border-white/10 z-50 text-xs tracking-widest uppercase">
           {Object.values(SCENES).map((s) => (
             <button 
@@ -268,7 +261,7 @@ export default function App() {
           ))}
         </footer>
 
-        {/* MODALS */}
+        {/* MODAL POPUPS */}
         {activeModal && (
           <div className="absolute inset-0 bg-black/80 backdrop-blur-md z-[70] flex items-center justify-center p-6">
             <div className="relative w-full max-w-sm bg-[#111] border border-white/20 rounded-2xl p-6 shadow-2xl">
