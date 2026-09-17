@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ShoppingBag, Play, Pause, X, Loader2, Mail, Music, Radio } from 'lucide-react';
+import { ShoppingBag, X, Loader2, Mail, Music } from 'lucide-react';
 
 const SCENES = {
   hotel: {
@@ -16,8 +16,8 @@ const SCENES = {
         x: '75%', 
         y: '28%', 
         w: '28%', 
-        h: '10%', 
-        className: 'block md:hidden',
+        h: '15%', 
+        className: 'block',
         transitionVideo: 'https://res.cloudinary.com/dccxjo9x8/video/upload/c_scale,w_800/f_auto,q_auto:eco/v1789630779/1st_transition_m2cwtv.mp4'
       },
       { id: 'lumusic_hq', type: 'modal', target: 'BIO', x: '75%', y: '77%', w: '28%', h: '10%', className: 'block md:hidden' },
@@ -34,8 +34,8 @@ const SCENES = {
     background: 'https://uploads.onecompiler.io/44jjpumhc/178960916900/2%20the%20new%20pharoah%20black%20cat.svg',
     hitboxes: [
       { id: 'vinyl', type: 'product', target: 'p_vinyl', x: '40%', y: '60%', w: '15%', h: '15%', className: 'hidden md:block' },
-      { id: 'cat', type: 'product', target: 'p2', x: '18%', y: '60%', w: '18%', h: '18%', className: 'block md:hidden' },
-      { id: 'gun', type: 'product', target: 'p3', x: '70%', y: '80%', w: '20%', h: '12%', className: 'block md:hidden' },
+      { id: 'cat', type: 'product', target: 'p2', x: '18%', y: '60%', w: '18%', h: '18%', className: 'block' },
+      { id: 'gun', type: 'product', target: 'p3', x: '70%', y: '80%', w: '20%', h: '12%', className: 'block' },
       { id: 'escape_text', type: 'scene', target: 'escape', x: '50%', y: '85%', w: '30%', h: '10%', className: 'block md:hidden' }
     ],
     products: [
@@ -66,44 +66,38 @@ export default function App() {
   const [activeProduct, setActiveProduct] = useState(null);
   const [cart, setCart] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
   const [sceneLoading, setSceneLoading] = useState(true);
   const [activeModal, setActiveModal] = useState(null);
   const [activeTransition, setActiveTransition] = useState(null);
 
-  const audioRef = useRef(null);
+  // In-memory Cache for Pre-downloaded Video Blobs
+  const videoBlobCache = useRef({});
+
   const scene = SCENES[currentSceneKey];
 
-  useEffect(() => {
-    audioRef.current = new Audio('https://res.cloudinary.com/dccxjo9x8/video/upload/v1781667910/May%C3%A9_X_Bonnie_Suga_and_Spice_Mixed__1756223314000_1756223314000_6279753_ahvioq.mp3');
-    audioRef.current.loop = true;
-    return () => {
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current.src = "";
-      }
-    };
-  }, []);
-
-  useEffect(() => {
-    if (audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.play().catch(() => {});
-      } else {
-        audioRef.current.pause();
-      }
-    }
-  }, [isPlaying]);
-
-  // Preload background images
+  // Preload Background Images & Fetch Transition Videos into Blob Cache on Initial Load
   useEffect(() => {
     Object.values(SCENES).forEach((s) => {
+      // Cache Background Images
       const img = new Image();
       img.src = s.background;
+
+      // Pre-download Transition Videos
+      s.hitboxes.forEach((box) => {
+        if (box.transitionVideo && !videoBlobCache.current[box.transitionVideo]) {
+          fetch(box.transitionVideo)
+            .then((res) => res.blob())
+            .then((blob) => {
+              const blobUrl = URL.createObjectURL(blob);
+              videoBlobCache.current[box.transitionVideo] = blobUrl;
+            })
+            .catch(() => {});
+        }
+      });
     });
   }, []);
 
-  // Handle Scene Image Loading
+  // Handle Scene Image Loading States
   useEffect(() => {
     setSceneLoading(true);
     const img = new Image();
@@ -113,8 +107,15 @@ export default function App() {
     if (img.complete) setSceneLoading(false);
   }, [currentSceneKey]);
 
+  const completeTransition = () => {
+    if (activeTransition) {
+      setCurrentSceneKey(activeTransition.targetScene);
+      setActiveTransition(null);
+    }
+  };
+
   const handleAddToCart = (product) => {
-    setCart(prev => [...prev, product]);
+    setCart((prev) => [...prev, product]);
     setActiveProduct(null);
     setIsCartOpen(true);
   };
@@ -123,7 +124,9 @@ export default function App() {
     if (box.type === 'scene') {
       setActiveProduct(null);
       if (box.transitionVideo) {
-        setActiveTransition({ videoUrl: box.transitionVideo, targetScene: box.target });
+        // Use cached local blob if available for instant play, else raw URL
+        const cachedSource = videoBlobCache.current[box.transitionVideo] || box.transitionVideo;
+        setActiveTransition({ videoUrl: cachedSource, targetScene: box.target });
       } else {
         setCurrentSceneKey(box.target);
       }
@@ -132,7 +135,7 @@ export default function App() {
     } else if (box.type === 'cart') {
       setIsCartOpen(true);
     } else if (box.type === 'product') {
-      const prod = scene.products.find(p => p.id === box.target);
+      const prod = scene.products.find((p) => p.id === box.target);
       if (prod) setActiveProduct(prod);
     }
   };
@@ -143,7 +146,6 @@ export default function App() {
     <div className="fixed inset-0 w-full h-[100dvh] overflow-hidden bg-black text-white font-sans flex justify-center">
       
       <style>{`
-        /* Radar Beacon Dark-to-White Pulse */
         @keyframes beaconPulse {
           0%, 100% {
             background-color: #000000;
@@ -176,9 +178,12 @@ export default function App() {
         }
       `}</style>
 
-      {/* FULLSCREEN VIDEO TRANSITION OVERLAY */}
+      {/* INSTANT PRE-CACHED VIDEO TRANSITION OVERLAY */}
       {activeTransition && (
-        <div className="absolute inset-0 z-[100] bg-black">
+        <div 
+          className="absolute inset-0 z-[100] bg-black cursor-pointer"
+          onClick={completeTransition}
+        >
           <video
             src={activeTransition.videoUrl}
             autoPlay
@@ -186,10 +191,8 @@ export default function App() {
             muted
             preload="auto"
             className="w-full h-full object-cover"
-            onEnded={() => {
-              setCurrentSceneKey(activeTransition.targetScene);
-              setActiveTransition(null);
-            }}
+            onEnded={completeTransition}
+            onError={completeTransition}
           />
         </div>
       )}
@@ -210,29 +213,13 @@ export default function App() {
           <h1 className="text-xl font-serif tracking-widest font-bold">MAYÉ</h1>
           <div className="flex items-center gap-6">
             <div className="flex gap-4 text-gray-300">
-              <Music size={18} className="hover:text-yellow-500 cursor-pointer" />
-              <Radio size={18} className="hover:text-yellow-500 cursor-pointer" />
+              <Music size={18} className="hover:text-yellow-500 cursor-pointer" onClick={() => setActiveModal('MUSIC')} />
             </div>
             <button onClick={() => setIsCartOpen(true)} className="flex items-center gap-2 text-sm tracking-widest uppercase hover:text-yellow-500 transition-colors">
               <ShoppingBag size={16} /> Cart ({cart.length})
             </button>
           </div>
         </header>
-
-        {/* MOBILE TOP INVISIBLE TOUCH OVERLAY */}
-        <div className="absolute top-0 left-0 w-full h-[8%] z-40 flex justify-between px-2 md:hidden">
-          <button onClick={() => setActiveModal('BIO')} className="w-1/4 h-full focus:outline-none" />
-          <button onClick={() => setActiveModal('MUSIC')} className="w-1/4 h-full focus:outline-none" />
-          <button onClick={() => setActiveModal('GALLERY')} className="w-1/4 h-full focus:outline-none" />
-          <button onClick={() => setActiveModal('JOIN')} className="w-1/4 h-full focus:outline-none" />
-        </div>
-
-        {/* MOBILE BOTTOM INVISIBLE TOUCH OVERLAY */}
-        <div className="absolute bottom-0 left-0 w-full h-[8%] z-40 flex justify-between px-2 md:hidden">
-          <button onClick={() => setActiveModal('TOUR')} className="w-1/3 h-full focus:outline-none" />
-          <button onClick={() => setCurrentSceneKey('escape')} className="w-1/3 h-full focus:outline-none" />
-          <button onClick={() => setIsCartOpen(true)} className="w-1/3 h-full focus:outline-none" />
-        </div>
 
         {/* MAIN SCENE CANVAS */}
         <div className="relative flex-1 w-full h-full overflow-hidden bg-black flex items-center justify-center">
@@ -260,9 +247,7 @@ export default function App() {
             >
               {box.type === 'scene' && (
                 <div className="relative flex items-center justify-center w-6 h-6">
-                  {/* Subtle outer ripple */}
                   <span className="absolute w-5 h-5 rounded-full border border-white/60 animate-ripple pointer-events-none" />
-                  {/* Sleek inner dark-to-white dot */}
                   <span className="w-2.5 h-2.5 rounded-full border border-white/80 animate-beacon transition-transform group-hover:scale-125" />
                 </div>
               )}
@@ -283,7 +268,7 @@ export default function App() {
           ))}
         </footer>
 
-        {/* MODAL DIALOGS */}
+        {/* MODALS */}
         {activeModal && (
           <div className="absolute inset-0 bg-black/80 backdrop-blur-md z-[70] flex items-center justify-center p-6">
             <div className="relative w-full max-w-sm bg-[#111] border border-white/20 rounded-2xl p-6 shadow-2xl">
@@ -308,9 +293,6 @@ export default function App() {
                       <p className="font-bold text-xs">Suga & Spice</p>
                       <p className="text-[10px] text-gray-400">Single • Mayé X Bonny</p>
                     </div>
-                    <button onClick={() => setIsPlaying(!isPlaying)} className="p-2 bg-yellow-500 text-black rounded-full">
-                      {isPlaying ? <Pause size={14} /> : <Play size={14} />}
-                    </button>
                   </div>
                 </div>
               )}
