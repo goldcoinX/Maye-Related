@@ -1,21 +1,22 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ShoppingBag, X, Loader2, Mail, Music } from 'lucide-react';
+import { ShoppingBag, X, Loader2, Mail, Music, Calendar, User, Image as ImageIcon } from 'lucide-react';
 
 const SCENES = {
   hotel: {
     id: 'hotel',
     name: 'THE HOTEL',
-    background: 'https://uploads.onecompiler.io/44jjpumhc/1789609923816/1%20the%20hotel.svg',
+    background: 'https://uploads.onecompiler.io/44jjpumhc/1789650864337/1%20the%20hotel.svg',
     hitboxes: [
-      // Bulletproof Top Header Hitboxes (0-12% height, split into 4 perfect 25% width columns)
-      { id: 'bio_text', type: 'modal', target: 'BIO', x: '12.5%', y: '6%', w: '25%', h: '12%', className: 'block' },
-      { id: 'music_text', type: 'modal', target: 'MUSIC', x: '37.5%', y: '6%', w: '25%', h: '12%', className: 'block' },
-      { id: 'gallery_text', type: 'modal', target: 'GALLERY', x: '62.5%', y: '6%', w: '25%', h: '12%', className: 'block' },
-      { id: 'join_text', type: 'modal', target: 'JOIN', x: '87.5%', y: '6%', w: '25%', h: '12%', className: 'block' },
-      
-      // Interactive scene elements
-      { id: 'plaid_suit', type: 'product', target: 'p1', x: '20%', y: '50%', w: '20%', h: '35%', className: 'block' },
-      { id: 'briefcase', type: 'product', target: 'p4', x: '50%', y: '70%', w: '20%', h: '20%', className: 'block' },
+      // Top Header Overlay Hitboxes (BIO, MUSIC, GALLERY, JOIN)
+      { id: 'bio_text', type: 'modal', target: 'BIO', x: '12.5%', y: '5%', w: '22%', h: '9%', className: 'block' },
+      { id: 'music_text', type: 'modal', target: 'MUSIC', x: '37.5%', y: '5%', w: '22%', h: '9%', className: 'block' },
+      { id: 'gallery_text', type: 'modal', target: 'GALLERY', x: '62.5%', y: '5%', w: '22%', h: '9%', className: 'block' },
+      { id: 'join_text', type: 'modal', target: 'JOIN', x: '87.5%', y: '5%', w: '22%', h: '9%', className: 'block' },
+
+      // In-Scene Interactive Hotspots
+      { id: 'booking_text', type: 'modal', target: 'BOOKING', x: '50%', y: '16%', w: '40%', h: '8%', className: 'block' },
+      { id: 'plaid_suit', type: 'product', target: 'p1', x: '20%', y: '52%', w: '22%', h: '35%', className: 'block' },
+      { id: 'briefcase', type: 'product', target: 'p4', x: '50%', y: '72%', w: '22%', h: '20%', className: 'block' },
       { 
         id: 'room_sign', 
         type: 'scene', 
@@ -28,26 +29,25 @@ const SCENES = {
         showBeacon: true,
         transitionVideo: 'https://res.cloudinary.com/dccxjo9x8/video/upload/c_scale,w_800/f_auto,q_auto:eco/v1789630779/1st_transition_m2cwtv.mp4'
       },
-      { id: 'lumusic_hq', type: 'modal', target: 'BIO', x: '75%', y: '77%', w: '30%', h: '12%', className: 'block' },
-      { id: 'hotel_text', type: 'scene', target: 'hotel', x: '50%', y: '18%', w: '40%', h: '8%', className: 'block' }
+      { id: 'lumusic_hq', type: 'modal', target: 'BIO', x: '75%', y: '78%', w: '30%', h: '12%', className: 'block' }
     ],
     products: [
-      { id: 'p1', name: 'Mayé Red Plaid Suit', price: 850, desc: 'Exclusive tailored red plaid suit.', image: 'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=500&auto=format&fit=crop' },
-      { id: 'p4', name: 'Lumusic Briefcase', price: 300, desc: 'Official Lumusic HQ briefcase.', image: 'https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=500&auto=format&fit=crop' }
+      { id: 'p1', name: 'Mayé Red Plaid Suit', price: 850, desc: 'Exclusive tailored red plaid suit from the video set.', image: 'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=500&auto=format&fit=crop' },
+      { id: 'p4', name: 'Lumusic Briefcase', price: 300, desc: 'Official Lumusic HQ custom briefcase.', image: 'https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=500&auto=format&fit=crop' }
     ]
   },
   room: {
     id: 'room',
     name: 'BONNY & CLYDE ROOM',
-    background: 'https://uploads.onecompiler.io/44jjpumhc/1789609916900/2%20the%20new%20pharoah%20black%20cat.svg',
+    background: 'https://uploads.onecompiler.io/44jjpumhc/1789650906488/2%20the%20new%20pharoah%20cat.svg',
     hitboxes: [
-      // Bulletproof Top Header Hitboxes
-      { id: 'bio_text', type: 'modal', target: 'BIO', x: '12.5%', y: '6%', w: '25%', h: '12%', className: 'block' },
-      { id: 'music_text', type: 'modal', target: 'MUSIC', x: '37.5%', y: '6%', w: '25%', h: '12%', className: 'block' },
-      { id: 'gallery_text', type: 'modal', target: 'GALLERY', x: '62.5%', y: '6%', w: '25%', h: '12%', className: 'block' },
-      { id: 'join_text', type: 'modal', target: 'JOIN', x: '87.5%', y: '6%', w: '25%', h: '12%', className: 'block' },
+      // Top Header Overlay Hitboxes
+      { id: 'bio_text', type: 'modal', target: 'BIO', x: '12.5%', y: '5%', w: '22%', h: '9%', className: 'block' },
+      { id: 'music_text', type: 'modal', target: 'MUSIC', x: '37.5%', y: '5%', w: '22%', h: '9%', className: 'block' },
+      { id: 'gallery_text', type: 'modal', target: 'GALLERY', x: '62.5%', y: '5%', w: '22%', h: '9%', className: 'block' },
+      { id: 'join_text', type: 'modal', target: 'JOIN', x: '87.5%', y: '5%', w: '22%', h: '9%', className: 'block' },
 
-      // Interactive scene elements
+      // In-Scene Interactive Hotspots
       { id: 'vinyl', type: 'product', target: 'p_vinyl', x: '40%', y: '60%', w: '18%', h: '18%', className: 'block' },
       { id: 'cat', type: 'product', target: 'p2', x: '18%', y: '60%', w: '20%', h: '20%', className: 'block' },
       { id: 'gun', type: 'product', target: 'p3', x: '70%', y: '80%', w: '22%', h: '15%', className: 'block' },
@@ -62,22 +62,19 @@ const SCENES = {
   escape: {
     id: 'escape',
     name: 'THE ESCAPE',
-    background: 'https://uploads.onecompiler.io/44jjpumhc/1789609903497/3%20the%20escape%20.svg',
+    background: 'https://uploads.onecompiler.io/44jjpumhc/1789650950359/3%20the%20escape%20.svg',
     hitboxes: [
-      // Bulletproof Top Header Hitboxes
-      { id: 'bio_text', type: 'modal', target: 'BIO', x: '12.5%', y: '6%', w: '25%', h: '12%', className: 'block' },
-      { id: 'music_text', type: 'modal', target: 'MUSIC', x: '37.5%', y: '6%', w: '25%', h: '12%', className: 'block' },
-      { id: 'gallery_text', type: 'modal', target: 'GALLERY', x: '62.5%', y: '6%', w: '25%', h: '12%', className: 'block' },
-      { id: 'join_text', type: 'modal', target: 'JOIN', x: '87.5%', y: '6%', w: '25%', h: '12%', className: 'block' },
+      // Top Header Overlay Hitboxes
+      { id: 'bio_text', type: 'modal', target: 'BIO', x: '12.5%', y: '5%', w: '22%', h: '9%', className: 'block' },
+      { id: 'music_text', type: 'modal', target: 'MUSIC', x: '37.5%', y: '5%', w: '22%', h: '9%', className: 'block' },
+      { id: 'gallery_text', type: 'modal', target: 'GALLERY', x: '62.5%', y: '5%', w: '22%', h: '9%', className: 'block' },
+      { id: 'join_text', type: 'modal', target: 'JOIN', x: '87.5%', y: '5%', w: '22%', h: '9%', className: 'block' },
 
-      // Interactive scene elements
+      // Interactive Navigation & Bottom Text Hitboxes (TOUR, MERCH)
       { id: 'seal', type: 'scene', target: 'hotel', x: '68%', y: '60%', w: '32%', h: '15%', className: 'block', showBeacon: true },
       { id: 'hotel_link', type: 'scene', target: 'hotel', x: '73%', y: '62%', w: '30%', h: '18%', className: 'block' },
-      { id: 'escape_nav_text', type: 'scene', target: 'escape', x: '50%', y: '80%', w: '30%', h: '6%', className: 'block' },
-      
-      // Bulletproof Bottom Footer Hitboxes (split into 2 perfect 50% width columns)
-      { id: 'tour_text', type: 'modal', target: 'TOUR', x: '25%', y: '94%', w: '50%', h: '12%', className: 'block' },
-      { id: 'merch_text', type: 'cart', target: 'cart', x: '75%', y: '94%', w: '50%', h: '12%', className: 'block' }
+      { id: 'tour_text', type: 'modal', target: 'TOUR', x: '25%', y: '93%', w: '45%', h: '10%', className: 'block' },
+      { id: 'merch_text', type: 'cart', target: 'cart', x: '75%', y: '93%', w: '45%', h: '10%', className: 'block' }
     ],
     products: []
   }
@@ -234,7 +231,6 @@ export default function App() {
               key={box.id}
               onClick={() => handleHitboxClick(box)}
               aria-label={box.id}
-              // Added hover:bg-white/10 so you can physically see the grid blocks when you tap/hover them
               className={`absolute -translate-x-1/2 -translate-y-1/2 cursor-pointer z-30 focus:outline-none flex items-center justify-center transition-all duration-150 hover:bg-white/10 active:bg-white/20 active:scale-95 rounded-lg ${box.className || ''}`}
               style={{ left: box.x, top: box.y, width: box.w, height: box.h }}
             >
@@ -261,7 +257,7 @@ export default function App() {
           ))}
         </footer>
 
-        {/* MODAL POPUPS */}
+        {/* MODAL POPUPS (BIO, MUSIC, GALLERY, JOIN, BOOKING, TOUR) */}
         {activeModal && (
           <div className="absolute inset-0 bg-black/80 backdrop-blur-md z-[70] flex items-center justify-center p-6">
             <div className="relative w-full max-w-sm bg-[#111] border border-white/20 rounded-2xl p-6 shadow-2xl">
@@ -271,7 +267,10 @@ export default function App() {
 
               {activeModal === 'BIO' && (
                 <div className="space-y-3">
-                  <h2 className="text-lg font-serif font-bold uppercase text-yellow-500">Biography</h2>
+                  <div className="flex items-center gap-2 text-yellow-500">
+                    <User size={20} />
+                    <h2 className="text-lg font-serif font-bold uppercase">Biography</h2>
+                  </div>
                   <p className="text-xs leading-relaxed text-gray-300">
                     MAYÉ is an independent visionary artist blending sultry R&B textures, cinematic storytelling, and genre-defying production.
                   </p>
@@ -280,7 +279,10 @@ export default function App() {
 
               {activeModal === 'MUSIC' && (
                 <div className="space-y-4">
-                  <h2 className="text-lg font-serif font-bold uppercase text-yellow-500">Music</h2>
+                  <div className="flex items-center gap-2 text-yellow-500">
+                    <Music size={20} />
+                    <h2 className="text-lg font-serif font-bold uppercase">Music</h2>
+                  </div>
                   <div className="p-3 bg-white/5 rounded border border-white/10 flex justify-between items-center">
                     <div>
                       <p className="font-bold text-xs">Suga & Spice</p>
@@ -292,7 +294,10 @@ export default function App() {
 
               {activeModal === 'TOUR' && (
                 <div className="space-y-3">
-                  <h2 className="text-lg font-serif font-bold uppercase text-yellow-500">Upcoming Tours</h2>
+                  <div className="flex items-center gap-2 text-yellow-500">
+                    <Calendar size={20} />
+                    <h2 className="text-lg font-serif font-bold uppercase">Upcoming Tours</h2>
+                  </div>
                   <div className="space-y-2">
                     {[
                       { date: 'OCT 24', city: 'Lagos, Nigeria', venue: 'Beachfront Arena' },
@@ -312,7 +317,10 @@ export default function App() {
 
               {activeModal === 'GALLERY' && (
                 <div>
-                  <h2 className="text-lg font-serif font-bold uppercase mb-4 text-yellow-500">Gallery</h2>
+                  <div className="flex items-center gap-2 text-yellow-500 mb-4">
+                    <ImageIcon size={20} />
+                    <h2 className="text-lg font-serif font-bold uppercase">Gallery</h2>
+                  </div>
                   <div className="grid grid-cols-2 gap-2">
                     {[
                       'https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=500&auto=format&fit=crop',
@@ -329,9 +337,24 @@ export default function App() {
                   <Mail className="mx-auto text-yellow-500 mb-2" size={28} />
                   <h2 className="text-lg font-serif font-bold uppercase mb-2">The Inner Circle</h2>
                   <form onSubmit={(e) => { e.preventDefault(); setActiveModal(null); }} className="flex flex-col gap-2 mt-3">
-                    <input type="email" placeholder="Enter your email" required className="bg-white/5 border border-white/10 rounded px-3 py-2 text-xs focus:outline-none focus:border-yellow-500" />
+                    <input type="email" placeholder="Enter your email" required className="bg-white/5 border border-white/10 rounded px-3 py-2 text-xs focus:outline-none focus:border-yellow-500 text-white" />
                     <button type="submit" className="py-2.5 bg-yellow-500 text-black font-bold text-xs uppercase rounded">Subscribe</button>
                   </form>
+                </div>
+              )}
+
+              {activeModal === 'BOOKING' && (
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2 text-yellow-500">
+                    <Calendar size={20} />
+                    <h2 className="text-lg font-serif font-bold uppercase">Booking & Inquiries</h2>
+                  </div>
+                  <p className="text-xs text-gray-300 leading-relaxed">
+                    For live performances, management, sync licensing, and press inquiries, reach out directly below.
+                  </p>
+                  <a href="mailto:booking@mayemusic.com" className="block w-full py-2.5 bg-yellow-500 text-black text-center font-bold text-xs uppercase rounded">
+                    Email Management
+                  </a>
                 </div>
               )}
 
@@ -359,10 +382,10 @@ export default function App() {
           )}
         </div>
 
-        {/* CART DRAWER */}
+        {/* CART DRAWER (MERCH) */}
         <div className={`absolute bottom-0 left-0 w-full h-[80%] bg-black/95 backdrop-blur-xl border-t border-white/10 p-6 z-[60] transition-transform duration-300 ease-out flex flex-col rounded-t-3xl ${isCartOpen ? 'translate-y-0' : 'translate-y-full'}`}>
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-serif font-bold uppercase">Your Cart</h2>
+            <h2 className="text-lg font-serif font-bold uppercase">Your Cart / Merch</h2>
             <button onClick={() => setIsCartOpen(false)} className="p-2 rounded-full bg-white/10">
               <X size={18} />
             </button>
