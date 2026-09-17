@@ -7,6 +7,13 @@ const SCENES = {
     name: 'THE HOTEL',
     background: 'https://uploads.onecompiler.io/44jjpumhc/1789609923816/1%20the%20hotel.svg',
     hitboxes: [
+      // Top artwork text labels
+      { id: 'bio_text', type: 'modal', target: 'BIO', x: '12%', y: '3%', w: '18%', h: '5%', className: 'block' },
+      { id: 'music_text', type: 'modal', target: 'MUSIC', x: '35%', y: '3%', w: '20%', h: '5%', className: 'block' },
+      { id: 'gallery_text', type: 'modal', target: 'GALLERY', x: '62%', y: '3%', w: '22%', h: '5%', className: 'block' },
+      { id: 'join_text', type: 'modal', target: 'JOIN', x: '88%', y: '3%', w: '18%', h: '5%', className: 'block' },
+      
+      // Interactive scene elements
       { id: 'plaid_suit', type: 'product', target: 'p1', x: '20%', y: '50%', w: '20%', h: '35%', className: 'block' },
       { id: 'briefcase', type: 'product', target: 'p4', x: '50%', y: '70%', w: '20%', h: '20%', className: 'block' },
       { 
@@ -34,6 +41,13 @@ const SCENES = {
     name: 'BONNY & CLYDE ROOM',
     background: 'https://uploads.onecompiler.io/44jjpumhc/1789609916900/2%20the%20new%20pharoah%20black%20cat.svg',
     hitboxes: [
+      // Top artwork text labels
+      { id: 'bio_text', type: 'modal', target: 'BIO', x: '12%', y: '3%', w: '18%', h: '5%', className: 'block' },
+      { id: 'music_text', type: 'modal', target: 'MUSIC', x: '35%', y: '3%', w: '20%', h: '5%', className: 'block' },
+      { id: 'gallery_text', type: 'modal', target: 'GALLERY', x: '62%', y: '3%', w: '22%', h: '5%', className: 'block' },
+      { id: 'join_text', type: 'modal', target: 'JOIN', x: '88%', y: '3%', w: '18%', h: '5%', className: 'block' },
+
+      // Interactive scene elements
       { id: 'vinyl', type: 'product', target: 'p_vinyl', x: '40%', y: '60%', w: '18%', h: '18%', className: 'block' },
       { id: 'cat', type: 'product', target: 'p2', x: '18%', y: '60%', w: '20%', h: '20%', className: 'block' },
       { id: 'gun', type: 'product', target: 'p3', x: '70%', y: '80%', w: '22%', h: '15%', className: 'block' },
@@ -50,13 +64,18 @@ const SCENES = {
     name: 'THE ESCAPE',
     background: 'https://uploads.onecompiler.io/44jjpumhc/1789609903497/3%20the%20escape%20.svg',
     hitboxes: [
+      // Top artwork text labels
+      { id: 'bio_text', type: 'modal', target: 'BIO', x: '12%', y: '3%', w: '18%', h: '5%', className: 'block' },
+      { id: 'music_text', type: 'modal', target: 'MUSIC', x: '35%', y: '3%', w: '20%', h: '5%', className: 'block' },
+      { id: 'gallery_text', type: 'modal', target: 'GALLERY', x: '62%', y: '3%', w: '22%', h: '5%', className: 'block' },
+      { id: 'join_text', type: 'modal', target: 'JOIN', x: '88%', y: '3%', w: '18%', h: '5%', className: 'block' },
+
+      // Interactive scene elements & bottom artwork text labels
       { id: 'seal', type: 'scene', target: 'hotel', x: '68%', y: '60%', w: '32%', h: '15%', className: 'block', showBeacon: true },
-      { id: 'music', type: 'modal', target: 'MUSIC', x: '32%', y: '4%', w: '18%', h: '7%', className: 'block' },
-      { id: 'join', type: 'modal', target: 'JOIN', x: '88%', y: '4%', w: '15%', h: '7%', className: 'block' },
       { id: 'hotel_link', type: 'scene', target: 'hotel', x: '73%', y: '62%', w: '30%', h: '18%', className: 'block' },
-      { id: 'tour', type: 'modal', target: 'TOUR', x: '18%', y: '94%', w: '22%', h: '8%', className: 'block' },
-      { id: 'escape_nav', type: 'scene', target: 'escape', x: '50%', y: '94%', w: '28%', h: '8%', className: 'block' },
-      { id: 'merch', type: 'cart', target: 'cart', x: '82%', y: '94%', w: '22%', h: '8%', className: 'block' }
+      { id: 'tour_text', type: 'modal', target: 'TOUR', x: '18%', y: '95%', w: '25%', h: '6%', className: 'block' },
+      { id: 'escape_nav_text', type: 'scene', target: 'escape', x: '50%', y: '95%', w: '30%', h: '6%', className: 'block' },
+      { id: 'merch_text', type: 'cart', target: 'cart', x: '82%', y: '95%', w: '25%', h: '6%', className: 'block' }
     ],
     products: []
   }
@@ -169,13 +188,6 @@ export default function App() {
         .animate-ripple {
           animation: rippleRing 1.4s ease-out infinite;
         }
-        .no-scrollbar::-webkit-scrollbar {
-          display: none;
-        }
-        .no-scrollbar {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
       `}</style>
 
       {/* INSTANT TRANSITION VIDEO OVERLAY */}
@@ -198,41 +210,8 @@ export default function App() {
       )}
 
       <div className="relative w-full max-w-[1400px] h-full flex flex-col shadow-2xl bg-black">
-        
-        {/* RESPONSIVE HEADER NAV (MOBILE & DESKTOP) */}
-        <header className="flex flex-col md:flex-row justify-between items-center px-4 md:px-8 py-2 md:py-4 bg-black/90 backdrop-blur-md border-b border-white/10 z-50 gap-2 md:gap-0">
-          <div className="flex items-center justify-between w-full md:w-auto">
-            <h1 className="text-base md:text-xl font-serif tracking-widest font-bold">MAYÉ</h1>
-            <div className="flex items-center gap-4 md:hidden">
-              <Music size={16} className="text-gray-300 hover:text-yellow-500 cursor-pointer" onClick={() => setActiveModal('MUSIC')} />
-              <button onClick={() => setIsCartOpen(true)} className="flex items-center gap-1.5 text-xs tracking-widest uppercase hover:text-yellow-500 transition-colors">
-                <ShoppingBag size={14} /> ({cart.length})
-              </button>
-            </div>
-          </div>
 
-          {/* FULL CLICKABLE NAVIGATION FOR ALL 7 SECTIONS */}
-          <nav className="flex w-full md:w-auto overflow-x-auto no-scrollbar gap-4 md:gap-6 text-xs md:text-sm tracking-widest uppercase font-serif py-1 text-gray-300">
-            <button onClick={() => setActiveModal('BOOKING')} className="whitespace-nowrap hover:text-yellow-500 transition-colors">Booking</button>
-            <button onClick={() => setActiveModal('BIO')} className="whitespace-nowrap hover:text-yellow-500 transition-colors">Bio</button>
-            <button onClick={() => setActiveModal('TOUR')} className="whitespace-nowrap hover:text-yellow-500 transition-colors">Tour</button>
-            <button onClick={() => setIsCartOpen(true)} className="whitespace-nowrap hover:text-yellow-500 transition-colors">Merch</button>
-            <button onClick={() => setActiveModal('MUSIC')} className="whitespace-nowrap hover:text-yellow-500 transition-colors">Music</button>
-            <button onClick={() => setActiveModal('GALLERY')} className="whitespace-nowrap hover:text-yellow-500 transition-colors">Gallery</button>
-            <button onClick={() => setActiveModal('JOIN')} className="whitespace-nowrap hover:text-yellow-500 transition-colors">Join</button>
-          </nav>
-
-          <div className="hidden md:flex items-center gap-6">
-            <div className="flex gap-4 text-gray-300">
-              <Music size={18} className="hover:text-yellow-500 cursor-pointer" onClick={() => setActiveModal('MUSIC')} />
-            </div>
-            <button onClick={() => setIsCartOpen(true)} className="flex items-center gap-2 text-sm tracking-widest uppercase hover:text-yellow-500 transition-colors">
-              <ShoppingBag size={16} /> Cart ({cart.length})
-            </button>
-          </div>
-        </header>
-
-        {/* MAIN CANVAS */}
+        {/* MAIN ARTWORK CANVAS */}
         <div className="relative flex-1 w-full h-full overflow-hidden bg-black flex items-center justify-center">
           
           {sceneLoading && (
@@ -247,13 +226,13 @@ export default function App() {
             className={`w-full h-full object-fill transition-opacity duration-300 ${sceneLoading ? 'opacity-0' : 'opacity-100'}`}
           />
 
-          {/* INTERACTIVE HOTSPOTS */}
+          {/* OVERLAY HITBOXES FOR ARTWORK TEXT AND OBJECTS */}
           {!sceneLoading && scene.hitboxes.map((box) => (
             <button
               key={box.id}
               onClick={() => handleHitboxClick(box)}
               aria-label={box.id}
-              className={`absolute -translate-x-1/2 -translate-y-1/2 cursor-pointer z-30 focus:outline-none flex items-center justify-center transition-all duration-200 hover:bg-white/10 active:scale-95 rounded-lg ${box.className || ''}`}
+              className={`absolute -translate-x-1/2 -translate-y-1/2 cursor-pointer z-30 focus:outline-none flex items-center justify-center transition-all duration-150 hover:bg-white/10 active:bg-white/20 active:scale-95 rounded-lg ${box.className || ''}`}
               style={{ left: box.x, top: box.y, width: box.w, height: box.h }}
             >
               {box.showBeacon && (
@@ -266,8 +245,8 @@ export default function App() {
           ))}
         </div>
 
-        {/* RESPONSIVE FOOTER NAV */}
-        <footer className="flex justify-center gap-6 md:gap-8 py-3 md:py-4 bg-black/90 backdrop-blur-md border-t border-white/10 z-50 text-[10px] md:text-xs tracking-widest uppercase overflow-x-auto no-scrollbar px-4">
+        {/* SCENE NAVIGATION FOOTER */}
+        <footer className="flex justify-center gap-6 md:gap-8 py-3 bg-black/90 backdrop-blur-md border-t border-white/10 z-50 text-[10px] md:text-xs tracking-widest uppercase px-4">
           {Object.values(SCENES).map((s) => (
             <button 
               key={s.id}
