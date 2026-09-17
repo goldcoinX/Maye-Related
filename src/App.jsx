@@ -169,6 +169,13 @@ export default function App() {
         .animate-ripple {
           animation: rippleRing 1.4s ease-out infinite;
         }
+        .no-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+        .no-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
       `}</style>
 
       {/* INSTANT TRANSITION VIDEO OVERLAY */}
@@ -192,19 +199,30 @@ export default function App() {
 
       <div className="relative w-full max-w-[1400px] h-full flex flex-col shadow-2xl bg-black">
         
-        {/* DESKTOP HEADER NAV */}
-        <header className="hidden md:flex justify-between items-center px-8 py-4 bg-black/80 backdrop-blur-md border-b border-white/10 z-50">
-          <div className="flex gap-6 text-sm tracking-widest uppercase font-serif">
-            <button onClick={() => setActiveModal('BOOKING')} className="hover:text-yellow-500 transition-colors">Booking</button>
-            <button onClick={() => setActiveModal('BIO')} className="hover:text-yellow-500 transition-colors">Bio</button>
-            <button onClick={() => setActiveModal('TOUR')} className="hover:text-yellow-500 transition-colors">Tour</button>
-            <button onClick={() => setIsCartOpen(true)} className="hover:text-yellow-500 transition-colors">Merch</button>
-            <button onClick={() => setActiveModal('MUSIC')} className="hover:text-yellow-500 transition-colors">Music</button>
-            <button onClick={() => setActiveModal('GALLERY')} className="hover:text-yellow-500 transition-colors">Gallery</button>
-            <button onClick={() => setActiveModal('JOIN')} className="hover:text-yellow-500 transition-colors">Join</button>
+        {/* RESPONSIVE HEADER NAV (MOBILE & DESKTOP) */}
+        <header className="flex flex-col md:flex-row justify-between items-center px-4 md:px-8 py-2 md:py-4 bg-black/90 backdrop-blur-md border-b border-white/10 z-50 gap-2 md:gap-0">
+          <div className="flex items-center justify-between w-full md:w-auto">
+            <h1 className="text-base md:text-xl font-serif tracking-widest font-bold">MAYÉ</h1>
+            <div className="flex items-center gap-4 md:hidden">
+              <Music size={16} className="text-gray-300 hover:text-yellow-500 cursor-pointer" onClick={() => setActiveModal('MUSIC')} />
+              <button onClick={() => setIsCartOpen(true)} className="flex items-center gap-1.5 text-xs tracking-widest uppercase hover:text-yellow-500 transition-colors">
+                <ShoppingBag size={14} /> ({cart.length})
+              </button>
+            </div>
           </div>
-          <h1 className="text-xl font-serif tracking-widest font-bold">MAYÉ</h1>
-          <div className="flex items-center gap-6">
+
+          {/* FULL CLICKABLE NAVIGATION FOR ALL 7 SECTIONS */}
+          <nav className="flex w-full md:w-auto overflow-x-auto no-scrollbar gap-4 md:gap-6 text-xs md:text-sm tracking-widest uppercase font-serif py-1 text-gray-300">
+            <button onClick={() => setActiveModal('BOOKING')} className="whitespace-nowrap hover:text-yellow-500 transition-colors">Booking</button>
+            <button onClick={() => setActiveModal('BIO')} className="whitespace-nowrap hover:text-yellow-500 transition-colors">Bio</button>
+            <button onClick={() => setActiveModal('TOUR')} className="whitespace-nowrap hover:text-yellow-500 transition-colors">Tour</button>
+            <button onClick={() => setIsCartOpen(true)} className="whitespace-nowrap hover:text-yellow-500 transition-colors">Merch</button>
+            <button onClick={() => setActiveModal('MUSIC')} className="whitespace-nowrap hover:text-yellow-500 transition-colors">Music</button>
+            <button onClick={() => setActiveModal('GALLERY')} className="whitespace-nowrap hover:text-yellow-500 transition-colors">Gallery</button>
+            <button onClick={() => setActiveModal('JOIN')} className="whitespace-nowrap hover:text-yellow-500 transition-colors">Join</button>
+          </nav>
+
+          <div className="hidden md:flex items-center gap-6">
             <div className="flex gap-4 text-gray-300">
               <Music size={18} className="hover:text-yellow-500 cursor-pointer" onClick={() => setActiveModal('MUSIC')} />
             </div>
@@ -248,13 +266,13 @@ export default function App() {
           ))}
         </div>
 
-        {/* DESKTOP FOOTER NAV */}
-        <footer className="hidden md:flex justify-center gap-8 py-4 bg-black/80 backdrop-blur-md border-t border-white/10 z-50 text-xs tracking-widest uppercase">
+        {/* RESPONSIVE FOOTER NAV */}
+        <footer className="flex justify-center gap-6 md:gap-8 py-3 md:py-4 bg-black/90 backdrop-blur-md border-t border-white/10 z-50 text-[10px] md:text-xs tracking-widest uppercase overflow-x-auto no-scrollbar px-4">
           {Object.values(SCENES).map((s) => (
             <button 
               key={s.id}
               onClick={() => { setActiveProduct(null); setCurrentSceneKey(s.id); }}
-              className={`pb-1 transition-colors ${currentSceneKey === s.id ? 'text-yellow-500 border-b-2 border-yellow-500' : 'text-gray-400 hover:text-white'}`}
+              className={`pb-0.5 whitespace-nowrap transition-colors ${currentSceneKey === s.id ? 'text-yellow-500 border-b-2 border-yellow-500 font-bold' : 'text-gray-400 hover:text-white'}`}
             >
               {s.name}
             </button>
