@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ShoppingBag, Play, Pause, X, Loader2, Mail, Instagram, Youtube, Music, Radio } from 'lucide-react';
+import { ShoppingBag, Play, Pause, X, Loader2, Mail, Music, Radio } from 'lucide-react';
 
 const SCENES = {
   hotel: {
@@ -147,8 +147,8 @@ export default function App() {
           <h1 className="text-xl font-serif tracking-widest font-bold">MAYÉ</h1>
           <div className="flex items-center gap-6">
             <div className="flex gap-4 text-gray-300">
-              <Instagram size={18} className="hover:text-yellow-500 cursor-pointer" />
-              <Youtube size={18} className="hover:text-yellow-500 cursor-pointer" />
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="hover:text-yellow-500 cursor-pointer"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="hover:text-yellow-500 cursor-pointer"><path d="M2.5 7.1C2.6 5 4.3 3.3 6.4 3.1 9.8 2.8 14.2 2.8 17.6 3.1 19.7 3.3 21.4 5 21.5 7.1 21.7 9.8 21.7 14.2 21.5 16.9 21.4 19 19.7 20.7 17.6 20.9 14.2 21.2 9.8 21.2 6.4 20.9 4.3 20.7 2.6 19 2.5 16.9 2.3 14.2 2.3 9.8 2.5 7.1Z"/><path d="m10 15 5-3-5-3v6Z"/></svg>
               <Music size={18} className="hover:text-yellow-500 cursor-pointer" />
               <Radio size={18} className="hover:text-yellow-500 cursor-pointer" />
             </div>
