@@ -7,14 +7,21 @@ const SCENES = {
     name: 'THE HOTEL',
     background: 'https://uploads.onecompiler.io/44jjpumhc/1789609923816/1%20the%20hotel.svg',
     hitboxes: [
-      // Navigation Glowing Dots
-      { id: 'dot_room', type: 'scene', target: 'room', label: 'B&C ROOM', x: '82%', y: '32%' },
-      { id: 'dot_escape', type: 'scene', target: 'escape', label: 'THE ESCAPE', x: '45%', y: '88%' },
-      
-      // Interactive Item Hotspots
       { id: 'plaid_suit', type: 'product', target: 'p1', x: '20%', y: '50%', w: '15%', h: '30%', className: 'hidden md:block' },
       { id: 'briefcase', type: 'product', target: 'p4', x: '50%', y: '70%', w: '15%', h: '15%', className: 'hidden md:block' },
+      { 
+        id: 'room_sign', 
+        type: 'scene', 
+        target: 'room', 
+        x: '70%', 
+        y: '27%', 
+        w: '25%', 
+        h: '12%', 
+        className: 'block md:hidden',
+        transitionVideo: 'https://res.cloudinary.com/dccxjo9x8/video/upload/c_scale,w_800/f_auto,q_auto:eco/v1789630779/1st_transition_m2cwtv.mp4'
+      },
       { id: 'lumusic_hq', type: 'modal', target: 'BIO', x: '63%', y: '73%', w: '28%', h: '12%', className: 'block md:hidden' },
+      { id: 'hotel_text', type: 'scene', target: 'hotel', x: '35%', y: '8%', w: '30%', h: '8%', className: 'block md:hidden' }
     ],
     products: [
       { id: 'p1', name: 'Mayé Red Plaid Suit', price: 850, desc: 'Exclusive tailored red plaid suit.', image: 'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=500&auto=format&fit=crop' },
@@ -24,16 +31,12 @@ const SCENES = {
   room: {
     id: 'room',
     name: 'BONNY & CLYDE ROOM',
-    background: 'https://uploads.onecompiler.io/44jjpumhc/1789609916900/2%20the%20new%20pharoah%20black%20cat.svg',
+    background: 'https://uploads.onecompiler.io/44jjpumhc/178960916900/2%20the%20new%20pharoah%20black%20cat.svg',
     hitboxes: [
-      // Navigation Glowing Dots
-      { id: 'dot_hotel', type: 'scene', target: 'hotel', label: 'THE HOTEL', x: '18%', y: '12%' },
-      { id: 'dot_escape', type: 'scene', target: 'escape', label: 'THE ESCAPE', x: '50%', y: '88%' },
-      
-      // Interactive Item Hotspots
       { id: 'vinyl', type: 'product', target: 'p_vinyl', x: '40%', y: '60%', w: '15%', h: '15%', className: 'hidden md:block' },
       { id: 'cat', type: 'product', target: 'p2', x: '18%', y: '60%', w: '18%', h: '18%', className: 'block md:hidden' },
       { id: 'gun', type: 'product', target: 'p3', x: '70%', y: '80%', w: '20%', h: '12%', className: 'block md:hidden' },
+      { id: 'escape_text', type: 'scene', target: 'escape', x: '35%', y: '85%', w: '30%', h: '10%', className: 'block md:hidden' }
     ],
     products: [
       { id: 'p2', name: 'The New Pharaoh Cat', price: 450, desc: 'Bastet inspired black cat statue from the B&C Room.', image: 'https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=500&auto=format&fit=crop' },
@@ -46,14 +49,12 @@ const SCENES = {
     name: 'THE ESCAPE',
     background: 'https://uploads.onecompiler.io/44jjpumhc/1789609903497/3%20the%20escape%20.svg',
     hitboxes: [
-      // Navigation Glowing Dots
-      { id: 'dot_hotel', type: 'scene', target: 'hotel', label: 'THE HOTEL', x: '75%', y: '60%' },
-      { id: 'dot_room', type: 'scene', target: 'room', label: 'B&C ROOM', x: '25%', y: '60%' },
-      
-      // Interactive Item Hotspots
+      { id: 'seal', type: 'scene', target: 'hotel', x: '60%', y: '55%', w: '30%', h: '18%', className: 'block md:hidden' },
       { id: 'music', type: 'modal', target: 'MUSIC', x: '32%', y: '4%', w: '16%', h: '5%', className: 'hidden md:block' },
       { id: 'join', type: 'modal', target: 'JOIN', x: '88%', y: '4%', w: '12%', h: '5%', className: 'hidden md:block' },
+      { id: 'hotel_link', type: 'scene', target: 'hotel', x: '73%', y: '62%', w: '28%', h: '16%', className: 'hidden md:block' },
       { id: 'tour', type: 'modal', target: 'TOUR', x: '18%', y: '96%', w: '20%', h: '6%', className: 'hidden md:block' },
+      { id: 'escape_nav', type: 'scene', target: 'escape', x: '50%', y: '96%', w: '25%', h: '6%', className: 'hidden md:block' },
       { id: 'merch', type: 'cart', target: 'cart', x: '82%', y: '96%', w: '20%', h: '6%', className: 'hidden md:block' }
     ],
     products: []
@@ -66,13 +67,15 @@ export default function App() {
   const [cart, setCart] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isAppLoading, setIsAppLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isLoaded, setIsLoaded] = useState(false);
   const [activeModal, setActiveModal] = useState(null);
+  const [activeTransition, setActiveTransition] = useState(null);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
 
   const audioRef = useRef(null);
-  const currentScene = SCENES[currentSceneKey];
+  const scene = SCENES[currentSceneKey];
 
-  // AUDIO INITIALIZATION
   useEffect(() => {
     audioRef.current = new Audio('https://res.cloudinary.com/dccxjo9x8/video/upload/v1781667910/May%C3%A9_X_Bonnie_Suga_and_Spice_Mixed__1756223314000_1756223314000_6279753_ahvioq.mp3');
     audioRef.current.loop = true;
@@ -87,45 +90,50 @@ export default function App() {
   useEffect(() => {
     if (audioRef.current) {
       if (isPlaying) {
-        audioRef.current.play().catch(e => console.error("Audio playback error:", e));
+        audioRef.current.play().catch(e => console.error("Audio playback failed:", e));
       } else {
         audioRef.current.pause();
       }
     }
   }, [isPlaying]);
 
-  // INSTANT PRELOADER FOR ALL SCENE BACKGROUNDS
   useEffect(() => {
-    let loadedCount = 0;
-    const sceneList = Object.values(SCENES);
-
-    sceneList.forEach((sceneItem) => {
+    Object.values(SCENES).forEach((s) => {
       const img = new Image();
-      img.src = sceneItem.background;
-      const handleImageReady = () => {
-        loadedCount += 1;
-        if (loadedCount >= sceneList.length) {
-          setIsAppLoading(false);
-        }
-      };
-      img.onload = handleImageReady;
-      img.onerror = handleImageReady;
+      img.src = s.background;
+    });
+
+    const videoUrls = [
+      'https://res.cloudinary.com/dccxjo9x8/video/upload/c_scale,w_800/f_auto,q_auto:eco/v1789630779/1st_transition_m2cwtv.mp4'
+    ];
+    videoUrls.forEach((url) => {
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'video';
+      link.href = url;
+      document.head.appendChild(link);
     });
   }, []);
 
-  const handleHitboxClick = (box) => {
-    if (box.type === 'scene') {
-      setActiveProduct(null);
-      setCurrentSceneKey(box.target);
-    } else if (box.type === 'modal') {
-      setActiveModal(box.target);
-    } else if (box.type === 'cart') {
-      setIsCartOpen(true);
-    } else if (box.type === 'product') {
-      const prod = currentScene.products.find(p => p.id === box.target);
-      if (prod) setActiveProduct(prod);
+  useEffect(() => {
+    if (isInitialLoad) {
+      setIsLoading(true);
+      setIsLoaded(false);
     }
-  };
+
+    const img = new Image();
+    img.src = scene.background;
+    
+    const handleLoadComplete = () => {
+      setIsLoading(false);
+      setIsInitialLoad(false); 
+      setTimeout(() => setIsLoaded(true), 50); 
+    };
+    
+    img.onload = handleLoadComplete;
+    img.onerror = handleLoadComplete;
+    if (img.complete) handleLoadComplete();
+  }, [currentSceneKey, scene, isInitialLoad]);
 
   const handleAddToCart = (product) => {
     setCart(prev => [...prev, product]);
@@ -133,28 +141,73 @@ export default function App() {
     setIsCartOpen(true);
   };
 
+  const handleHitboxClick = (box) => {
+    if (box.type === 'scene') {
+      setActiveProduct(null);
+      if (box.transitionVideo) {
+        setActiveTransition({ videoUrl: box.transitionVideo, targetScene: box.target });
+      } else {
+        setCurrentSceneKey(box.target);
+      }
+    } else if (box.type === 'modal') {
+      setActiveModal(box.target);
+    } else if (box.type === 'cart') {
+      setIsCartOpen(true);
+    } else if (box.type === 'product') {
+      const prod = scene.products.find(p => p.id === box.target);
+      if (prod) setActiveProduct(prod);
+    }
+  };
+
   const cartTotal = cart.reduce((total, item) => total + item.price, 0);
 
   return (
-    <div className="fixed inset-0 w-full h-[100dvh] overflow-hidden bg-black text-white font-sans flex justify-center selection:bg-yellow-500 selection:text-black">
+    <div className="fixed inset-0 w-full h-[100dvh] overflow-hidden bg-black text-white font-sans selection:bg-yellow-500 selection:text-black flex justify-center">
       
       <style>{`
         #root, #__next, :root { max-width: none !important; width: 100% !important; height: 100% !important; margin: 0 !important; padding: 0 !important; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Dark to White Blinking Dot Animation */
+        @keyframes dotBlink {
+          0%, 100% {
+            background-color: #000000;
+            border-color: #333333;
+            box-shadow: 0 0 0px rgba(255, 255, 255, 0);
+          }
+          50% {
+            background-color: #ffffff;
+            border-color: #ffffff;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.9);
+          }
+        }
+        .animate-dot-blink {
+          animation: dotBlink 1.2s ease-in-out infinite;
+        }
       `}</style>
 
-      {/* APP INITIAL LOADING OVERLAY */}
-      {isAppLoading && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center z-[100] bg-black">
-          <Loader2 className="animate-spin text-yellow-500 mb-2" size={40} />
-          <span className="text-xs uppercase tracking-widest text-gray-400">Loading Experience...</span>
+      {/* FULLSCREEN VIDEO TRANSITION OVERLAY */}
+      {activeTransition && (
+        <div className="absolute inset-0 z-[100] bg-black">
+          <video
+            src={activeTransition.videoUrl}
+            autoPlay
+            playsInline
+            muted
+            preload="auto"
+            className="w-full h-full object-cover"
+            onEnded={() => {
+              setCurrentSceneKey(activeTransition.targetScene);
+              setActiveTransition(null);
+            }}
+          />
         </div>
       )}
 
       <div className="relative w-full max-w-[1400px] h-full flex flex-col shadow-2xl">
         
-        {/* DESKTOP HEADER */}
+        {/* DESKTOP TOP HEADER NAV */}
         <header className="hidden md:flex justify-between items-center px-8 py-4 bg-black/80 backdrop-blur-md border-b border-white/10 z-50">
           <div className="flex gap-6 text-sm tracking-widest uppercase font-serif">
             <button onClick={() => setActiveModal('BOOKING')} className="hover:text-yellow-500 transition-colors">Booking</button>
@@ -168,6 +221,8 @@ export default function App() {
           <h1 className="text-xl font-serif tracking-widest font-bold">MAYÉ</h1>
           <div className="flex items-center gap-6">
             <div className="flex gap-4 text-gray-300">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="hover:text-yellow-500 cursor-pointer"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="hover:text-yellow-500 cursor-pointer"><path d="M2.5 7.1C2.6 5 4.3 3.3 6.4 3.1 9.8 2.8 14.2 2.8 17.6 3.1 19.7 3.3 21.4 5 21.5 7.1 21.7 9.8 21.7 14.2 21.5 16.9 21.4 19 19.7 20.7 17.6 20.9 14.2 21.2 9.8 21.2 6.4 20.9 4.3 20.7 2.6 19 2.5 16.9 2.3 14.2 2.3 9.8 2.5 7.1Z"/><path d="m10 15 5-3-5-3v6Z"/></svg>
               <Music size={18} className="hover:text-yellow-500 cursor-pointer" />
               <Radio size={18} className="hover:text-yellow-500 cursor-pointer" />
             </div>
@@ -177,7 +232,7 @@ export default function App() {
           </div>
         </header>
 
-        {/* MOBILE TOP NAVIGATION HOTSPOTS */}
+        {/* MOBILE TOP NAV INVISIBLE OVERLAY */}
         <div className="absolute top-0 left-0 w-full h-[10%] z-40 flex justify-between px-4 md:hidden">
           <button onClick={() => setActiveModal('BIO')} className="w-1/4 h-full focus:outline-none" aria-label="Bio" />
           <button onClick={() => setActiveModal('MUSIC')} className="w-1/4 h-full focus:outline-none" aria-label="Music" />
@@ -185,66 +240,59 @@ export default function App() {
           <button onClick={() => setActiveModal('JOIN')} className="w-1/4 h-full focus:outline-none" aria-label="Join" />
         </div>
 
-        {/* MOBILE BOTTOM NAVIGATION HOTSPOTS */}
+        {/* MOBILE BOTTOM NAV INVISIBLE OVERLAY */}
         <div className="absolute bottom-0 left-0 w-full h-[10%] z-40 flex justify-between px-4 md:hidden">
-          <button onClick={() => setActiveModal('TOUR')} className="w-1/2 h-full focus:outline-none" aria-label="Tour" />
-          <button onClick={() => setIsCartOpen(true)} className="w-1/2 h-full focus:outline-none" aria-label="Merch" />
+          <button onClick={() => setActiveModal('TOUR')} className="w-1/3 h-full focus:outline-none" aria-label="Tour" />
+          <button onClick={() => setCurrentSceneKey('escape')} className="w-1/3 h-full focus:outline-none" aria-label="Escape" />
+          <button onClick={() => setIsCartOpen(true)} className="w-1/3 h-full focus:outline-none" aria-label="Merch" />
         </div>
 
-        {/* SCENE CANVAS - PRE-RENDERED STACKED BACKGROUNDS FOR ZERO TRANSITION DELAY */}
         <div className="relative flex-1 w-full h-full overflow-hidden">
-          {Object.values(SCENES).map((sceneItem) => {
-            const isActive = currentSceneKey === sceneItem.id;
+          {isLoading && (
+            <div className="absolute inset-0 flex items-center justify-center z-50 bg-black">
+              <Loader2 className="animate-spin text-yellow-500" size={48} />
+            </div>
+          )}
 
-            return (
-              <div
-                key={sceneItem.id}
-                className={`absolute inset-0 transition-opacity duration-500 ease-in-out ${
-                  isActive ? 'opacity-100 z-10 pointer-events-auto' : 'opacity-0 z-0 pointer-events-none'
-                }`}
-                style={{
-                  backgroundImage: `url('${sceneItem.background}')`,
-                  backgroundSize: '100% 100%',
-                  backgroundPosition: 'center',
-                  backgroundRepeat: 'no-repeat',
-                }}
-              >
-                {/* HOTSPOTS FOR ACTIVE SCENE */}
-                {isActive && sceneItem.hitboxes.map((box) => (
-                  <button
-                    key={box.id}
-                    onClick={() => handleHitboxClick(box)}
-                    aria-label={box.label || box.id}
-                    className={`absolute -translate-x-1/2 -translate-y-1/2 cursor-pointer focus:outline-none group ${box.className || ''}`}
-                    style={{
-                      left: box.x,
-                      top: box.y,
-                      width: box.w || 'auto',
-                      height: box.h || 'auto',
-                    }}
-                  >
-                    {/* GLOWING DOT FOR SCENE TRANSITIONS */}
-                    {box.type === 'scene' ? (
-                      <div className="relative flex items-center justify-center">
-                        <span className="w-4 h-4 rounded-full bg-yellow-400 border border-yellow-200 shadow-[0_0_12px_4px_rgba(250,204,21,0.85)] transition-transform duration-200 group-hover:scale-125" />
-                        {box.label && (
-                          <span className="absolute bottom-full mb-2 whitespace-nowrap px-2 py-0.5 rounded bg-black/80 text-[10px] text-yellow-400 font-serif font-bold tracking-wider border border-yellow-500/30 opacity-80 group-hover:opacity-100 transition-opacity">
-                            {box.label}
-                          </span>
-                        )}
-                      </div>
-                    ) : (
-                      /* PRODUCT / MODAL HITBOX OVERLAY */
-                      <span className="w-full h-full block transition-all duration-300 group-hover:bg-white/10 rounded" />
-                    )}
-                  </button>
-                ))}
-              </div>
-            );
-          })}
+          <div 
+            className={`absolute inset-0 transition-all duration-500 ease-in-out ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
+            style={{
+              backgroundImage: `url('${scene.background}')`,
+              backgroundSize: '100% 100%', 
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
+            }}
+          />
+
+          {/* HITBOXES WITH MINIMALIST BLINKING DARK-TO-WHITE DOT */}
+          {isLoaded && scene.hitboxes.map((box) => (
+            <button
+              key={box.id}
+              onClick={() => handleHitboxClick(box)}
+              aria-label={box.id}
+              className={`absolute -translate-x-1/2 -translate-y-1/2 cursor-pointer z-30 group focus:outline-none flex items-center justify-center ${box.className || ''}`}
+              style={{ 
+                left: box.x, 
+                top: box.y, 
+                width: box.w, 
+                height: box.h,
+                background: 'transparent',
+                border: 'none',
+              }}
+            >
+              {box.type !== 'scene' && (
+                <span className="w-full h-full block transition-all duration-300 group-hover:bg-white/10 group-active:bg-white/20 rounded" />
+              )}
+              
+              {/* Scene hitboxes render a small, centered dark-to-white blinking dot without text labels */}
+              {box.type === 'scene' && (
+                <span className="w-2.5 h-2.5 rounded-full border border-white/50 animate-dot-blink transition-transform group-hover:scale-150" />
+              )}
+            </button>
+          ))}
         </div>
 
-        {/* DESKTOP FOOTER SCENE SELECTOR */}
+        {/* SCENE SELECTOR FOOTER FOR DESKTOP */}
         <footer className="hidden md:flex justify-center gap-8 py-4 bg-black/80 backdrop-blur-md border-t border-white/10 z-50 text-xs tracking-widest uppercase">
           {Object.values(SCENES).map((s) => (
             <button 
@@ -257,7 +305,6 @@ export default function App() {
           ))}
         </footer>
 
-        {/* MODALS */}
         {activeModal && (
           <div className="absolute inset-0 bg-black/90 backdrop-blur-md z-[70] flex items-center justify-center p-6">
             <div className="relative w-full max-w-sm bg-[#111] border border-white/20 rounded-2xl p-8 max-h-[85vh] overflow-y-auto no-scrollbar shadow-2xl">
@@ -270,7 +317,7 @@ export default function App() {
 
               {activeModal === 'BIO' && (
                 <div className="space-y-4">
-                  <h2 className="text-xl font-serif font-bold tracking-widest uppercase text-yellow-500">Biography</h2>
+                  <h2 className="text-xl font-serif font-bold tracking-widest uppercase mb-4 text-yellow-500">Biography</h2>
                   <p className="text-sm leading-relaxed text-gray-300">
                     MAYÉ is an independent visionary artist blending sultry R&B textures, cinematic storytelling, and genre-defying production.
                   </p>
@@ -279,7 +326,7 @@ export default function App() {
 
               {activeModal === 'MUSIC' && (
                 <div className="space-y-4">
-                  <h2 className="text-xl font-serif font-bold tracking-widest uppercase text-yellow-500">Music</h2>
+                  <h2 className="text-xl font-serif font-bold tracking-widest uppercase mb-4 text-yellow-500">Music</h2>
                   <div className="p-3 bg-white/5 rounded border border-white/10 flex justify-between items-center">
                     <div>
                       <p className="font-bold text-sm">Suga & Spice</p>
@@ -339,7 +386,7 @@ export default function App() {
 
               {activeModal === 'BOOKING' && (
                 <div className="space-y-4">
-                  <h2 className="text-xl font-serif font-bold tracking-widest uppercase text-yellow-500">Booking Inquiries</h2>
+                  <h2 className="text-xl font-serif font-bold tracking-widest uppercase mb-4 text-yellow-500">Booking Inquiries</h2>
                   <p className="text-sm leading-relaxed text-gray-300">
                     For bookings, sync licensing, and press inquiries, contact management directly.
                   </p>
@@ -349,7 +396,6 @@ export default function App() {
           </div>
         )}
 
-        {/* PRODUCT DETAILS DRAWER */}
         <div 
           className={`absolute bottom-0 left-0 w-full h-[75%] bg-black/95 backdrop-blur-xl border-t border-white/10 p-6 z-[60] transform transition-transform duration-500 ease-out flex flex-col rounded-t-3xl ${
             activeProduct ? 'translate-y-0' : 'translate-y-full'
@@ -366,7 +412,11 @@ export default function App() {
               
               <div className="flex-1 mt-6 overflow-y-auto no-scrollbar">
                 <div className="w-full aspect-video bg-gray-900 rounded-xl mb-6 overflow-hidden relative border border-white/10">
-                  <img src={activeProduct.image} alt={activeProduct.name} className="w-full h-full object-cover opacity-80" />
+                  <img 
+                    src={activeProduct.image} 
+                    alt={activeProduct.name} 
+                    className="w-full h-full object-cover opacity-80"
+                  />
                 </div>
                 <h2 className="text-xl font-serif font-bold mb-2 pr-8">{activeProduct.name}</h2>
                 <p className="text-yellow-500 text-lg font-medium mb-4">${activeProduct.price.toLocaleString('en-US', {minimumFractionDigits: 2})}</p>
@@ -383,7 +433,6 @@ export default function App() {
           )}
         </div>
 
-        {/* SHOPPING CART DRAWER */}
         <div 
           className={`absolute bottom-0 left-0 w-full h-[85%] bg-black/95 backdrop-blur-xl border-t border-white/10 p-6 z-[60] transform transition-transform duration-500 ease-out flex flex-col rounded-t-3xl ${
             isCartOpen ? 'translate-y-0' : 'translate-y-full'
