@@ -9,7 +9,7 @@ const SCENES = {
     hitboxes: [
       { id: 'plaid_suit', type: 'product', target: 'p1', x: '20%', y: '50%', w: '15%', h: '30%', className: 'hidden md:block' },
       { id: 'briefcase', type: 'product', target: 'p4', x: '50%', y: '70%', w: '15%', h: '15%', className: 'hidden md:block' },
-      // Green Circle: B&C ROOM Sign (Now with transitionVideo attached)
+      // Green Circle: B&C ROOM Sign (Now with optimized MP4 transitionVideo attached)
       { 
         id: 'room_sign', 
         type: 'scene', 
@@ -19,7 +19,7 @@ const SCENES = {
         w: '25%', 
         h: '8%', 
         className: 'block md:hidden',
-        transitionVideo: 'https://res.cloudinary.com/dccxjo9x8/video/upload/v1789630779/1st_transition_m2cwtv.mov'
+        transitionVideo: 'https://res.cloudinary.com/dccxjo9x8/video/upload/f_auto,q_auto/v1789630779/1st_transition_m2cwtv.mp4'
       },
       // Green Circle: Lumusic HQ Badge
       { id: 'lumusic_hq', type: 'modal', target: 'BIO', x: '63%', y: '73%', w: '28%', h: '12%', className: 'block md:hidden' },
@@ -77,11 +77,13 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
   const [activeModal, setActiveModal] = useState(null);
-  const [activeTransition, setActiveTransition] = useState(null); // New state for managing video transitions
+  const [activeTransition, setActiveTransition] = useState(null);
+  const [isInitialLoad, setIsInitialLoad] = useState(true); // NEW STATE for initial load
 
   const audioRef = useRef(null);
   const scene = SCENES[currentSceneKey];
 
+  // AUDIO LOGIC
   useEffect(() => {
     audioRef.current = new Audio('https://res.cloudinary.com/dccxjo9x8/video/upload/v1781667910/May%C3%A9_X_Bonnie_Suga_and_Spice_Mixed__1756223314000_1756223314000_6279753_ahvioq.mp3');
     audioRef.current.loop = true;
@@ -103,20 +105,45 @@ export default function App() {
     }
   }, [isPlaying]);
 
+  // NEW PRELOADER: Downloads backgrounds and transition videos instantly
   useEffect(() => {
-    setIsLoading(true);
-    setIsLoaded(false);
+    Object.values(SCENES).forEach((s) => {
+      const img = new Image();
+      img.src = s.background;
+    });
+
+    const videoUrls = [
+      'https://res.cloudinary.com/dccxjo9x8/video/upload/f_auto,q_auto/v1789630779/1st_transition_m2cwtv.mp4'
+    ];
+    videoUrls.forEach((url) => {
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'video';
+      link.href = url;
+      document.head.appendChild(link);
+    });
+  }, []);
+
+  // UPDATED SPINNER LOGIC: Only show loading spinner on the first visit
+  useEffect(() => {
+    if (isInitialLoad) {
+      setIsLoading(true);
+      setIsLoaded(false);
+    }
 
     const img = new Image();
     img.src = scene.background;
+    
     const handleLoadComplete = () => {
       setIsLoading(false);
+      setIsInitialLoad(false); // Prevents the spinner from appearing on future clicks
       setTimeout(() => setIsLoaded(true), 50); 
     };
+    
     img.onload = handleLoadComplete;
     img.onerror = handleLoadComplete;
     if (img.complete) handleLoadComplete();
-  }, [currentSceneKey, scene]);
+  }, [currentSceneKey, scene, isInitialLoad]);
 
   const handleAddToCart = (product) => {
     setCart(prev => [...prev, product]);
