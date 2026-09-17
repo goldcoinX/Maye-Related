@@ -4,41 +4,54 @@ import { ShoppingBag, Play, Pause, X, Loader2, Mail } from 'lucide-react';
 const SCENES = {
   hotel: {
     id: 'hotel',
-    name: 'THE HOTEL', // Updated to match screenshot
-    backgroundDesktop: 'https://res.cloudinary.com/dccxjo9x8/image/upload/v1781626534/home_ready_hotel_azeki6.png',
-    backgroundMobile: 'https://res.cloudinary.com/dccxjo9x8/image/upload/v1789580313/1_the_hotel_h3udh8.png',
-    // ... hitboxes remain the same
+    name: 'THE HOTEL',
+    background: 'https://res.cloudinary.com/dccxjo9x8/image/upload/v1789580313/1_the_hotel_h3udh8.png',
+    hitboxes: [
+      // Desktop Items (Hidden on Mobile)
+      { id: 'plaid_suit', type: 'product', target: 'p1', x: '20%', y: '50%', w: '15%', h: '30%', className: 'hidden md:block' },
+      { id: 'briefcase', type: 'product', target: 'p4', x: '50%', y: '70%', w: '15%', h: '15%', className: 'hidden md:block' },
+      // Mobile Items (Hidden on Desktop)
+      { id: 'room_sign', type: 'scene', target: 'room', x: '70%', y: '27%', w: '25%', h: '8%', className: 'block md:hidden' },
+      { id: 'lumusic_hq', type: 'modal', target: 'BIO', x: '63%', y: '73%', w: '28%', h: '12%', className: 'block md:hidden' },
+      { id: 'hotel_text', type: 'scene', target: 'hotel', x: '35%', y: '8%', w: '30%', h: '6%', className: 'block md:hidden' }
+    ],
+    products: [
+      { id: 'p1', name: 'Mayé Red Plaid Suit', price: 850, desc: 'Exclusive tailored red plaid suit.', image: 'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=500&auto=format&fit=crop' },
+      { id: 'p4', name: 'Lumusic Briefcase', price: 300, desc: 'Official Lumusic HQ briefcase.', image: 'https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=500&auto=format&fit=crop' }
+    ]
   },
   room: {
     id: 'room',
-    name: 'BONNY & CLYDE ROOM', // Updated to match screenshot
-    backgroundDesktop: 'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?q=80&w=2560&auto=format&fit=crop',
-    backgroundMobile: 'https://res.cloudinary.com/dccxjo9x8/image/upload/v1789580317/2_the_new_pharoah_black_cat_vmfw9q.png',
-    // ... hitboxes remain the same
-  },
-  escape: {
-    id: 'escape',
-    name: 'THE ESCAPE', // Updated to match screenshot
-    backgroundDesktop: 'https://images.unsplash.com/photo-1513628253939-010e64ac66cd?q=80&w=2560&auto=format&fit=crop',
-    backgroundMobile: 'https://res.cloudinary.com/dccxjo9x8/image/upload/v1789580311/3_the_escape_mc2sqm.png',
-    // ... hitboxes remain the same
-  }
-};
+    name: 'BONNY & CLYDE ROOM',
+    background: 'https://res.cloudinary.com/dccxjo9x8/image/upload/v1789580317/2_the_new_pharoah_black_cat_vmfw9q.png',
+    hitboxes: [
+      // Desktop Items (Hidden on Mobile)
+      { id: 'vinyl', type: 'product', target: 'p_vinyl', x: '40%', y: '60%', w: '15%', h: '15%', className: 'hidden md:block' },
+      // Mobile Items (Hidden on Desktop)
+      { id: 'cat', type: 'product', target: 'p2', x: '18%', y: '60%', w: '18%', h: '18%', className: 'block md:hidden' },
+      { id: 'gun', type: 'product', target: 'p3', x: '70%', y: '80%', w: '20%', h: '12%', className: 'block md:hidden' },
+      { id: 'escape_text', type: 'scene', target: 'escape', x: '35%', y: '85%', w: '30%', h: '8%', className: 'block md:hidden' }
+    ],
     products: [
       { id: 'p2', name: 'The New Pharaoh Cat', price: 450, desc: 'Bastet inspired black cat statue from the B&C Room.', image: 'https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=500&auto=format&fit=crop' },
-      { id: 'p3', name: 'Prop Gun Replica', price: 150, desc: 'Used in the Escape shoot polaroids.', image: 'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=500&auto=format&fit=crop' }
+      { id: 'p3', name: 'Prop Gun Replica', price: 150, desc: 'Used in the Escape shoot polaroids.', image: 'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=500&auto=format&fit=crop' },
+      { id: 'p_vinyl', name: 'Suga & Spice Vinyl', price: 45, desc: 'Limited edition vinyl record.', image: 'https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=500&auto=format&fit=crop' }
     ]
   },
   escape: {
     id: 'escape',
+    name: 'THE ESCAPE',
     background: 'https://res.cloudinary.com/dccxjo9x8/image/upload/v1789580311/3_the_escape_mc2sqm.png',
     hitboxes: [
-      { id: 'music', type: 'modal', target: 'MUSIC', x: '32%', y: '4%', w: '16%', h: '5%' },
-      { id: 'join', type: 'modal', target: 'JOIN', x: '88%', y: '4%', w: '12%', h: '5%' },
-      { id: 'hotel_link', type: 'scene', target: 'hotel', x: '73%', y: '62%', w: '28%', h: '16%' },
-      { id: 'tour', type: 'modal', target: 'TOUR', x: '18%', y: '96%', w: '20%', h: '6%' },
-      { id: 'escape_nav', type: 'scene', target: 'escape', x: '50%', y: '96%', w: '25%', h: '6%' },
-      { id: 'merch', type: 'cart', target: 'cart', x: '82%', y: '96%', w: '20%', h: '6%' }
+      // Mobile Items (Hidden on Desktop)
+      { id: 'seal', type: 'scene', target: 'hotel', x: '60%', y: '55%', w: '30%', h: '18%', className: 'block md:hidden' },
+      // Desktop Items (Hidden on Mobile - Mobile uses the transparent nav bars instead)
+      { id: 'music', type: 'modal', target: 'MUSIC', x: '32%', y: '4%', w: '16%', h: '5%', className: 'hidden md:block' },
+      { id: 'join', type: 'modal', target: 'JOIN', x: '88%', y: '4%', w: '12%', h: '5%', className: 'hidden md:block' },
+      { id: 'hotel_link', type: 'scene', target: 'hotel', x: '73%', y: '62%', w: '28%', h: '16%', className: 'hidden md:block' },
+      { id: 'tour', type: 'modal', target: 'TOUR', x: '18%', y: '96%', w: '20%', h: '6%', className: 'hidden md:block' },
+      { id: 'escape_nav', type: 'scene', target: 'escape', x: '50%', y: '96%', w: '25%', h: '6%', className: 'hidden md:block' },
+      { id: 'merch', type: 'cart', target: 'cart', x: '82%', y: '96%', w: '20%', h: '6%', className: 'hidden md:block' }
     ],
     products: []
   }
@@ -126,6 +139,21 @@ export default function App() {
 
       <div className="relative w-full max-w-[500px] h-full shadow-2xl">
         
+        {/* MOBILE TOP NAV INVISIBLE OVERLAY */}
+        <div className="absolute top-0 left-0 w-full h-[10%] z-40 flex justify-between px-4 md:hidden">
+          <button onClick={() => setActiveModal('BIO')} className="w-1/4 h-full" aria-label="Bio" />
+          <button onClick={() => setActiveModal('MUSIC')} className="w-1/4 h-full" aria-label="Music" />
+          <button onClick={() => setActiveModal('GALLERY')} className="w-1/4 h-full" aria-label="Gallery" />
+          <button onClick={() => setActiveModal('JOIN')} className="w-1/4 h-full" aria-label="Join" />
+        </div>
+
+        {/* MOBILE BOTTOM NAV INVISIBLE OVERLAY */}
+        <div className="absolute bottom-0 left-0 w-full h-[10%] z-40 flex justify-between px-4 md:hidden">
+          <button onClick={() => setActiveModal('TOUR')} className="w-1/3 h-full" aria-label="Tour" />
+          <button onClick={() => setCurrentSceneKey('escape')} className="w-1/3 h-full" aria-label="Escape" />
+          <button onClick={() => setIsCartOpen(true)} className="w-1/3 h-full" aria-label="Merch" />
+        </div>
+
         {isLoading && (
           <div className="absolute inset-0 flex items-center justify-center z-50 bg-black">
             <Loader2 className="animate-spin text-yellow-500" size={48} />
@@ -147,7 +175,7 @@ export default function App() {
             key={box.id}
             onClick={() => handleHitboxClick(box)}
             aria-label={box.id}
-            className="absolute -translate-x-1/2 -translate-y-1/2 cursor-pointer z-30 group focus:outline-none"
+            className={`absolute -translate-x-1/2 -translate-y-1/2 cursor-pointer z-30 group focus:outline-none ${box.className || ''}`}
             style={{ 
               left: box.x, 
               top: box.y, 
